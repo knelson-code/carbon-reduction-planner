@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma"
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -16,9 +16,10 @@ export async function GET(
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const userId = (session.user as any).id
+    const { id } = await params
     const organization = await prisma.organization.findFirst({
       where: {
-        id: params.id,
+        id: id,
         userId: userId
       }
     })
