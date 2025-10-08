@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CO₂ Reduction Planner
+
+A full-stack web application for planning and tracking organizational carbon reduction initiatives.
+
+## Features
+
+- 🔐 **User Authentication** - Secure registration and login with NextAuth.js
+- 🏢 **Organization Management** - Create and manage multiple organizations
+- 📊 **Emission Tracking** - Track baseline emissions across Scopes 1, 2, and 3
+- 🎯 **Reduction Targets** - Automatic calculation of 42% and 90% reduction targets
+- 💾 **Database** - SQLite with Prisma ORM (production-ready for PostgreSQL)
+- 🎨 **Modern UI** - Responsive design with Tailwind CSS
+
+## Tech Stack
+
+- **Framework:** Next.js 15 with App Router
+- **Language:** TypeScript
+- **Authentication:** NextAuth.js v4
+- **Database:** Prisma ORM with SQLite (PostgreSQL ready)
+- **Styling:** Tailwind CSS
+- **Deployment:** Vercel
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 20+ or 22+
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/knelson-code/carbon-reduction-planner.git
+cd carbon-reduction-planner
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+```bash
+cp .env.example .env
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Edit `.env` and add your values.
 
-## Learn More
+4. Initialize the database:
+```bash
+npx prisma generate
+npx prisma migrate dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+5. Run the development server:
+```bash
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Environment Variables
 
-## Deploy on Vercel
+Required environment variables:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `DATABASE_URL` - Database connection string
+- `NEXTAUTH_SECRET` - Secret key for NextAuth.js
+- `NEXTAUTH_URL` - URL of your application
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+
+This app is ready to deploy on Vercel:
+
+1. Push your code to GitHub
+2. Import your repository in Vercel
+3. Add environment variables
+4. Deploy!
+
+For production, consider using PostgreSQL instead of SQLite.
+
+## License
+
+MIT
