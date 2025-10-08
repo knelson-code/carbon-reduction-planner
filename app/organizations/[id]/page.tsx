@@ -11,14 +11,6 @@ interface Organization {
   baseYear: number
 }
 
-interface EmissionCategory {
-  id: string
-  name: string
-  key: string
-  baseline: number
-  scopeId: string
-}
-
 export default function OrganizationDetailPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -71,7 +63,7 @@ export default function OrganizationDetailPage() {
     if (session && orgId) {
       fetchOrganization()
     }
-  }, [session, orgId])
+  }, [session, orgId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     // Calculate totals
