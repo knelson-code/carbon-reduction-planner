@@ -61,7 +61,7 @@ export default function DashboardPage() {
         <div className="bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg shadow-md p-8 text-white">
           <h2 className="text-2xl font-bold mb-4">🎉 Your app is ready!</h2>
           <p className="text-lg mb-4">
-            You've successfully built a full-stack CO₂ Reduction Planning application with:
+            You&apos;ve successfully built a full-stack CO₂ Reduction Planning application with:
           </p>
           <ul className="space-y-2 mb-6">
             <li className="flex items-center">

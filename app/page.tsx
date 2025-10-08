@@ -8,7 +8,7 @@ export default function Home() {
           CO₂ Reduction Planner
         </h1>
         <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-          Plan, track, and achieve your organization's carbon reduction goals with comprehensive emissions management and tactical planning.
+          Plan, track, and achieve your organization&apos;s carbon reduction goals with comprehensive emissions management and tactical planning.
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
