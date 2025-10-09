@@ -7,8 +7,7 @@ import { signIn } from "next-auth/react"
 
 export default function RegisterPage() {
   const router = useRouter()
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
+  const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
@@ -22,7 +21,7 @@ export default function RegisterPage() {
       const response = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ username, password }),
       })
 
       const data = await response.json()
@@ -35,7 +34,7 @@ export default function RegisterPage() {
 
       // Automatically sign in after registration
       const result = await signIn("credentials", {
-        email,
+        username,
         password,
         redirect: false,
       })
@@ -66,32 +65,19 @@ export default function RegisterPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-              Name (Optional)
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+              Username
             </label>
             <input
-              id="name"
+              id="username"
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              placeholder="John Doe"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              placeholder="you@example.com"
+              placeholder="Choose any username"
             />
+            <p className="text-xs text-gray-500 mt-1">No email required - choose any username you like</p>
           </div>
 
           <div>
@@ -109,6 +95,12 @@ export default function RegisterPage() {
               placeholder="••••••••"
             />
             <p className="text-xs text-gray-500 mt-1">At least 6 characters</p>
+          </div>
+
+          <div className="bg-yellow-50 border border-yellow-200 rounded-md p-3">
+            <p className="text-xs text-yellow-800">
+              ⚠️ <strong>Important:</strong> Save your credentials. Password recovery requires emailing support@newdayclimate.com
+            </p>
           </div>
 
           <button
