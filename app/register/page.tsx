@@ -53,9 +53,9 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4">
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-3xl font-bold text-center mb-6">Create Account</h2>
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-8">
+      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md border" style={{ borderColor: '#d4dfe0' }}>
+        <h2 className="text-3xl font-bold text-center mb-6" style={{ color: '#0B1F32' }}>Create Account</h2>
         
         {error && (
           <div className="bg-red-50 text-red-600 p-3 rounded-md mb-4 text-sm">
@@ -97,9 +97,9 @@ export default function RegisterPage() {
             <p className="text-xs text-gray-500 mt-1">At least 6 characters</p>
           </div>
 
-          <div className="bg-yellow-50 border border-yellow-200 rounded-md p-3">
-            <p className="text-xs text-yellow-800">
-              ⚠️ <strong>Important:</strong> Save your credentials. Password recovery requires emailing keith.nelson@newdayinternationalconsulting.com
+          <div className="rounded-md p-4 border" style={{ backgroundColor: '#f5f5f5', borderColor: '#d4dfe0' }}>
+            <p className="text-sm" style={{ color: '#FF5B35' }}>
+              <strong>Important:</strong> You must save your credentials! This is a privacy-focused software system. We do not store personal recovery information. If you lose access, contact keith.nelson@newdayinternationalconsulting.com
             </p>
           </div>
 
