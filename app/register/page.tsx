@@ -29,7 +29,7 @@ IMPORTANT:
 - If you lose these credentials, you will need to create a new account
 - Usernames and passwords are case sensitive
 
-This is a privacy-focused system. You were instructed to use an anonymous user name. If you've done that correctly, then no one, including the producers of this software, has any way to link your data to your personal identity or to your company.
+This is a privacy-focused system. You were instructed to use an anonymous user name. If you've done that correctly, then no one, including the producers of this software, has any way to associate the data you input into this software to your personal identity or to your company.
 `
     
     const blob = new Blob([content], { type: 'text/plain' })
@@ -139,7 +139,7 @@ This is a privacy-focused system. You were instructed to use an anonymous user n
               placeholder="••••••••"
             />
             <p className="text-xs text-gray-500 mt-1">
-              At least 6 characters. <strong style={{ color: '#6b7280' }}>Case sensitive</strong>
+              At least 6 characters. Case sensitive
             </p>
           </div>
 
@@ -161,7 +161,7 @@ This is a privacy-focused system. You were instructed to use an anonymous user n
 
           <div className="rounded-md p-3 border" style={{ backgroundColor: '#f5f5f5', borderColor: '#d4dfe0' }}>
             <p className="text-xs" style={{ color: '#FF5B35' }}>
-              <strong>Important:</strong> You must save your credentials! We do not provide password support. We recommend saving your login information to your browser&apos;s password manager.
+              <strong>Important:</strong> You must save your credentials! We do not provide password support. We recommend that you use your browser&apos;s password manager to save your login information.
             </p>
           </div>
 

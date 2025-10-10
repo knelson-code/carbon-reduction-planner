@@ -56,17 +56,6 @@ export default function Footer() {
                   onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                   onMouseLeave={(e) => e.currentTarget.style.color = '#7a9197'}
                 >
-                  Password Recovery
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/support" 
-                  className="text-sm transition-colors"
-                  style={{ color: '#7a9197' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = '#7a9197'}
-                >
                   Support Requests
                 </Link>
               </li>
