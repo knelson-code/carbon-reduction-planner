@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="flex items-center justify-center bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
-        <h1 className="text-5xl font-bold mb-6" style={{ color: '#163E64' }}>
+        <h1 className="text-5xl font-bold mb-6" style={{ color: '#0B1F32' }}>
           CO₂ Reduction Planner
         </h1>
         <p className="text-xl mb-8 max-w-2xl mx-auto leading-relaxed" style={{ color: '#5a6c6f' }}>
@@ -26,9 +26,9 @@ export default function Home() {
           <Link 
             href="/login"
             className="px-8 py-4 rounded-lg font-semibold text-lg transition-colors"
-            style={{ backgroundColor: '#163E64', color: '#ffffff' }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0f2940'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#163E64'}
+            style={{ backgroundColor: '#4a5568', color: '#ffffff' }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#374151'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4a5568'}
           >
             Sign In
           </Link>
@@ -36,21 +36,21 @@ export default function Home() {
 
         <div className="grid md:grid-cols-3 gap-8 mt-12">
           <div className="bg-white p-8 rounded-lg border" style={{ borderColor: '#d4dfe0' }}>
-            <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}>Track Emissions</h3>
+            <h3 className="text-xl font-bold mb-3" style={{ color: '#0B1F32' }}>Track Emissions</h3>
             <p className="leading-relaxed" style={{ color: '#5a6c6f' }}>
               Organize emissions by Scope 1, 2, and 3 categories with detailed baseline tracking
             </p>
           </div>
           
           <div className="bg-white p-8 rounded-lg border" style={{ borderColor: '#d4dfe0' }}>
-            <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}>Plan Reductions</h3>
+            <h3 className="text-xl font-bold mb-3" style={{ color: '#0B1F32' }}>Plan Reductions</h3>
             <p className="leading-relaxed" style={{ color: '#5a6c6f' }}>
               Create reduction tactics with timelines, costs, and implementation strategies
             </p>
           </div>
           
           <div className="bg-white p-8 rounded-lg border" style={{ borderColor: '#d4dfe0' }}>
-            <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}>Visualize Progress</h3>
+            <h3 className="text-xl font-bold mb-3" style={{ color: '#0B1F32' }}>Visualize Progress</h3>
             <p className="leading-relaxed" style={{ color: '#5a6c6f' }}>
               See projected emissions vs. targets with interactive charts and forecasts
             </p>
