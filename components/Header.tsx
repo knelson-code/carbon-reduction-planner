@@ -27,7 +27,7 @@ export default function Header() {
               height={48}
               className="w-12 h-12"
             />
-            <span className="text-xl font-bold hidden sm:block" style={{ color: '#112d2f' }}>
+            <span className="text-xl font-bold hidden sm:block" style={{ color: '#102c37' }}>
               CO₂ Reduction Planner
             </span>
           </Link>
@@ -39,18 +39,18 @@ export default function Header() {
                 <Link 
                   href="/dashboard" 
                   className="font-semibold transition-colors"
-                  style={{ color: '#112d2f' }}
+                  style={{ color: '#102c37' }}
                   onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = '#112d2f'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = '#102c37'}
                 >
                   Dashboard
                 </Link>
                 <Link 
                   href="/organizations" 
                   className="font-semibold transition-colors"
-                  style={{ color: '#112d2f' }}
+                  style={{ color: '#102c37' }}
                   onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = '#112d2f'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = '#102c37'}
                 >
                   Organizations
                 </Link>
@@ -74,9 +74,9 @@ export default function Header() {
                 <Link 
                   href="/login" 
                   className="font-semibold transition-colors"
-                  style={{ color: '#112d2f' }}
+                  style={{ color: '#102c37' }}
                   onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = '#112d2f'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = '#102c37'}
                 >
                   Login
                 </Link>
