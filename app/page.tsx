@@ -16,19 +16,31 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
           <Link 
             href="/register"
-            className="px-8 py-4 rounded-lg font-semibold text-lg transition-colors"
-            style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E54A24'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF5B35'}
+            className="px-8 py-4 rounded-lg font-semibold text-lg transition-all border-2"
+            style={{ backgroundColor: '#f5f5f5', color: '#FF5B35', borderColor: '#FF5B35' }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#FF5B35'
+              e.currentTarget.style.color = '#ffffff'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#f5f5f5'
+              e.currentTarget.style.color = '#FF5B35'
+            }}
           >
             Get Started
           </Link>
           <Link 
             href="/login"
-            className="px-8 py-4 rounded-lg font-semibold text-lg transition-colors"
-            style={{ backgroundColor: '#4a5568', color: '#ffffff' }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#374151'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4a5568'}
+            className="px-8 py-4 rounded-lg font-semibold text-lg transition-all border-2"
+            style={{ backgroundColor: '#f5f5f5', color: '#0B1F32', borderColor: '#0B1F32' }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#0B1F32'
+              e.currentTarget.style.color = '#ffffff'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#f5f5f5'
+              e.currentTarget.style.color = '#0B1F32'
+            }}
           >
             Sign In
           </Link>
