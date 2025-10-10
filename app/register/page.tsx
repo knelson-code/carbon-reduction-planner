@@ -11,6 +11,8 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [acceptedPrivacy, setAcceptedPrivacy] = useState(false)
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -77,7 +79,9 @@ export default function RegisterPage() {
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               placeholder="Choose any username"
             />
-            <p className="text-xs text-gray-500 mt-1">No email required - choose any username you like</p>
+            <p className="text-xs text-gray-500 mt-1">
+              No email required - choose any username you like. <strong style={{ color: '#6b7280' }}>Case sensitive</strong>
+            </p>
           </div>
 
           <div>
@@ -94,18 +98,56 @@ export default function RegisterPage() {
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               placeholder="••••••••"
             />
-            <p className="text-xs text-gray-500 mt-1">At least 6 characters</p>
+            <p className="text-xs text-gray-500 mt-1">
+              At least 6 characters. <strong style={{ color: '#6b7280' }}>Case sensitive</strong>
+            </p>
           </div>
 
-          <div className="rounded-md p-4 border" style={{ backgroundColor: '#f5f5f5', borderColor: '#d4dfe0' }}>
-            <p className="text-sm" style={{ color: '#FF5B35' }}>
-              <strong>Important:</strong> You must save your credentials! This is a privacy-focused software system. We do not store personal recovery information in a way that is associated with your email address. If you lose access, you will have to file a support request. <strong>Username and password are case sensitive.</strong>
+          <div className="rounded-md p-3 border" style={{ backgroundColor: '#f5f5f5', borderColor: '#d4dfe0' }}>
+            <p className="text-xs" style={{ color: '#FF5B35' }}>
+              <strong>Important:</strong> You must save your credentials! This is a privacy-focused software system. We do not store personal recovery information in a way that is associated with your email address. If you lose access, you will have to file a support request.
             </p>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-start">
+              <input
+                id="privacy"
+                type="checkbox"
+                checked={acceptedPrivacy}
+                onChange={(e) => setAcceptedPrivacy(e.target.checked)}
+                required
+                className="mt-1 mr-2"
+              />
+              <label htmlFor="privacy" className="text-sm text-gray-700">
+                I have read and accept the{" "}
+                <Link href="/privacy" target="_blank" className="text-orange-500 hover:text-orange-600 underline">
+                  Privacy Policy
+                </Link>
+              </label>
+            </div>
+            
+            <div className="flex items-start">
+              <input
+                id="terms"
+                type="checkbox"
+                checked={acceptedTerms}
+                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                required
+                className="mt-1 mr-2"
+              />
+              <label htmlFor="terms" className="text-sm text-gray-700">
+                I have read and accept the{" "}
+                <Link href="/terms" target="_blank" className="text-orange-500 hover:text-orange-600 underline">
+                  Terms of Service
+                </Link>
+              </label>
+            </div>
           </div>
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !acceptedPrivacy || !acceptedTerms}
             className="w-full py-3 bg-orange-500 text-white rounded-md hover:bg-orange-600 font-semibold transition-colors disabled:bg-gray-400"
           >
             {loading ? "Creating account..." : "Create Account"}
