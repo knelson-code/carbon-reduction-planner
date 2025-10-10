@@ -2,27 +2,7 @@ export default function SupportPage() {
   return (
     <div className="min-h-[calc(100vh-4rem)] py-12 px-4">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">Support & Password Recovery</h1>
-        
-        <div className="bg-white rounded-lg shadow-md p-8 mb-6">
-          <h2 className="text-2xl font-semibold mb-4">Password Recovery</h2>
-          <p className="text-gray-700 mb-4">
-            Lost your password? We can help! Since we prioritize your privacy, password recovery is handled manually through email.
-          </p>
-          
-          <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-4">
-            <h3 className="font-semibold text-blue-900 mb-2">To reset your password:</h3>
-            <ol className="list-decimal list-inside space-y-2 text-blue-900">
-              <li>Email us at: <a href="mailto:keith.nelson@newdayinternationalconsulting.com" className="font-semibold underline">keith.nelson@newdayinternationalconsulting.com</a></li>
-              <li>Include your username in the email</li>
-              <li>We'll send you a temporary password within 24 hours</li>
-            </ol>
-          </div>
-          
-          <p className="text-sm text-gray-600">
-            <strong>Response time:</strong> We typically respond within 24 hours during business days.
-          </p>
-        </div>
+        <h1 className="text-4xl font-bold mb-8">Support</h1>
         
         <div className="bg-white rounded-lg shadow-md p-8 mb-6">
           <h2 className="text-2xl font-semibold mb-4">General Support</h2>

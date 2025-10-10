@@ -161,7 +161,7 @@ This is a privacy-focused system. You were instructed to use an anonymous user n
 
           <div className="rounded-md p-3 border" style={{ backgroundColor: '#f5f5f5', borderColor: '#d4dfe0' }}>
             <p className="text-xs" style={{ color: '#FF5B35' }}>
-              <strong>Important:</strong> You must save your credentials! We do not provide password support. We recommend that you use your browser&apos;s password manager to save your login information.
+              <strong>Important:</strong> You are responsible for saving your user name and password. We do not provide password support. We recommend that you use your browser&apos;s password manager to save your login information.
             </p>
           </div>
 
