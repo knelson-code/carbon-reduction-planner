@@ -165,7 +165,7 @@ This is a privacy-focused system. Your data is not associated with your personal
               placeholder="••••••••"
             />
             <p className="text-xs text-gray-500 mt-1">
-              Re-enter your password to confirm
+              Re-enter your password to confirm. <strong style={{ color: '#6b7280' }}>Case sensitive</strong>
             </p>
           </div>
 
