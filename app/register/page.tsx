@@ -117,10 +117,10 @@ This is a privacy-focused system. You were instructed to use an anonymous user n
               placeholder="Choose an anonymous username"
             />
             <p className="text-xs text-gray-500 mt-1">
-              <span style={{ textDecoration: 'underline', textDecorationColor: '#FF5B35', color: '#374151' }}>
+              <span style={{ textDecoration: 'underline', textDecorationColor: '#FF5B35' }}>
                 Please choose an anonymous user name that does not identify your company or your personal information
               </span>
-              . Do not use your email. <strong style={{ color: '#6b7280' }}>Case sensitive</strong>
+              . Do not use your email. Case sensitive
             </p>
           </div>
 
@@ -161,7 +161,7 @@ This is a privacy-focused system. You were instructed to use an anonymous user n
 
           <div className="rounded-md p-3 border" style={{ backgroundColor: '#f5f5f5', borderColor: '#d4dfe0' }}>
             <p className="text-xs" style={{ color: '#FF5B35' }}>
-              <strong>Important:</strong> You must save your credentials! This is a privacy-focused software system. We do not store personal recovery information in a way that is associated with your email address. If you lose access, you will have to file a support request.
+              <strong>Important:</strong> You must save your credentials! We do not provide password support. We recommend saving your login information to your browser&apos;s password manager.
             </p>
           </div>
 
@@ -221,30 +221,30 @@ This is a privacy-focused system. You were instructed to use an anonymous user n
       {/* Credentials Download Modal */}
       {showCredentialsModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 relative">
-            <button
-              onClick={() => {
-                setShowCredentialsModal(false)
-                router.push("/dashboard")
-                router.refresh()
-              }}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl font-bold"
-              style={{ lineHeight: '1' }}
-            >
-              ×
-            </button>
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
             <h3 className="text-xl font-bold mb-4" style={{ color: '#0B1F32' }}>
-              ✅ Credentials Saved!
+              Registration completed correctly
             </h3>
             <p className="text-sm text-gray-700 mb-4">
-              Your credentials have been downloaded as a text file. 
-              <strong className="block mt-2" style={{ color: '#FF5B35' }}>
-                Important: We do NOT store your credentials in a way that associates them with your identity.
-              </strong>
+              Your credentials have been downloaded as a text file.
             </p>
             <p className="text-sm text-gray-700 mb-4">
               Please save this file securely. If you lose your credentials, you will need to create a new account.
             </p>
+            <div className="flex items-center justify-end gap-2">
+              <p className="text-sm text-gray-600">Click here to close this pop up message</p>
+              <button
+                onClick={() => {
+                  setShowCredentialsModal(false)
+                  router.push("/dashboard")
+                  router.refresh()
+                }}
+                className="text-3xl font-bold hover:opacity-80"
+                style={{ color: '#FF5B35', lineHeight: '1' }}
+              >
+                ×
+              </button>
+            </div>
           </div>
         </div>
       )}
