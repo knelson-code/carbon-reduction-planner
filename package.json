@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "postinstall": "prisma generate",
-    "vercel-build": "prisma db push --force-reset --accept-data-loss && next build"
+    "vercel-build": "prisma db push && next build"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",
