@@ -21,7 +21,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3">
             <Image 
-              src="/newday-logo.svg" 
+              src="/logo_ND_normal.svg" 
               alt="New Day Climate" 
               width={48} 
               height={48}
