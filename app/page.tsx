@@ -16,16 +16,16 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20">
           <Link 
             href="/register"
-            className="px-8 py-4 rounded-lg font-bold text-lg transition-colors"
+            className="px-8 py-4 rounded-lg font-semibold text-lg transition-colors"
             style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E54A24'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF5B35'}
           >
-            Get Started Free
+            Get Started
           </Link>
           <Link 
             href="/login"
-            className="px-8 py-4 rounded-lg font-bold text-lg transition-colors"
+            className="px-8 py-4 rounded-lg font-semibold text-lg transition-colors"
             style={{ backgroundColor: '#102c37', color: '#ffffff' }}
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0d2325'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#102c37'}

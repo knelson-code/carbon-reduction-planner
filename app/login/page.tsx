@@ -40,7 +40,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-3xl font-bold text-center mb-6">Sign In</h2>
+        <h2 className="text-3xl font-bold text-center mb-6" style={{ color: '#102c37' }}>Sign In</h2>
         
         {error && (
           <div className="bg-red-50 text-red-600 p-3 rounded-md mb-4 text-sm">
@@ -82,15 +82,24 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-orange-500 text-white rounded-md hover:bg-orange-600 font-semibold transition-colors disabled:bg-gray-400"
+            className="w-full py-3 text-white rounded-lg font-semibold transition-colors disabled:opacity-50"
+            style={{ backgroundColor: '#FF5B35' }}
+            onMouseEnter={(e) => !loading && (e.currentTarget.style.backgroundColor = '#E54A24')}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF5B35'}
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
-        <p className="mt-4 text-center text-sm text-gray-600">
+        <p className="mt-4 text-center text-sm" style={{ color: '#5a6c6f' }}>
           Don&apos;t have an account?{" "}
-          <Link href="/register" className="text-orange-500 hover:text-orange-600 font-semibold">
+          <Link 
+            href="/register" 
+            className="font-semibold transition-colors"
+            style={{ color: '#FF5B35' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = '#E54A24'}
+            onMouseLeave={(e) => e.currentTarget.style.color = '#FF5B35'}
+          >
             Sign up
           </Link>
         </p>

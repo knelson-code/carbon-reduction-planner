@@ -60,15 +60,15 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a 
-                  href="mailto:keith.nelson@newdayinternationalconsulting.com" 
+                <Link 
+                  href="/support" 
                   className="text-sm transition-colors"
                   style={{ color: '#b0c4c8' }}
                   onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                   onMouseLeave={(e) => e.currentTarget.style.color = '#b0c4c8'}
                 >
-                  keith.nelson@newdayinternationalconsulting.com
-                </a>
+                  Support Requests
+                </Link>
               </li>
             </ul>
           </div>

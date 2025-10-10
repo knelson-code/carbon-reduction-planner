@@ -82,7 +82,7 @@ export default function Header() {
                 </Link>
                 <Link 
                   href="/register" 
-                  className="px-6 py-2 rounded-lg font-bold transition-colors"
+                  className="px-6 py-2 rounded-lg font-semibold transition-colors"
                   style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
                   onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E54A24'}
                   onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF5B35'}
