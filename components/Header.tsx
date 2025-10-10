@@ -15,11 +15,11 @@ export default function Header() {
   }
 
   return (
-    <header className="bg-gray-100 border-b border-gray-200">
+    <header className="border-b" style={{ backgroundColor: '#f0f0f0', borderColor: '#d4dfe0' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3">
+          <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
             <Image 
               src="/logo_ND_normal.svg" 
               alt="New Day Climate" 
@@ -27,7 +27,7 @@ export default function Header() {
               height={48}
               className="w-12 h-12"
             />
-            <span className="text-xl font-semibold text-gray-900 hidden sm:block">
+            <span className="text-xl font-bold hidden sm:block" style={{ color: '#112d2f' }}>
               CO₂ Reduction Planner
             </span>
           </Link>
@@ -38,23 +38,32 @@ export default function Header() {
               <>
                 <Link 
                   href="/dashboard" 
-                  className="text-gray-700 hover:text-gray-900 font-medium"
+                  className="font-semibold transition-colors"
+                  style={{ color: '#112d2f' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#f1613a'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = '#112d2f'}
                 >
                   Dashboard
                 </Link>
                 <Link 
                   href="/organizations" 
-                  className="text-gray-700 hover:text-gray-900 font-medium"
+                  className="font-semibold transition-colors"
+                  style={{ color: '#112d2f' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#f1613a'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = '#112d2f'}
                 >
                   Organizations
                 </Link>
                 <div className="flex items-center space-x-4">
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm font-medium" style={{ color: '#5a6c6f' }}>
                     {session.user?.email}
                   </span>
                   <button
                     onClick={handleSignOut}
-                    className="px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 font-semibold transition-colors"
+                    className="px-4 py-2 text-white rounded-full font-bold transition-colors"
+                    style={{ backgroundColor: '#ef4444' }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#dc2626'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#ef4444'}
                   >
                     Sign Out
                   </button>
@@ -64,13 +73,19 @@ export default function Header() {
               <>
                 <Link 
                   href="/login" 
-                  className="text-gray-700 hover:text-gray-900 font-medium"
+                  className="font-semibold transition-colors"
+                  style={{ color: '#112d2f' }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#f1613a'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = '#112d2f'}
                 >
                   Login
                 </Link>
                 <Link 
                   href="/register" 
-                  className="px-6 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 font-bold transition-colors"
+                  className="px-6 py-2 text-white rounded-full font-bold transition-colors"
+                  style={{ backgroundColor: '#f1613a' }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#d84d2a'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f1613a'}
                 >
                   Get Started
                 </Link>
