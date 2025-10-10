@@ -9,14 +9,51 @@ export default function RegisterPage() {
   const router = useRouter()
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false)
   const [acceptedTerms, setAcceptedTerms] = useState(false)
+  const [showCredentialsModal, setShowCredentialsModal] = useState(false)
+
+  const generateCredentialsPDF = (username: string, password: string) => {
+    const content = `CO₂ Reduction Planner - Account Credentials
+
+Username: ${username}
+Password: ${password}
+
+Created: ${new Date().toLocaleString()}
+
+IMPORTANT: 
+- Keep these credentials safe and secure
+- We do not store this information in association with your identity
+- If you lose these credentials, you will need to create a new account
+- Usernames and passwords are case sensitive
+
+This is a privacy-focused system. Your data is not associated with your personal information.
+`
+    
+    const blob = new Blob([content], { type: 'text/plain' })
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `CO2-Planner-Credentials-${username}.txt`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    window.URL.revokeObjectURL(url)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
+    
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      setError("Passwords do not match")
+      return
+    }
+    
     setLoading(true)
 
     try {
@@ -45,8 +82,15 @@ export default function RegisterPage() {
         setError("Registration successful, but sign in failed. Please try logging in.")
         setLoading(false)
       } else {
-        router.push("/dashboard")
-        router.refresh()
+        // Generate and download credentials file
+        generateCredentialsPDF(username, password)
+        setShowCredentialsModal(true)
+        
+        // Redirect after showing modal
+        setTimeout(() => {
+          router.push("/dashboard")
+          router.refresh()
+        }, 4000)
       }
     } catch {
       setError("An error occurred. Please try again.")
@@ -77,10 +121,13 @@ export default function RegisterPage() {
               onChange={(e) => setUsername(e.target.value)}
               required
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              placeholder="Choose any username"
+              placeholder="Choose an anonymous username"
             />
             <p className="text-xs text-gray-500 mt-1">
-              No email required - choose any username you like. <strong style={{ color: '#6b7280' }}>Case sensitive</strong>
+              <span style={{ textDecoration: 'underline', textDecorationColor: '#FF5B35', color: '#374151' }}>
+                Please choose an anonymous user name that does not identify your company or your personal information
+              </span>
+              . Do not use your email. <strong style={{ color: '#6b7280' }}>Case sensitive</strong>
             </p>
           </div>
 
@@ -100,6 +147,25 @@ export default function RegisterPage() {
             />
             <p className="text-xs text-gray-500 mt-1">
               At least 6 characters. <strong style={{ color: '#6b7280' }}>Case sensitive</strong>
+            </p>
+          </div>
+
+          <div>
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+              Confirm Password
+            </label>
+            <input
+              id="confirmPassword"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              minLength={6}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              placeholder="••••••••"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Re-enter your password to confirm
             </p>
           </div>
 
@@ -161,6 +227,29 @@ export default function RegisterPage() {
           </Link>
         </p>
       </div>
+
+      {/* Credentials Download Modal */}
+      {showCredentialsModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+            <h3 className="text-xl font-bold mb-4" style={{ color: '#0B1F32' }}>
+              ✅ Credentials Saved!
+            </h3>
+            <p className="text-sm text-gray-700 mb-4">
+              Your credentials have been downloaded as a text file. 
+              <strong className="block mt-2" style={{ color: '#FF5B35' }}>
+                Important: We do NOT store your credentials in a way that associates them with your identity.
+              </strong>
+            </p>
+            <p className="text-sm text-gray-700 mb-4">
+              Please save this file securely. If you lose your credentials, you will need to create a new account.
+            </p>
+            <p className="text-xs text-gray-500">
+              Redirecting to dashboard...
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
