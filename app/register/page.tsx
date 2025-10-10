@@ -220,18 +220,18 @@ This is a privacy-focused system. You were instructed to use an anonymous user n
 
       {/* Credentials Download Modal */}
       {showCredentialsModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-            <h3 className="text-xl font-bold mb-4" style={{ color: '#0B1F32' }}>
+        <div className="fixed inset-0 flex items-center justify-center z-50 p-4" style={{ backgroundColor: 'rgba(243, 244, 246, 0.95)' }}>
+          <div className="bg-white rounded-lg shadow-2xl max-w-md w-full p-8 border-2" style={{ borderColor: '#d4dfe0' }}>
+            <h3 className="text-2xl font-bold mb-6 text-center" style={{ color: '#0B1F32' }}>
               Registration completed correctly
             </h3>
             <p className="text-sm text-gray-700 mb-4">
-              Your credentials have been downloaded as a text file.
+              For your convenience, your user name and login have been downloaded as a text file.
             </p>
-            <p className="text-sm text-gray-700 mb-4">
-              Please save this file securely. If you lose your credentials, you will need to create a new account.
+            <p className="text-sm text-gray-700 mb-6">
+              Please save this information securely. If you forget your user name or password, you will need to create a new account.
             </p>
-            <div className="flex items-center justify-end gap-2">
+            <div className="flex items-center justify-end gap-3 pt-4 border-t" style={{ borderColor: '#d4dfe0' }}>
               <p className="text-sm text-gray-600">Click here to close this pop up message</p>
               <button
                 onClick={() => {
@@ -239,7 +239,7 @@ This is a privacy-focused system. You were instructed to use an anonymous user n
                   router.push("/dashboard")
                   router.refresh()
                 }}
-                className="text-3xl font-bold hover:opacity-80"
+                className="text-3xl font-bold hover:opacity-80 transition-opacity"
                 style={{ color: '#FF5B35', lineHeight: '1' }}
               >
                 ×
