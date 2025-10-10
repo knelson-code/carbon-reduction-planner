@@ -35,21 +35,21 @@ export default function Home() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 mt-12">
-          <div className="bg-white p-8 rounded-lg border" style={{ borderColor: '#d4dfe0' }}>
+          <div className="p-8 rounded-lg border" style={{ backgroundColor: '#f5f5f5', borderColor: '#d4dfe0' }}>
             <h3 className="text-xl font-bold mb-3" style={{ color: '#0B1F32' }}>Track Emissions</h3>
             <p className="leading-relaxed" style={{ color: '#5a6c6f' }}>
               Organize emissions by Scope 1, 2, and 3 categories with detailed baseline tracking
             </p>
           </div>
           
-          <div className="bg-white p-8 rounded-lg border" style={{ borderColor: '#d4dfe0' }}>
+          <div className="p-8 rounded-lg border" style={{ backgroundColor: '#f5f5f5', borderColor: '#d4dfe0' }}>
             <h3 className="text-xl font-bold mb-3" style={{ color: '#0B1F32' }}>Plan Reductions</h3>
             <p className="leading-relaxed" style={{ color: '#5a6c6f' }}>
               Create reduction tactics with timelines, costs, and implementation strategies
             </p>
           </div>
           
-          <div className="bg-white p-8 rounded-lg border" style={{ borderColor: '#d4dfe0' }}>
+          <div className="p-8 rounded-lg border" style={{ backgroundColor: '#f5f5f5', borderColor: '#d4dfe0' }}>
             <h3 className="text-xl font-bold mb-3" style={{ color: '#0B1F32' }}>Visualize Progress</h3>
             <p className="leading-relaxed" style={{ color: '#5a6c6f' }}>
               See projected emissions vs. targets with interactive charts and forecasts

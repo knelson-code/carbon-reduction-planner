@@ -60,10 +60,10 @@ export default function Header() {
                   </span>
                   <button
                     onClick={handleSignOut}
-                    className="px-4 py-2 text-white rounded-full font-bold transition-colors"
-                    style={{ backgroundColor: '#ef4444' }}
-                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#dc2626'}
-                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#ef4444'}
+                    className="px-6 py-2 text-white rounded-lg font-semibold transition-colors"
+                    style={{ backgroundColor: '#FF5B35' }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E54A24'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF5B35'}
                   >
                     Sign Out
                   </button>

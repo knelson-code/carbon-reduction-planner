@@ -58,38 +58,6 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg shadow-md p-8 text-white">
-          <h2 className="text-2xl font-bold mb-4">🎉 Your app is ready!</h2>
-          <p className="text-lg mb-4">
-            You&apos;ve successfully built a full-stack CO₂ Reduction Planning application with:
-          </p>
-          <ul className="space-y-2 mb-6">
-            <li className="flex items-center">
-              <span className="mr-2">✅</span> User authentication & secure login
-            </li>
-            <li className="flex items-center">
-              <span className="mr-2">✅</span> Database with Prisma ORM
-            </li>
-            <li className="flex items-center">
-              <span className="mr-2">✅</span> Modern UI with Tailwind CSS
-            </li>
-            <li className="flex items-center">
-              <span className="mr-2">✅</span> Next.js 14 App Router
-            </li>
-            <li className="flex items-center">
-              <span className="mr-2">✅</span> TypeScript for type safety
-            </li>
-          </ul>
-          <div className="bg-white/20 rounded-lg p-4">
-            <p className="font-semibold mb-2">Next Steps:</p>
-            <p className="text-sm">
-              The full emission tracking and planning features are ready to be built! 
-              You have the complete database schema for organizations, emission scopes, 
-              categories, and reduction tactics. Now you can add pages to create and manage 
-              these resources, plus add Chart.js visualizations for emissions forecasting.
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   )
