@@ -99,7 +99,7 @@ export default function RegisterPage() {
 
           <div className="rounded-md p-4 border" style={{ backgroundColor: '#f5f5f5', borderColor: '#d4dfe0' }}>
             <p className="text-sm" style={{ color: '#FF5B35' }}>
-              <strong>Important:</strong> You must save your credentials! This is a privacy-focused software system. We do not store personal recovery information. If you lose access, contact keith.nelson@newdayinternationalconsulting.com
+              <strong>Important:</strong> You must save your credentials! This is a privacy-focused software system. We do not store personal recovery information in a way that is associated with your email address. If you lose access, you will have to file a support request. <strong>Username and password are case sensitive.</strong>
             </p>
           </div>
 
