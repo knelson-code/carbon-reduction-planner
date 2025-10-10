@@ -6,7 +6,7 @@ Based on the New Day Climate main website design principles.
 
 ### Primary Colors
 - **Primary Text**: `#112d2f` - Dark teal, used for main body text and headings
-- **Accent/Highlight**: `#f1613a` - Coral orange, used for CTAs and emphasis
+- **Accent/Highlight**: `#FF5B35` - Coral orange, used for CTAs and emphasis
 - **Background White**: `#ffffff` - Clean white for main sections
 - **Light Background**: `#f0f0f0` - Subtle gray for alternating sections
 - **Dark Background**: `#102c37` - Deep teal for footer and dark sections
@@ -59,11 +59,11 @@ Based on the New Day Climate main website design principles.
 
 ### Buttons
 **Primary (CTA)**
-- Background: `#f1613a`
+- Background: `#FF5B35`
 - Text: `#ffffff`
-- Hover: Darken by 10%
+- Hover: `#E54A24` (darken by ~10%)
 - Padding: 16px 32px
-- Border Radius: 9999px (full rounded)
+- Border Radius: 8px (rounded corners, not fully rounded)
 - Font Weight: 700
 
 **Secondary**
@@ -71,7 +71,7 @@ Based on the New Day Climate main website design principles.
 - Text: `#112d2f`
 - Hover: `#e0e0e0`
 - Padding: 16px 32px
-- Border Radius: 9999px (full rounded)
+- Border Radius: 8px (rounded corners, not fully rounded)
 - Font Weight: 600
 
 **Tertiary/Ghost**
@@ -138,8 +138,8 @@ colors: {
     light: '#5a6c6f',
   },
   accent: {
-    DEFAULT: '#f1613a',
-    hover: '#d84d2a',
+    DEFAULT: '#FF5B35',
+    hover: '#E54A24',
   },
   background: {
     DEFAULT: '#ffffff',

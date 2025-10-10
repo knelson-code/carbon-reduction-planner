@@ -40,7 +40,7 @@ export default function Header() {
                   href="/dashboard" 
                   className="font-semibold transition-colors"
                   style={{ color: '#112d2f' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#f1613a'}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                   onMouseLeave={(e) => e.currentTarget.style.color = '#112d2f'}
                 >
                   Dashboard
@@ -49,7 +49,7 @@ export default function Header() {
                   href="/organizations" 
                   className="font-semibold transition-colors"
                   style={{ color: '#112d2f' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#f1613a'}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                   onMouseLeave={(e) => e.currentTarget.style.color = '#112d2f'}
                 >
                   Organizations
@@ -75,17 +75,17 @@ export default function Header() {
                   href="/login" 
                   className="font-semibold transition-colors"
                   style={{ color: '#112d2f' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#f1613a'}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                   onMouseLeave={(e) => e.currentTarget.style.color = '#112d2f'}
                 >
                   Login
                 </Link>
                 <Link 
                   href="/register" 
-                  className="px-6 py-2 text-white rounded-full font-bold transition-colors"
-                  style={{ backgroundColor: '#f1613a' }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#d84d2a'}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f1613a'}
+                  className="px-6 py-2 text-white rounded-lg font-bold transition-colors"
+                  style={{ backgroundColor: '#FF5B35' }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E54A24'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF5B35'}
                 >
                   Get Started
                 </Link>

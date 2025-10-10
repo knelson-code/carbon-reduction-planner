@@ -24,7 +24,7 @@ export default function Footer() {
                   href="/privacy" 
                   className="text-sm transition-colors"
                   style={{ color: '#b0c4c8' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#f1613a'}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                   onMouseLeave={(e) => e.currentTarget.style.color = '#b0c4c8'}
                 >
                   Privacy Policy
@@ -35,7 +35,7 @@ export default function Footer() {
                   href="/terms" 
                   className="text-sm transition-colors"
                   style={{ color: '#b0c4c8' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#f1613a'}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                   onMouseLeave={(e) => e.currentTarget.style.color = '#b0c4c8'}
                 >
                   Terms of Service
@@ -53,7 +53,7 @@ export default function Footer() {
                   href="/support" 
                   className="text-sm transition-colors"
                   style={{ color: '#b0c4c8' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#f1613a'}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                   onMouseLeave={(e) => e.currentTarget.style.color = '#b0c4c8'}
                 >
                   Password Recovery
@@ -64,7 +64,7 @@ export default function Footer() {
                   href="mailto:keith.nelson@newdayinternationalconsulting.com" 
                   className="text-sm transition-colors"
                   style={{ color: '#b0c4c8' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#f1613a'}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                   onMouseLeave={(e) => e.currentTarget.style.color = '#b0c4c8'}
                 >
                   keith.nelson@newdayinternationalconsulting.com
