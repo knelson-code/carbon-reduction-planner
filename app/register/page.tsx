@@ -17,7 +17,7 @@ export default function RegisterPage() {
   const [showCredentialsModal, setShowCredentialsModal] = useState(false)
 
   const generateCredentialsPDF = (username: string, password: string) => {
-    const content = `CO₂ Reduction Planner - Account Credentials
+    const content = `New Day Climate Software
 
 Username: ${username}
 Password: ${password}
@@ -26,18 +26,17 @@ Created: ${new Date().toLocaleString()}
 
 IMPORTANT: 
 - Keep these credentials safe and secure
-- We do not store this information in association with your identity
 - If you lose these credentials, you will need to create a new account
 - Usernames and passwords are case sensitive
 
-This is a privacy-focused system. Your data is not associated with your personal information.
+This is a privacy-focused system. You were instructed to use an anonymous user name. If you've done that correctly, then no one, including the producers of this software, has any way to link your data to your personal identity or to your company.
 `
     
     const blob = new Blob([content], { type: 'text/plain' })
     const url = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = `CO2-Planner-Credentials-${username}.txt`
+    link.download = `Climate Software.txt`
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -85,12 +84,6 @@ This is a privacy-focused system. Your data is not associated with your personal
         // Generate and download credentials file
         generateCredentialsPDF(username, password)
         setShowCredentialsModal(true)
-        
-        // Redirect after showing modal
-        setTimeout(() => {
-          router.push("/dashboard")
-          router.refresh()
-        }, 4000)
       }
     } catch {
       setError("An error occurred. Please try again.")
@@ -164,9 +157,6 @@ This is a privacy-focused system. Your data is not associated with your personal
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               placeholder="••••••••"
             />
-            <p className="text-xs text-gray-500 mt-1">
-              Re-enter your password to confirm. <strong style={{ color: '#6b7280' }}>Case sensitive</strong>
-            </p>
           </div>
 
           <div className="rounded-md p-3 border" style={{ backgroundColor: '#f5f5f5', borderColor: '#d4dfe0' }}>
@@ -231,7 +221,18 @@ This is a privacy-focused system. Your data is not associated with your personal
       {/* Credentials Download Modal */}
       {showCredentialsModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 relative">
+            <button
+              onClick={() => {
+                setShowCredentialsModal(false)
+                router.push("/dashboard")
+                router.refresh()
+              }}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl font-bold"
+              style={{ lineHeight: '1' }}
+            >
+              ×
+            </button>
             <h3 className="text-xl font-bold mb-4" style={{ color: '#0B1F32' }}>
               ✅ Credentials Saved!
             </h3>
@@ -243,9 +244,6 @@ This is a privacy-focused system. Your data is not associated with your personal
             </p>
             <p className="text-sm text-gray-700 mb-4">
               Please save this file securely. If you lose your credentials, you will need to create a new account.
-            </p>
-            <p className="text-xs text-gray-500">
-              Redirecting to dashboard...
             </p>
           </div>
         </div>
