@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <circle cx="250" cy="250" r="235" fill="none" stroke="#000" stroke-width="15"/>
+  <circle cx="250" cy="250" r="220" fill="none" stroke="#000" stroke-width="3"/>
+  <text x="250" y="210" font-family="Arial, sans-serif" font-size="85" font-weight="bold" text-anchor="middle" fill="#000">new</text>
+  <text x="250" y="305" font-family="Arial, sans-serif" font-size="85" font-weight="bold" text-anchor="middle" fill="#000">day</text>
+  <line x1="165" y1="330" x2="335" y2="330" stroke="#000" stroke-width="6"/>
+</svg>

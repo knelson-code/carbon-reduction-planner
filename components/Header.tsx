@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 
@@ -19,12 +20,13 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3">
-            <div className="w-12 h-12 rounded-full border-4 border-black flex items-center justify-center bg-white">
-              <div className="text-center leading-tight">
-                <div className="text-xs font-bold">new</div>
-                <div className="text-xs font-bold">day</div>
-              </div>
-            </div>
+            <Image 
+              src="/newday-logo.svg" 
+              alt="New Day Climate" 
+              width={48} 
+              height={48}
+              className="w-12 h-12"
+            />
             <span className="text-xl font-semibold text-gray-900 hidden sm:block">
               CO₂ Reduction Planner
             </span>

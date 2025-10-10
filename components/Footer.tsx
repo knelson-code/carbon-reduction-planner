@@ -65,9 +65,6 @@ export default function Footer() {
           <p className="text-sm text-gray-600">
             © {new Date().getFullYear()} New Day Climate. All rights reserved.
           </p>
-          <p className="text-xs text-gray-500 mt-1">
-            A doing business name of New Day International Consulting
-          </p>
         </div>
       </div>
     </footer>
