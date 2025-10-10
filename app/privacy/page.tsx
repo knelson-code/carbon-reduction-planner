@@ -11,7 +11,7 @@ export default function PrivacyPage() {
               Effective Date: January 10, 2025
             </p>
             <p className="text-gray-700 mt-2">
-              This Privacy Policy describes how NewDay Climate ("we," "us," or "our") collects, uses, and protects information in connection with the CO₂ Reduction Planner tool.
+              This Privacy Policy describes how New Day Climate ("we," "us," or "our"), a doing business name of New Day International Consulting, collects, uses, and protects information in connection with the CO₂ Reduction Planner tool.
             </p>
           </section>
 
@@ -91,7 +91,7 @@ export default function PrivacyPage() {
               <li><strong>Portability:</strong> Export your data in a common format</li>
             </ul>
             <p className="text-gray-700 mt-3">
-              To exercise these rights, contact: <a href="mailto:support@newdayclimate.com" className="text-orange-500 hover:text-orange-600 font-semibold">support@newdayclimate.com</a>
+              To exercise these rights, contact: <a href="mailto:keith.nelson@newdayinternationalconsulting.com" className="text-orange-500 hover:text-orange-600 font-semibold">keith.nelson@newdayinternationalconsulting.com</a>
             </p>
           </section>
 
@@ -122,7 +122,11 @@ export default function PrivacyPage() {
               For questions about this Privacy Policy or your data:
             </p>
             <p className="text-gray-700 mt-2">
-              Email: <a href="mailto:support@newdayclimate.com" className="text-orange-500 hover:text-orange-600 font-semibold">support@newdayclimate.com</a>
+              <strong>New Day Climate</strong><br />
+              (A doing business name of New Day International Consulting)
+            </p>
+            <p className="text-gray-700 mt-2">
+              Email: <a href="mailto:keith.nelson@newdayinternationalconsulting.com" className="text-orange-500 hover:text-orange-600 font-semibold">keith.nelson@newdayinternationalconsulting.com</a>
             </p>
           </section>
         </div>

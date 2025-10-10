@@ -18,7 +18,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-semibold mb-3">Service Description</h2>
             <p className="text-gray-700">
-              The CO₂ Reduction Planner is a free tool provided by NewDay Climate to help organizations plan and track their carbon emission reduction efforts. The Tool allows you to:
+              The CO₂ Reduction Planner is a free tool provided by New Day Climate (a doing business name of New Day International Consulting) to help organizations plan and track their carbon emission reduction efforts. The Tool allows you to:
             </p>
             <ul className="list-disc list-inside space-y-2 text-gray-700 ml-4">
               <li>Create and manage anonymous organization profiles</li>
@@ -82,7 +82,7 @@ export default function TermsPage() {
               <strong>Important:</strong> This Tool is designed to assist with planning and should not be the sole basis for business decisions.
             </p>
             <p className="text-gray-700">
-              TO THE FULLEST EXTENT PERMITTED BY LAW, NEWDAY CLIMATE SHALL NOT BE LIABLE FOR:
+              TO THE FULLEST EXTENT PERMITTED BY LAW, NEW DAY CLIMATE SHALL NOT BE LIABLE FOR:
             </p>
             <ul className="list-disc list-inside space-y-2 text-gray-700 ml-4">
               <li>Any business decisions made based on Tool outputs</li>
@@ -127,7 +127,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-semibold mb-3">Intellectual Property</h2>
             <p className="text-gray-700">
-              All content, features, and functionality of the Tool (excluding your data) are owned by NewDay Climate and are protected by international copyright, trademark, and other intellectual property laws.
+              All content, features, and functionality of the Tool (excluding your data) are owned by New Day International Consulting and are protected by international copyright, trademark, and other intellectual property laws.
             </p>
           </section>
 
@@ -141,7 +141,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-2xl font-semibold mb-3">Indemnification</h2>
             <p className="text-gray-700">
-              You agree to indemnify and hold harmless NewDay Climate from any claims, damages, or expenses arising from your use of the Tool or violation of these Terms.
+              You agree to indemnify and hold harmless New Day Climate and New Day International Consulting from any claims, damages, or expenses arising from your use of the Tool or violation of these Terms.
             </p>
           </section>
 
@@ -165,7 +165,11 @@ export default function TermsPage() {
               For questions about these Terms:
             </p>
             <p className="text-gray-700 mt-2">
-              Email: <a href="mailto:support@newdayclimate.com" className="text-orange-500 hover:text-orange-600 font-semibold">support@newdayclimate.com</a>
+              <strong>New Day Climate</strong><br />
+              (A doing business name of New Day International Consulting)
+            </p>
+            <p className="text-gray-700 mt-2">
+              Email: <a href="mailto:keith.nelson@newdayinternationalconsulting.com" className="text-orange-500 hover:text-orange-600 font-semibold">keith.nelson@newdayinternationalconsulting.com</a>
             </p>
           </section>
 

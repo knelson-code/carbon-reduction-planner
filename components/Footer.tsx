@@ -50,10 +50,10 @@ export default function Footer() {
               </li>
               <li>
                 <a 
-                  href="mailto:support@newdayclimate.com" 
+                  href="mailto:keith.nelson@newdayinternationalconsulting.com" 
                   className="text-sm text-gray-600 hover:text-orange-500 transition-colors"
                 >
-                  support@newdayclimate.com
+                  keith.nelson@newdayinternationalconsulting.com
                 </a>
               </li>
             </ul>
@@ -63,7 +63,10 @@ export default function Footer() {
         {/* Copyright */}
         <div className="border-t border-gray-200 mt-8 pt-6 text-center">
           <p className="text-sm text-gray-600">
-            © {new Date().getFullYear()} NewDay Climate. All rights reserved.
+            © {new Date().getFullYear()} New Day Climate. All rights reserved.
+          </p>
+          <p className="text-xs text-gray-500 mt-1">
+            A doing business name of New Day International Consulting
           </p>
         </div>
       </div>

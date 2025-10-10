@@ -99,7 +99,7 @@ export default function RegisterPage() {
 
           <div className="bg-yellow-50 border border-yellow-200 rounded-md p-3">
             <p className="text-xs text-yellow-800">
-              ⚠️ <strong>Important:</strong> Save your credentials. Password recovery requires emailing support@newdayclimate.com
+              ⚠️ <strong>Important:</strong> Save your credentials. Password recovery requires emailing keith.nelson@newdayinternationalconsulting.com
             </p>
           </div>
 

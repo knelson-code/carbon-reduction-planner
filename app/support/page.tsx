@@ -13,7 +13,7 @@ export default function SupportPage() {
           <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-4">
             <h3 className="font-semibold text-blue-900 mb-2">To reset your password:</h3>
             <ol className="list-decimal list-inside space-y-2 text-blue-900">
-              <li>Email us at: <a href="mailto:support@newdayclimate.com" className="font-semibold underline">support@newdayclimate.com</a></li>
+              <li>Email us at: <a href="mailto:keith.nelson@newdayinternationalconsulting.com" className="font-semibold underline">keith.nelson@newdayinternationalconsulting.com</a></li>
               <li>Include your username in the email</li>
               <li>We'll send you a temporary password within 24 hours</li>
             </ol>
@@ -30,7 +30,7 @@ export default function SupportPage() {
             Have questions about using the CO₂ Reduction Planner? Need help with features?
           </p>
           <p className="text-gray-700">
-            Contact us: <a href="mailto:support@newdayclimate.com" className="text-orange-500 hover:text-orange-600 font-semibold">support@newdayclimate.com</a>
+            Contact us: <a href="mailto:keith.nelson@newdayinternationalconsulting.com" className="text-orange-500 hover:text-orange-600 font-semibold">keith.nelson@newdayinternationalconsulting.com</a>
           </p>
         </div>
         
