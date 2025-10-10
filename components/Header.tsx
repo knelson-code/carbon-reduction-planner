@@ -3,11 +3,13 @@
 import Link from "next/link"
 import Image from "next/image"
 import { useSession, signOut } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 
 export default function Header() {
   const { data: session } = useSession()
   const router = useRouter()
+  const pathname = usePathname()
+  const isHomePage = pathname === "/"
 
   const handleSignOut = async () => {
     await signOut({ redirect: false })
@@ -27,9 +29,11 @@ export default function Header() {
               height={48}
               className="w-12 h-12"
             />
-            <span className="text-xl font-bold hidden sm:block" style={{ color: '#0B1F32' }}>
-              CO₂ Reduction Planner
-            </span>
+            {!isHomePage && (
+              <span className="text-xl font-bold hidden sm:block" style={{ color: '#0B1F32' }}>
+                CO₂ Reduction Planner
+              </span>
+            )}
           </Link>
 
           {/* Navigation */}
@@ -71,24 +75,28 @@ export default function Header() {
               </>
             ) : (
               <>
-                <Link 
-                  href="/login" 
-                  className="font-semibold transition-colors"
-                  style={{ color: '#0B1F32' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = '#0B1F32'}
-                >
-                  Login
-                </Link>
-                <Link 
-                  href="/register" 
-                  className="px-6 py-2 rounded-lg font-semibold transition-colors"
-                  style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E54A24'}
-                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF5B35'}
-                >
-                  Get Started
-                </Link>
+                {!isHomePage && (
+                  <>
+                    <Link 
+                      href="/login" 
+                      className="font-semibold transition-colors"
+                      style={{ color: '#0B1F32' }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
+                      onMouseLeave={(e) => e.currentTarget.style.color = '#0B1F32'}
+                    >
+                      Login
+                    </Link>
+                    <Link 
+                      href="/register" 
+                      className="px-6 py-2 rounded-lg font-semibold transition-colors"
+                      style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E54A24'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF5B35'}
+                    >
+                      Get Started
+                    </Link>
+                  </>
+                )}
               </>
             )}
           </nav>
