@@ -40,7 +40,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-3xl font-bold text-center mb-6" style={{ color: '#102c37' }}>Sign In</h2>
+        <h2 className="text-3xl font-bold text-center mb-6" style={{ color: '#163E64' }}>Sign In</h2>
         
         {error && (
           <div className="bg-red-50 text-red-600 p-3 rounded-md mb-4 text-sm">

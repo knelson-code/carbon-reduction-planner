@@ -5,11 +5,11 @@ Based on the New Day Climate main website design principles.
 ## Color Palette
 
 ### Primary Colors
-- **Primary Text**: `#102c37` - Dark teal/blue, used for ALL text (headings, body, navigation)
+- **Primary Text**: `#163E64` - Navy blue, used for ALL text (headings, body, navigation)
 - **Accent/Highlight**: `#FF5B35` - Coral orange, used for CTAs and emphasis
 - **Background White**: `#ffffff` - Clean white for main sections
 - **Light Background**: `#f0f0f0` - Subtle gray for alternating sections
-- **Dark Background**: `#102c37` - Deep teal for footer and dark sections
+- **Dark Background**: `#163E64` - Navy blue for footer and dark sections
 
 ### Secondary Colors
 - **Subtle Text**: `#5a6c6f` - Muted teal for secondary text
@@ -29,11 +29,11 @@ Based on the New Day Climate main website design principles.
 - **Target Weight**: 700 (Bold) for headings, mimicking ff-real-text-pro style
 
 ### Type Scale
-- **Heading 1**: 48px (3rem) - Bold, #102c37
-- **Heading 2**: 36px (2.25rem) - Bold, #102c37
-- **Heading 3**: 24px (1.5rem) - Semibold, #102c37
-- **Body Large**: 20px (1.25rem) - Regular, #102c37
-- **Body**: 16px (1rem) - Regular, #102c37
+- **Heading 1**: 48px (3rem) - Bold, #163E64
+- **Heading 2**: 36px (2.25rem) - Bold, #163E64
+- **Heading 3**: 24px (1.5rem) - Semibold, #163E64
+- **Body Large**: 20px (1.25rem) - Regular, #163E64
+- **Body**: 16px (1rem) - Regular, #163E64
 - **Small**: 14px (0.875rem) - Regular, #5a6c6f
 
 ### Line Height
@@ -68,9 +68,9 @@ Based on the New Day Climate main website design principles.
 - **IMPORTANT**: All orange buttons MUST have white text
 
 **Secondary**
-- Background: `#102c37` (dark teal/blue)
+- Background: `#163E64` (navy blue)
 - Text: `#ffffff` (white)
-- Hover: `#0d2325` (darker teal)
+- Hover: `#0f2940` (darker navy)
 - Padding: 16px 32px
 - Border Radius: 8px (rounded corners, not fully rounded)
 - Font Weight: 700
@@ -78,8 +78,8 @@ Based on the New Day Climate main website design principles.
 
 **Tertiary/Ghost**
 - Background: transparent
-- Text: `#102c37`
-- Border: 2px solid `#102c37`
+- Text: `#163E64`
+- Border: 2px solid `#163E64`
 - Hover: Background `#f0f0f0`
 
 ### Cards
@@ -93,13 +93,13 @@ Based on the New Day Climate main website design principles.
 - Input Border: 1px solid `#d4dfe0`
 - Input Focus: 2px solid `#f1613a`
 - Input Padding: 12px 16px
-- Label: `#102c37`, font-weight 600
+- Label: `#163E64`, font-weight 600
 - Placeholder: `#9ca3af`
 
 ### Navigation
 - Background: `#ffffff` or `#f0f0f0`
 - Border: 1px solid `#d4dfe0`
-- Link Color: `#102c37`
+- Link Color: `#163E64`
 - Link Hover: `#FF5B35`
 - Active: `#FF5B35` with underline
 
@@ -136,7 +136,7 @@ Update `tailwind.config.ts` with custom colors:
 ```typescript
 colors: {
   primary: {
-    DEFAULT: '#102c37',
+    DEFAULT: '#163E64',
     light: '#5a6c6f',
   },
   accent: {
@@ -146,7 +146,7 @@ colors: {
   background: {
     DEFAULT: '#ffffff',
     light: '#f0f0f0',
-    dark: '#102c37',
+    dark: '#163E64',
   },
   border: '#d4dfe0',
 }
@@ -156,13 +156,13 @@ colors: {
 Apply base styles to body:
 ```css
 body {
-  color: #102c37;
+  color: #163E64;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #102c37;
+  color: #163E64;
   font-weight: 700;
 }
 ```
