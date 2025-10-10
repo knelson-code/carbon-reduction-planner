@@ -16,30 +16,26 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
           <Link 
             href="/register"
-            className="px-8 py-4 rounded-lg font-semibold text-lg transition-all border-2"
-            style={{ backgroundColor: '#f5f5f5', color: '#FF5B35', borderColor: '#FF5B35' }}
+            className="px-8 py-4 rounded-lg font-semibold text-lg transition-all"
+            style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#FF5B35'
-              e.currentTarget.style.color = '#ffffff'
+              e.currentTarget.style.backgroundColor = '#E54A24'
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#f5f5f5'
-              e.currentTarget.style.color = '#FF5B35'
+              e.currentTarget.style.backgroundColor = '#FF5B35'
             }}
           >
             Get Started
           </Link>
           <Link 
             href="/login"
-            className="px-8 py-4 rounded-lg font-semibold text-lg transition-all border-2"
-            style={{ backgroundColor: '#f5f5f5', color: '#0B1F32', borderColor: '#0B1F32' }}
+            className="px-8 py-4 rounded-lg font-semibold text-lg transition-all"
+            style={{ backgroundColor: '#0B1F32', color: '#ffffff' }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#0B1F32'
-              e.currentTarget.style.color = '#ffffff'
+              e.currentTarget.style.backgroundColor = '#081621'
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#f5f5f5'
-              e.currentTarget.style.color = '#0B1F32'
+              e.currentTarget.style.backgroundColor = '#0B1F32'
             }}
           >
             Sign In
