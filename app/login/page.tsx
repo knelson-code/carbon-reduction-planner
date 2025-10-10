@@ -40,7 +40,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-3xl font-bold text-center mb-6" style={{ color: '#163E64' }}>Sign In</h2>
+        <h2 className="text-3xl font-bold text-center mb-6" style={{ color: '#0B1F32' }}>Sign In</h2>
         
         {error && (
           <div className="bg-red-50 text-red-600 p-3 rounded-md mb-4 text-sm">
@@ -83,9 +83,9 @@ export default function LoginPage() {
             type="submit"
             disabled={loading}
             className="w-full py-3 text-white rounded-lg font-semibold transition-colors disabled:opacity-50"
-            style={{ backgroundColor: '#FF5B35' }}
-            onMouseEnter={(e) => !loading && (e.currentTarget.style.backgroundColor = '#E54A24')}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF5B35'}
+            style={{ backgroundColor: '#4a5568' }}
+            onMouseEnter={(e) => !loading && (e.currentTarget.style.backgroundColor = '#374151')}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4a5568'}
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
