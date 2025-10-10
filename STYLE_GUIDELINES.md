@@ -59,20 +59,22 @@ Based on the New Day Climate main website design principles.
 
 ### Buttons
 **Primary (CTA)**
-- Background: `#FF5B35`
-- Text: `#ffffff`
-- Hover: `#E54A24` (darken by ~10%)
+- Background: `#FF5B35` (orange)
+- Text: `#ffffff` (white)
+- Hover: `#E54A24` (darker orange)
 - Padding: 16px 32px
 - Border Radius: 8px (rounded corners, not fully rounded)
 - Font Weight: 700
+- **IMPORTANT**: All orange buttons MUST have white text
 
 **Secondary**
-- Background: `#f0f0f0`
-- Text: `#112d2f`
-- Hover: `#e0e0e0`
+- Background: `#112d2f` (dark teal/blue)
+- Text: `#ffffff` (white)
+- Hover: `#0d2325` (darker teal)
 - Padding: 16px 32px
 - Border Radius: 8px (rounded corners, not fully rounded)
-- Font Weight: 600
+- Font Weight: 700
+- **IMPORTANT**: Secondary buttons use dark blue background with white text
 
 **Tertiary/Ghost**
 - Background: transparent

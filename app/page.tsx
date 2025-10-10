@@ -16,8 +16,8 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20">
           <Link 
             href="/register"
-            className="px-8 py-4 text-white rounded-lg font-bold text-lg transition-colors"
-            style={{ backgroundColor: '#FF5B35' }}
+            className="px-8 py-4 rounded-lg font-bold text-lg transition-colors"
+            style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E54A24'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF5B35'}
           >
@@ -25,10 +25,10 @@ export default function Home() {
           </Link>
           <Link 
             href="/login"
-            className="px-8 py-4 rounded-lg font-semibold text-lg transition-colors"
-            style={{ backgroundColor: '#f0f0f0', color: '#112d2f' }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e0e0e0'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f0f0f0'}
+            className="px-8 py-4 rounded-lg font-bold text-lg transition-colors"
+            style={{ backgroundColor: '#112d2f', color: '#ffffff' }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0d2325'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#112d2f'}
           >
             Sign In
           </Link>
