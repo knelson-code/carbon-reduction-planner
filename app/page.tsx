@@ -17,12 +17,20 @@ export default function Home() {
           <Link 
             href="/register"
             className="px-8 py-4 rounded-lg font-semibold text-lg transition-all"
-            style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
+            style={{ 
+              backgroundColor: '#f5f5f5', 
+              color: '#FF5B35',
+              boxShadow: '0 2px 8px rgba(255, 91, 53, 0.15)'
+            }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#E54A24'
+              e.currentTarget.style.backgroundColor = '#FF5B35'
+              e.currentTarget.style.color = '#ffffff'
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.25)'
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#FF5B35'
+              e.currentTarget.style.backgroundColor = '#f5f5f5'
+              e.currentTarget.style.color = '#FF5B35'
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 91, 53, 0.15)'
             }}
           >
             Get Started
@@ -30,12 +38,20 @@ export default function Home() {
           <Link 
             href="/login"
             className="px-8 py-4 rounded-lg font-semibold text-lg transition-all"
-            style={{ backgroundColor: '#0B1F32', color: '#ffffff' }}
+            style={{ 
+              backgroundColor: '#f5f5f5', 
+              color: '#0B1F32',
+              boxShadow: '0 2px 8px rgba(11, 31, 50, 0.15)'
+            }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#081621'
+              e.currentTarget.style.backgroundColor = '#0B1F32'
+              e.currentTarget.style.color = '#ffffff'
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(11, 31, 50, 0.25)'
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#0B1F32'
+              e.currentTarget.style.backgroundColor = '#f5f5f5'
+              e.currentTarget.style.color = '#0B1F32'
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(11, 31, 50, 0.15)'
             }}
           >
             Sign In
@@ -43,23 +59,23 @@ export default function Home() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 mt-12">
-          <div className="p-8 rounded-lg border" style={{ backgroundColor: '#f5f5f5', borderColor: '#d4dfe0' }}>
+          <div className="p-8 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
             <h3 className="text-xl font-bold mb-3" style={{ color: '#0B1F32' }}>Track Emissions</h3>
-            <p className="leading-relaxed" style={{ color: '#5a6c6f' }}>
+            <p className="leading-relaxed" style={{ color: '#0B1F32' }}>
               Organize emissions by Scope 1, 2, and 3 categories with detailed baseline tracking
             </p>
           </div>
           
-          <div className="p-8 rounded-lg border" style={{ backgroundColor: '#f5f5f5', borderColor: '#d4dfe0' }}>
+          <div className="p-8 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
             <h3 className="text-xl font-bold mb-3" style={{ color: '#0B1F32' }}>Plan Reductions</h3>
-            <p className="leading-relaxed" style={{ color: '#5a6c6f' }}>
+            <p className="leading-relaxed" style={{ color: '#0B1F32' }}>
               Create reduction tactics with timelines, costs, and implementation strategies
             </p>
           </div>
           
-          <div className="p-8 rounded-lg border" style={{ backgroundColor: '#f5f5f5', borderColor: '#d4dfe0' }}>
+          <div className="p-8 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
             <h3 className="text-xl font-bold mb-3" style={{ color: '#0B1F32' }}>Visualize Progress</h3>
-            <p className="leading-relaxed" style={{ color: '#5a6c6f' }}>
+            <p className="leading-relaxed" style={{ color: '#0B1F32' }}>
               See projected emissions vs. targets with interactive charts and forecasts
             </p>
           </div>
