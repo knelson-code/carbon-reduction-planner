@@ -19,15 +19,15 @@ export default function Header() {
   return (
     <header className="border-b" style={{ backgroundColor: '#0B1F32', borderColor: '#0B1F32' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-[115px]">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
             <Image 
               src="/logo_ND_white.svg" 
               alt="New Day Climate" 
-              width={48} 
-              height={48}
-              className="w-12 h-12"
+              width={86} 
+              height={86}
+              className="w-[86px] h-[86px]"
             />
             {!isHomePage && (
               <span className="text-xl font-bold hidden sm:block" style={{ color: '#ffffff' }}>

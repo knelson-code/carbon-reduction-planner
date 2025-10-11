@@ -17,7 +17,7 @@ export default function RegisterPage() {
   const [showCredentialsModal, setShowCredentialsModal] = useState(false)
 
   const generateCredentialsPDF = (username: string, password: string) => {
-    const content = `New Day Climate Software
+    const content = `Climate Software
 
 Username: ${username}
 Password: ${password}
@@ -29,7 +29,7 @@ IMPORTANT:
 - If you lose these credentials, you will need to create a new account
 - Usernames and passwords are case sensitive
 
-This is a privacy-focused system. You were instructed to use an anonymous user name. If you have done that, no one, including the producers of this software, has any way to associate the data you input into this software with your personal identity or with your company.
+This is a privacy-focused system. Since you used an anonymous username, no one, including us, can link your data to you or your company.
 `
     
     const blob = new Blob([content], { type: 'text/plain' })
