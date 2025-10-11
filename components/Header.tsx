@@ -19,18 +19,18 @@ export default function Header() {
   return (
     <header className="border-b" style={{ backgroundColor: '#0B1F32', borderColor: '#0B1F32' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-[115px]">
+        <div className="flex justify-between items-center h-[92px]">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
             <Image 
               src="/logo_ND_white.svg" 
               alt="New Day Climate" 
-              width={86} 
-              height={86}
-              className="w-[86px] h-[86px]"
+              width={69} 
+              height={69}
+              className="w-[69px] h-[69px]"
             />
             {!isHomePage && (
-              <span className="text-xl font-bold hidden sm:block" style={{ color: '#ffffff' }}>
+              <span className="text-2xl font-bold hidden sm:block" style={{ color: '#ffffff' }}>
                 CO₂ Reduction Planner
               </span>
             )}
@@ -42,7 +42,7 @@ export default function Header() {
               <>
                 <Link 
                   href="/dashboard" 
-                  className="font-semibold transition-colors"
+                  className="text-lg font-semibold transition-colors"
                   style={{ color: '#ffffff' }}
                   onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                   onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
@@ -51,7 +51,7 @@ export default function Header() {
                 </Link>
                 <Link 
                   href="/organizations" 
-                  className="font-semibold transition-colors"
+                  className="text-lg font-semibold transition-colors"
                   style={{ color: '#ffffff' }}
                   onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                   onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
@@ -59,12 +59,12 @@ export default function Header() {
                   Organizations
                 </Link>
                 <div className="flex items-center space-x-4">
-                  <span className="text-sm font-medium" style={{ color: '#ffffff' }}>
+                  <span className="text-base font-medium" style={{ color: '#ffffff' }}>
                     {session.user?.email}
                   </span>
                   <button
                     onClick={handleSignOut}
-                    className="px-6 py-2 text-white rounded-lg font-semibold transition-colors"
+                    className="px-7 py-2.5 text-white text-lg rounded-lg font-semibold transition-colors"
                     style={{ backgroundColor: '#FF5B35' }}
                     onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E54A24'}
                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF5B35'}
@@ -79,7 +79,7 @@ export default function Header() {
                   <>
                     <Link 
                       href="/login" 
-                      className="font-semibold transition-colors"
+                      className="text-lg font-semibold transition-colors"
                       style={{ color: '#ffffff' }}
                       onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                       onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
@@ -88,7 +88,7 @@ export default function Header() {
                     </Link>
                     <Link 
                       href="/register" 
-                      className="px-6 py-2 rounded-lg font-semibold transition-colors"
+                      className="px-7 py-2.5 text-lg rounded-lg font-semibold transition-colors"
                       style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
                       onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E54A24'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF5B35'}
