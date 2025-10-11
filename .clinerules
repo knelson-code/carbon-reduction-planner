@@ -1,0 +1,437 @@
+# CO₂ Reduction Planner - Project Context for Cline
+
+## 🌍 THE BIG PICTURE - WHO, WHY, AND VISION
+
+### Who You Are
+**Nelson** - CO₂ and climate change consultant, primarily assisting businesses with climate strategy and emissions management.
+
+### The Mission
+**Offering free, high-quality climate software to have real impact and showcase expertise.** This is both:
+1. **Impact-driven:** Help businesses actually address climate change effectively
+2. **Marketing/Positioning:** Demonstrate capabilities, build relationships, create consulting opportunities
+
+### Why This Matters - The Problem with Existing Tools
+Most climate tools in the market are:
+- **Narrowly framed** - Focus on compliance/reporting, not actual change
+- **Miss the point** - Don't address real theory of change for companies
+- **Avoid key strategies** - Don't focus on target setting and transition strategy
+- **Ineffective** - Don't help companies actually prepare for or fight climate change
+
+**Your political/economic insight:** You understand what actually works vs. what just looks good on paper.
+
+### The Solution - What We're Building
+**A free, modular climate strategy platform** that focuses on:
+- **Target Setting** - Meaningful goals, not just checking boxes
+- **Transition Strategy** - Real pathways to change
+- **Climate Risk** - Actual risk assessment and preparation
+- **CO₂ Management** - Comprehensive emissions tracking and reduction planning
+
+### Maximum Security & Privacy Approach
+**Two-layer access system:**
+1. **Request Access:** Users provide email → You manually send them the private URL
+2. **Anonymous Login:** They create username/password with NO email required
+   - Data is never tied to their company
+   - Complete anonymity after gaining access
+   - Even you don't know which company uses which account
+
+**Why this matters:** Businesses can explore honestly without fear of data leakage or association.
+
+### Modular Architecture Vision
+**Multiple interconnected modules (planned):**
+- 🎯 **CO₂ Management Module** (current focus) - Emissions tracking, Scope 1/2/3, reduction tactics
+- ⚠️ **Climate Risk Module** (future) - Risk assessment and adaptation planning  
+- 🚀 **Transition Strategy Module** (future) - Long-term decarbonization pathways
+- 🔗 **Cross-module integration** - Same username across all modules, shared data where relevant
+
+### User Journey
+1. **Discovery:** Find on your website (newdayclimate.com)
+2. **Request Access:** Submit email via form on Squarespace
+3. **Receive Access:** You manually send private URL to login page
+4. **Anonymous Registration:** Create username/password (no email, no company name required)
+5. **Use the Tools:** Access all modules, input data anonymously
+6. **Build Trust:** Experience quality → potential consulting relationship
+
+### Where You're Coming From - Technical Background
+- **Previous experience:** HTML/CSS code blocks in Squarespace via Claude
+- **Current learning:** Full-stack development (frontend, backend, database, APIs, GitHub, Vercel)
+- **Approach:** Experimenting to discover what's achievable
+- **Philosophy:** Starting simple, building complexity as understanding grows
+
+### Core Requirements - What Success Looks Like
+**Visual** - Clean, professional design that looks impressive
+**Simple** - Easy to use, intuitive, doesn't overwhelm users  
+**Awesome** - Showcases your technical capabilities and strategic thinking
+**Free** - No barriers to entry, maximum impact and reach
+**Secure** - Absolute privacy and anonymity for users
+
+### Strategic Goals
+1. **Have real impact** on climate change by providing effective tools
+2. **Demonstrate expertise** through quality software and design
+3. **Build relationships** with users who may become consulting clients
+4. **Create marketing asset** for promotion on website and LinkedIn
+5. **Learn and experiment** with full-stack development
+6. **Differentiate from market** by focusing on what actually works
+
+---
+
+## 🎯 PROJECT OVERVIEW (Technical)
+
+**What we're building:** A web application that helps organizations plan, track, and achieve their carbon reduction goals. Users can organize emissions by Scope 1, 2, and 3 categories, create reduction tactics with timelines and costs, and visualize progress with interactive charts.
+
+**Target users:** Sustainability managers and environmental consultants at organizations
+
+**Key differentiator:** Privacy-first approach - username-only authentication (no email required), anonymous organization names
+
+---
+
+## 🏗️ TECHNICAL ARCHITECTURE
+
+### Stack
+- **Frontend:** Next.js 15 (App Router), React 19, TypeScript
+- **Styling:** Tailwind CSS
+- **Database:** PostgreSQL (Neon) via Prisma ORM
+- **Authentication:** NextAuth.js with username/password (no OAuth)
+- **Hosting:** Vercel (production: https://risk-software.newdayclimate.com)
+- **Version Control:** GitHub (repo: knelson-code/carbon-reduction-planner)
+
+### Key Technical Decisions
+1. **Username-only auth** (no email) for maximum privacy
+2. **PostgreSQL** instead of SQLite (Vercel doesn't support file-based DBs)
+3. **Anonymous organization names** (users can name orgs anything)
+4. **Manual password recovery** via support email (no automated reset)
+5. **Server-side rendering** where possible for performance
+
+---
+
+## 📁 PROJECT STRUCTURE
+
+```
+carbon-reduction-planner/
+├── app/                          # Next.js App Router pages
+│   ├── page.tsx                 # Homepage (landing page)
+│   ├── layout.tsx               # Root layout (includes Header/Footer)
+│   ├── globals.css              # Global styles & Tailwind
+│   ├── login/page.tsx           # Login page
+│   ├── register/page.tsx        # Registration page
+│   ├── dashboard/page.tsx       # Main dashboard (after login)
+│   ├── organizations/           # Organization management
+│   ├── privacy/page.tsx         # Privacy policy
+│   ├── terms/page.tsx           # Terms of service
+│   └── support/page.tsx         # Support & password recovery info
+├── components/
+│   ├── Header.tsx               # Navigation bar (top)
+│   ├── Footer.tsx               # Footer with legal links (bottom)
+│   └── Providers.tsx            # NextAuth SessionProvider wrapper
+├── lib/
+│   ├── auth.ts                  # NextAuth configuration
+│   └── prisma.ts                # Prisma client singleton
+├── prisma/
+│   └── schema.prisma            # Database schema (User, Organization models)
+└── Documentation/
+    ├── DEPLOYMENT_GUIDE.md      # How to deploy changes
+    ├── VERCEL_SETUP.md          # Database & environment setup
+    ├── STYLE_GUIDELINES.md      # Design system & component rules
+    ├── GIT_WORKFLOW.md          # Git basics for beginners
+    └── .clinerules              # THIS FILE - Project context
+```
+
+---
+
+## 🎨 DESIGN SYSTEM
+
+### Colors (from STYLE_GUIDELINES.md)
+- **Primary Navy:** #163E64 (main text, headings, buttons)
+- **Accent Orange:** #FF6B35 (CTAs, highlights)
+- **Light Gray:** #F8F9FA (backgrounds)
+- **Medium Gray:** #6C757D (secondary text)
+- **White:** #FFFFFF (cards, overlays)
+
+### Typography
+- **Headings:** Inter font, bold
+- **Body:** Inter font, regular
+- **Sizes:** Responsive (mobile-first)
+
+### Component Patterns
+- **Cards:** White background, subtle shadow, rounded corners
+- **Buttons:** Primary (orange), Secondary (navy), consistent padding
+- **Forms:** Clean, labeled inputs with validation
+- **Spacing:** Consistent 4px grid system
+
+### Critical Design Rules
+1. **Always use #163E64 for main text/navy** (not black, not darker blue)
+2. **Maintain accessibility** (WCAG AA contrast ratios)
+3. **Mobile-first responsive** (test on small screens)
+4. **Consistent spacing** (use Tailwind's spacing scale)
+
+---
+
+## 🔐 AUTHENTICATION & DATABASE
+
+### Authentication Flow
+1. User registers with **username + password** (no email)
+2. Password hashed with bcrypt
+3. NextAuth.js manages sessions (JWT tokens)
+4. Protected routes redirect to /login if not authenticated
+5. No password reset - users contact support@newdayclimate.com
+
+### Database Schema (PostgreSQL)
+```prisma
+model User {
+  id           String         @id @default(cuid())
+  username     String         @unique
+  password     String
+  createdAt    DateTime       @default(now())
+  organizations Organization[]
+}
+
+model Organization {
+  id          String   @id @default(cuid())
+  name        String
+  createdAt   DateTime @default(now())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+}
+```
+
+### Environment Variables (Vercel)
+- `DATABASE_URL` - Neon PostgreSQL connection string
+- `NEXTAUTH_SECRET` - Random string for JWT encryption
+- `NEXTAUTH_URL` - Production URL (https://risk-software.newdayclimate.com)
+
+---
+
+## 🚀 DEPLOYMENT WORKFLOW
+
+### The Pipeline
+1. **Local changes** → Edit files in VS Code
+2. **Git commit** → Via VS Code Source Control or command line
+3. **Git push** → Pushes to GitHub (main branch)
+4. **Vercel auto-deploy** → Detects push, builds, deploys
+5. **Live in 1-2 minutes** → Changes appear at production URL
+
+### Critical Files for Deployment
+- `package.json` - Dependencies, build scripts
+- `next.config.ts` - Next.js configuration
+- `prisma/schema.prisma` - Database schema
+- `.env` (local only, not committed)
+
+### Database Migrations
+- Changes to `schema.prisma` require running `prisma db push` in production
+- This is automatic in Vercel via build script
+
+---
+
+## ⚠️ CRITICAL GOTCHAS & RULES
+
+### 1. File-Based Database Won't Work in Production
+- **Problem:** Vercel has read-only file systems
+- **Solution:** Always use PostgreSQL (Neon), never SQLite in production
+
+### 2. Color Consistency
+- **Problem:** Dark blue color was too black
+- **Solution:** Always use #163E64 (navy blue) for main text/headings
+- **Where to update:** globals.css, component files, anywhere "text-gray-900" or dark blue appears
+
+### 3. Server vs. Client Components
+- **Rule:** Use "use client" directive only when needed (interactivity, hooks)
+- **Default:** Server components for better performance
+- **Common needs for "use client":** useState, useEffect, onClick handlers
+
+### 4. Authentication Routes
+- **Public routes:** /, /login, /register, /privacy, /terms, /support
+- **Protected routes:** /dashboard, /organizations
+- **Redirect logic:** In page components via session checks
+
+### 5. Git Workflow
+- **Never commit:** .env files, node_modules, database files
+- **Always commit:** package.json changes, schema changes, source code
+- **Use branches:** For experimental features (main branch auto-deploys)
+
+**IMPORTANT - Working Git Commands for Cline:**
+Due to the directory structure and Windows/Git Bash environment, use this exact command format:
+```bash
+cd carbon-reduction-planner; git add <file>; git commit -m "message"; git push
+```
+
+**Why this works:**
+- Semicolons (`;`) chain commands in the same shell session
+- `cd carbon-reduction-planner` ensures you're in the right directory
+- All git operations happen in sequence without switching contexts
+
+**What DOESN'T work:**
+- `cd carbon-reduction-planner && git ...` (fails with "not a git repository")
+- `git -C carbon-reduction-planner ...` (inconsistent results)
+- `git --git-dir=... --work-tree=...` (fails with "not a git repository")
+
+**Example usage:**
+```bash
+cd carbon-reduction-planner; git add app/page.tsx; git commit -m "Update homepage styles"; git push
+```
+
+### 6. Spacing/Layout Issues
+- **Problem:** Hero sections cut off, too much vertical space
+- **Solution:** Use min-height instead of fixed height, test at different screen sizes
+- **Key files:** app/page.tsx, globals.css
+
+---
+
+## 🔧 COMMON TASKS & HOW TO DO THEM
+
+### Task: Update Colors Site-Wide
+1. Check STYLE_GUIDELINES.md for current color scheme
+2. Update globals.css for Tailwind custom colors
+3. Search all component files for hardcoded colors
+4. Test on both light backgrounds and dark buttons
+5. Verify accessibility (contrast ratios)
+
+### Task: Add New Page
+1. Create `app/new-page/page.tsx`
+2. Add to Header.tsx navigation if needed
+3. Add to Footer.tsx if it's a legal page
+4. Test routing works locally
+5. Push to deploy
+
+### Task: Modify Database Schema
+1. Edit `prisma/schema.prisma`
+2. Run `npx prisma db push` locally to test
+3. Commit and push (Vercel runs migrations automatically)
+4. Verify in Neon dashboard that changes applied
+
+### Task: Fix Authentication Issues
+1. Check lib/auth.ts for NextAuth config
+2. Verify environment variables in Vercel
+3. Check app/api/auth/[...nextauth]/route.ts exists
+4. Test login flow locally first
+
+### Task: Adjust Spacing/Layout
+1. Identify the component file (usually app/page.tsx or component file)
+2. Look for Tailwind classes (py-, px-, h-, min-h-, space-y-)
+3. Test responsively (mobile, tablet, desktop)
+4. Use browser dev tools to inspect actual rendered spacing
+5. Adjust incrementally (don't make huge changes at once)
+
+---
+
+## 📚 WHERE TO FIND INFORMATION
+
+### For Design Questions
+→ Read `STYLE_GUIDELINES.md` first
+→ Check `globals.css` for custom Tailwind config
+→ Look at existing components for patterns
+
+### For Deployment/Git Questions
+→ Read `GIT_WORKFLOW.md` for basics
+→ Read `DEPLOYMENT_GUIDE.md` for detailed process
+→ Read `VERCEL_SETUP.md` for environment setup
+
+### For Database Questions
+→ Look at `prisma/schema.prisma` for models
+→ Check `lib/prisma.ts` for client setup
+→ Check `lib/auth.ts` for how auth uses database
+
+### For Authentication Questions
+→ Look at `lib/auth.ts` (NextAuth config)
+→ Check `app/login/page.tsx` and `app/register/page.tsx`
+→ Read DEPLOYMENT_GUIDE.md section on authentication
+
+---
+
+## 🎯 DEVELOPMENT PRINCIPLES
+
+### When Making Changes
+1. **Always consider the big picture** - How does this affect other parts?
+2. **Test locally first** - Run `npm run dev` before pushing
+3. **Check existing patterns** - Don't reinvent, follow established patterns
+4. **Read the guidelines** - Design system exists for consistency
+5. **Think mobile-first** - Always test responsive behavior
+6. **Maintain accessibility** - Color contrast, keyboard navigation, etc.
+
+### When Adding Features
+1. **Check if it fits the privacy-first approach**
+2. **Consider database schema impacts**
+3. **Follow existing component patterns**
+4. **Add to appropriate documentation file**
+5. **Test authentication implications**
+
+### When Fixing Bugs
+1. **Understand the root cause** - Don't just patch symptoms
+2. **Check if it affects production** - Test deployed version
+3. **Consider edge cases** - Empty states, error states, loading states
+4. **Update documentation** - If the fix reveals a gotcha
+
+---
+
+## 🚨 RED FLAGS - STOP AND THINK IF...
+
+- **You're about to change authentication** → Verify this won't break existing users
+- **You're modifying the database schema** → Consider migration impact
+- **You're changing core layout files** → Test all pages, not just one
+- **You're adding dependencies** → Check bundle size impact
+- **You're hardcoding values** → Should this be in environment variables?
+- **You're copy-pasting code** → Should this be a reusable component?
+- **You're seeing TypeScript errors** → Don't ignore, fix properly
+- **Colors look different than design** → Double-check hex codes
+
+---
+
+## 💡 PROJECT GOALS & CONTEXT
+
+### Why We Built This
+- Help organizations track carbon reduction efforts
+- Make sustainability planning accessible
+- Provide privacy-first alternative to enterprise tools
+- Enable tactical planning with timelines and costs
+
+### Future Features (Potential)
+- PDF report exports
+- Data visualization charts
+- Multi-user organizations
+- Integration with carbon calculators
+- Mobile app version
+
+### User Journey
+1. Visit homepage → Learn about the tool
+2. Register → Create account with username
+3. Dashboard → View organizations
+4. Create organization → Set up emissions tracking
+5. Add tactics → Plan reduction strategies
+6. Visualize progress → See projected vs. actual
+
+---
+
+## 🔍 HOW TO USE THIS FILE
+
+**Cline automatically reads this file at the start of every task.** You don't need to do anything special - just start a new task, and I'll have this context.
+
+**If you need to update this file:**
+1. Open `.clinerules`
+2. Edit the relevant section
+3. Save and commit
+4. Next task will use updated context
+
+**Sections to update regularly:**
+- Recent gotchas you discover
+- New features added
+- Changes to design system
+- New critical rules
+
+---
+
+## ✅ CHECKLIST FOR NEW TASKS
+
+When starting work on a task, verify:
+- [ ] I understand the project structure
+- [ ] I know which files to modify
+- [ ] I've checked STYLE_GUIDELINES.md if design-related
+- [ ] I know the deployment process
+- [ ] I understand the authentication flow
+- [ ] I'm using the correct colors (#163E64 for navy)
+- [ ] I'll test locally before pushing
+- [ ] I understand how this affects the big picture
+
+---
+
+**Last Updated:** October 2025
+**Project Status:** Live in production, actively maintained
+**Production URL:** https://risk-software.newdayclimate.com
+**User:** Nelson, using Cline + Claude Sonnet for development
