@@ -16,6 +16,33 @@ export default function RegisterPage() {
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [showCredentialsModal, setShowCredentialsModal] = useState(false)
 
+  const playSuccessSound = () => {
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+      
+      // Create a pleasant "pop" sound
+      const oscillator = audioContext.createOscillator()
+      const gainNode = audioContext.createGain()
+      
+      oscillator.connect(gainNode)
+      gainNode.connect(audioContext.destination)
+      
+      // Pleasant tone frequency (C note)
+      oscillator.frequency.value = 523.25
+      oscillator.type = 'sine'
+      
+      // Quick fade out for "pop" effect
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime)
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1)
+      
+      oscillator.start(audioContext.currentTime)
+      oscillator.stop(audioContext.currentTime + 0.1)
+    } catch (error) {
+      // Silently fail if audio not supported
+      console.log('Audio not supported')
+    }
+  }
+
   const generateCredentialsPDF = (username: string, password: string) => {
     const content = `Climate Software
 
@@ -235,6 +262,7 @@ This is a privacy-focused system. Since you used an anonymous username, no one, 
               <p className="text-sm text-gray-600">Click here to close this pop up message</p>
               <button
                 onClick={() => {
+                  playSuccessSound()
                   setShowCredentialsModal(false)
                   router.push("/dashboard")
                   router.refresh()
