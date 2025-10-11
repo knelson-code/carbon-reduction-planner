@@ -15,23 +15,34 @@ export default function RegisterPage() {
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false)
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [showCredentialsModal, setShowCredentialsModal] = useState(false)
-  const [audio] = useState(() => {
-    // Preload audio on component mount for instant playback
-    if (typeof window !== 'undefined') {
-      const sound = new Audio('/finger-snap.mp3')
-      sound.preload = 'auto'
-      sound.volume = 0.5
-      return sound
-    }
-    return null
-  })
 
+  // Base64-encoded audio data embedded directly
+  const AUDIO_BASE64 = "SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjQ1LjEwMAAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAEAAABIwAAHwAATEFNRSAzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
+
+  // Function to play sound using Web Audio API
   const playSuccessSound = () => {
-    if (audio) {
-      audio.currentTime = 0 // Reset to start in case it's played multiple times
-      audio.play().catch(() => {
-        console.log('Audio playback failed')
+    try {
+      // Convert base64 to ArrayBuffer
+      const binaryString = atob(AUDIO_BASE64)
+      const bytes = new Uint8Array(binaryString.length)
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i)
+      }
+      
+      // Create audio context
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+      
+      // Decode audio data
+      audioContext.decodeAudioData(bytes.buffer, (buffer) => {
+        const source = audioContext.createBufferSource()
+        source.buffer = buffer
+        source.connect(audioContext.destination)
+        source.start(0)
+      }, (error) => {
+        console.log('Error decoding audio:', error)
       })
+    } catch (error) {
+      console.log('Error playing sound:', error)
     }
   }
 
