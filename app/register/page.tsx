@@ -20,18 +20,23 @@ export default function RegisterPage() {
     try {
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
       
-      // Create a realistic "pop" sound using white noise
-      const bufferSize = audioContext.sampleRate * 0.05 // 50ms
+      // Create a realistic finger snap with multiple frequencies
+      const duration = 0.08 // 80ms - short and snappy
+      const now = audioContext.currentTime
+      
+      // Main body of the snap - higher frequency noise burst
+      const bufferSize = audioContext.sampleRate * duration
       const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate)
       const data = buffer.getChannelData(0)
       
-      // Generate white noise that decays quickly (pop/snap effect)
       for (let i = 0; i < bufferSize; i++) {
-        // White noise
-        const noise = Math.random() * 2 - 1
-        // Sharp decay for pop sound
-        const decay = Math.pow(1 - i / bufferSize, 8)
-        data[i] = noise * decay
+        const t = i / bufferSize
+        // Sharp attack and quick decay
+        const envelope = Math.exp(-t * 30) * (1 - Math.pow(t, 0.5))
+        // Mix of noise and tone for realistic snap
+        const noise = (Math.random() * 2 - 1) * 0.7
+        const tone = Math.sin(2 * Math.PI * 1800 * t) * 0.3
+        data[i] = (noise + tone) * envelope
       }
       
       const source = audioContext.createBufferSource()
@@ -41,12 +46,9 @@ export default function RegisterPage() {
       source.connect(gainNode)
       gainNode.connect(audioContext.destination)
       
-      // Control volume - not too loud
-      gainNode.gain.setValueAtTime(0.15, audioContext.currentTime)
-      
-      source.start(audioContext.currentTime)
+      gainNode.gain.setValueAtTime(0.4, now)
+      source.start(now)
     } catch (error) {
-      // Silently fail if audio not supported
       console.log('Audio not supported')
     }
   }
