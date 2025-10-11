@@ -17,20 +17,20 @@ export default function Header() {
   }
 
   return (
-    <header className="border-b" style={{ backgroundColor: '#f0f0f0', borderColor: '#d4dfe0' }}>
+    <header className="border-b" style={{ backgroundColor: '#0B1F32', borderColor: '#0B1F32' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
             <Image 
-              src="/logo_ND_normal.svg" 
+              src="/logo_ND_white.svg" 
               alt="New Day Climate" 
               width={48} 
               height={48}
               className="w-12 h-12"
             />
             {!isHomePage && (
-              <span className="text-xl font-bold hidden sm:block" style={{ color: '#0B1F32' }}>
+              <span className="text-xl font-bold hidden sm:block" style={{ color: '#ffffff' }}>
                 CO₂ Reduction Planner
               </span>
             )}
@@ -43,23 +43,23 @@ export default function Header() {
                 <Link 
                   href="/dashboard" 
                   className="font-semibold transition-colors"
-                  style={{ color: '#0B1F32' }}
+                  style={{ color: '#ffffff' }}
                   onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = '#0B1F32'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
                 >
                   Dashboard
                 </Link>
                 <Link 
                   href="/organizations" 
                   className="font-semibold transition-colors"
-                  style={{ color: '#0B1F32' }}
+                  style={{ color: '#ffffff' }}
                   onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = '#0B1F32'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
                 >
                   Organizations
                 </Link>
                 <div className="flex items-center space-x-4">
-                  <span className="text-sm font-medium" style={{ color: '#5a6c6f' }}>
+                  <span className="text-sm font-medium" style={{ color: '#ffffff' }}>
                     {session.user?.email}
                   </span>
                   <button
@@ -80,9 +80,9 @@ export default function Header() {
                     <Link 
                       href="/login" 
                       className="font-semibold transition-colors"
-                      style={{ color: '#0B1F32' }}
+                      style={{ color: '#ffffff' }}
                       onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
-                      onMouseLeave={(e) => e.currentTarget.style.color = '#0B1F32'}
+                      onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
                     >
                       Login
                     </Link>
