@@ -15,16 +15,23 @@ export default function RegisterPage() {
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false)
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [showCredentialsModal, setShowCredentialsModal] = useState(false)
+  const [audio] = useState(() => {
+    // Preload audio on component mount for instant playback
+    if (typeof window !== 'undefined') {
+      const sound = new Audio('/finger-snap.mp3')
+      sound.preload = 'auto'
+      sound.volume = 0.5
+      return sound
+    }
+    return null
+  })
 
   const playSuccessSound = () => {
-    try {
-      const audio = new Audio('/finger-snap.mp3')
-      audio.volume = 0.5 // Set volume to 50%
+    if (audio) {
+      audio.currentTime = 0 // Reset to start in case it's played multiple times
       audio.play().catch(() => {
         console.log('Audio playback failed')
       })
-    } catch (error) {
-      console.log('Audio not supported')
     }
   }
 
