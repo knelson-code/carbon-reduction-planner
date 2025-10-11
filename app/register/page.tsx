@@ -254,10 +254,12 @@ This is a privacy-focused system. Since you used an anonymous username, no one, 
               <p className="text-sm text-gray-600">Click here to close this pop up message</p>
               <button
                 onClick={() => {
-                  playSuccessSound()
+                  // UI changes first (instant)
                   setShowCredentialsModal(false)
                   router.push("/dashboard")
                   router.refresh()
+                  // Sound plays after as background effect
+                  setTimeout(() => playSuccessSound(), 0)
                 }}
                 className="text-3xl font-bold hover:opacity-80 transition-opacity"
                 style={{ color: '#FF5B35', lineHeight: '1' }}
