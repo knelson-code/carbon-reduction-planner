@@ -277,6 +277,97 @@ cd carbon-reduction-planner; git add app/page.tsx; git commit -m "Update homepag
 
 ## 🔧 COMMON TASKS & HOW TO DO THEM
 
+### Task: Add Sound Effects (Audio Playback)
+**Current Implementation:** "Snap sound effect" plays when user closes registration completion modal
+
+**What we learned that WORKS:**
+1. **Use base64-encoded audio** embedded directly in component (no external files)
+2. **Use Web Audio API** with async/await for reliable playback
+3. **Critical:** The base64 format matters - must be a valid audio format (MP3 works)
+
+**Implementation Pattern (Registration snap sound as reference):**
+```typescript
+// 1. Embed base64 audio at component level
+const AUDIO_BASE64 = "//uUZAAAAAAAAAAAAAAAAAAAAAAAAAAAA..." // Full base64 string
+
+// 2. Create async playback function using Web Audio API
+const playSoundEffect = async () => {
+  try {
+    // Create audio context
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+    
+    // Convert base64 to ArrayBuffer
+    const binaryString = atob(AUDIO_BASE64)
+    const bytes = new Uint8Array(binaryString.length)
+    for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i)
+    }
+    
+    // Decode and play audio
+    const audioBuffer = await audioContext.decodeAudioData(bytes.buffer)
+    const source = audioContext.createBufferSource()
+    source.buffer = audioBuffer
+    source.connect(audioContext.destination)
+    source.start(0)
+  } catch (error) {
+    console.log('Error playing sound:', error)
+  }
+}
+
+// 3. Call function on user interaction (e.g., button click)
+onClick={() => {
+  // Do UI stuff first
+  setModalOpen(false)
+  // Play sound as background effect
+  setTimeout(() => playSoundEffect(), 0)
+}}
+```
+
+**To Add More Sound Effects:**
+1. Get audio file (MP3, WAV, etc.)
+2. Convert to base64 (use online converter or command line)
+3. Test the base64 in a simple HTML file first (see testing pattern below)
+4. Once confirmed working, add to component following pattern above
+5. Name function descriptively: `playSnapSound()`, `playSuccessSound()`, `playErrorSound()`, etc.
+
+**Testing Pattern (HTML test file):**
+```html
+<!DOCTYPE html>
+<html><body>
+<button id="playBtn">Play Sound</button>
+<script>
+  const base64Audio = "YOUR_BASE64_HERE";
+  async function playSound() {
+    try {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const binaryString = atob(base64Audio);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const audioBuffer = await audioContext.decodeAudioData(bytes.buffer);
+      const source = audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(audioContext.destination);
+      source.start(0);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  document.getElementById('playBtn').addEventListener('click', playSound);
+</script>
+</body></html>
+```
+
+**What DOESN'T work:**
+- ❌ Simple `new Audio()` constructor with base64 - unreliable
+- ❌ Callback-based `decodeAudioData()` - prefer async/await
+- ❌ External audio files - adds HTTP requests, deployment complexity
+- ❌ Truncated base64 strings - must be complete
+
+**Where it's implemented:**
+- `app/register/page.tsx` - Snap sound on modal close
+
 ### Task: Update Colors Site-Wide
 1. Check STYLE_GUIDELINES.md for current color scheme
 2. Update globals.css for Tailwind custom colors
