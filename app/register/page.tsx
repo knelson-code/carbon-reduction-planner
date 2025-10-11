@@ -18,36 +18,11 @@ export default function RegisterPage() {
 
   const playSuccessSound = () => {
     try {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-      
-      // Create a realistic finger snap with multiple frequencies
-      const duration = 0.08 // 80ms - short and snappy
-      const now = audioContext.currentTime
-      
-      // Main body of the snap - higher frequency noise burst
-      const bufferSize = audioContext.sampleRate * duration
-      const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate)
-      const data = buffer.getChannelData(0)
-      
-      for (let i = 0; i < bufferSize; i++) {
-        const t = i / bufferSize
-        // Sharp attack and quick decay
-        const envelope = Math.exp(-t * 30) * (1 - Math.pow(t, 0.5))
-        // Mix of noise and tone for realistic snap
-        const noise = (Math.random() * 2 - 1) * 0.7
-        const tone = Math.sin(2 * Math.PI * 1800 * t) * 0.3
-        data[i] = (noise + tone) * envelope
-      }
-      
-      const source = audioContext.createBufferSource()
-      const gainNode = audioContext.createGain()
-      
-      source.buffer = buffer
-      source.connect(gainNode)
-      gainNode.connect(audioContext.destination)
-      
-      gainNode.gain.setValueAtTime(0.4, now)
-      source.start(now)
+      const audio = new Audio('/finger-snap.mp3')
+      audio.volume = 0.5 // Set volume to 50%
+      audio.play().catch(() => {
+        console.log('Audio playback failed')
+      })
     } catch (error) {
       console.log('Audio not supported')
     }
