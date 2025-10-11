@@ -20,23 +20,31 @@ export default function RegisterPage() {
     try {
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
       
-      // Create a pleasant "pop" sound
-      const oscillator = audioContext.createOscillator()
+      // Create a realistic "pop" sound using white noise
+      const bufferSize = audioContext.sampleRate * 0.05 // 50ms
+      const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate)
+      const data = buffer.getChannelData(0)
+      
+      // Generate white noise that decays quickly (pop/snap effect)
+      for (let i = 0; i < bufferSize; i++) {
+        // White noise
+        const noise = Math.random() * 2 - 1
+        // Sharp decay for pop sound
+        const decay = Math.pow(1 - i / bufferSize, 8)
+        data[i] = noise * decay
+      }
+      
+      const source = audioContext.createBufferSource()
       const gainNode = audioContext.createGain()
       
-      oscillator.connect(gainNode)
+      source.buffer = buffer
+      source.connect(gainNode)
       gainNode.connect(audioContext.destination)
       
-      // Pleasant tone frequency (C note)
-      oscillator.frequency.value = 523.25
-      oscillator.type = 'sine'
+      // Control volume - not too loud
+      gainNode.gain.setValueAtTime(0.15, audioContext.currentTime)
       
-      // Quick fade out for "pop" effect
-      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime)
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1)
-      
-      oscillator.start(audioContext.currentTime)
-      oscillator.stop(audioContext.currentTime + 0.1)
+      source.start(audioContext.currentTime)
     } catch (error) {
       // Silently fail if audio not supported
       console.log('Audio not supported')
