@@ -29,7 +29,7 @@ IMPORTANT:
 - If you lose these credentials, you will need to create a new account
 - Usernames and passwords are case sensitive
 
-This is a privacy-focused system. You were instructed to use an anonymous user name. If you've done that correctly, then no one, including the producers of this software, has any way to associate the data you input into this software to your personal identity or to your company.
+This is a privacy-focused system. You were instructed to use an anonymous user name. If you have done that, no one, including the producers of this software, has any way to associate the data you input into this software with your personal identity or with your company.
 `
     
     const blob = new Blob([content], { type: 'text/plain' })
