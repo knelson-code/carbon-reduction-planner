@@ -26,7 +26,7 @@ export default function RegisterPage() {
     successAudioRef.current.preload = 'auto'
     successAudioRef.current.load()
     
-    errorAudioRef.current = new Audio('/wood-effect.mp3')
+    errorAudioRef.current = new Audio('/fat-snare.mp3')
     errorAudioRef.current.preload = 'auto'
     errorAudioRef.current.load()
     // Force browser to fully load the audio by playing it at 0 volume
@@ -41,6 +41,7 @@ export default function RegisterPage() {
     })
     
     eatingChipsAudioRef.current = new Audio('/eating-chips.mp3')
+    eatingChipsAudioRef.current.volume = 0.7 // Reduce volume by 30%
     eatingChipsAudioRef.current.preload = 'auto'
     eatingChipsAudioRef.current.load()
   }, [])
