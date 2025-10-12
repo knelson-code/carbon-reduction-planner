@@ -37,12 +37,12 @@ export default function Header() {
           </Link>
 
           {/* Navigation */}
-          <nav className="flex items-center space-x-6">
+          <nav className="flex items-center space-x-2 sm:space-x-4 lg:space-x-6">
             {session ? (
               <>
                 <Link 
                   href="/dashboard" 
-                  className="text-lg font-semibold transition-colors"
+                  className="text-sm sm:text-base lg:text-lg font-semibold transition-colors"
                   style={{ color: '#ffffff' }}
                   onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                   onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
@@ -51,20 +51,20 @@ export default function Header() {
                 </Link>
                 <Link 
                   href="/organizations" 
-                  className="text-lg font-semibold transition-colors"
+                  className="text-sm sm:text-base lg:text-lg font-semibold transition-colors"
                   style={{ color: '#ffffff' }}
                   onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                   onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
                 >
                   Organizations
                 </Link>
-                <div className="flex items-center space-x-4">
-                  <span className="text-base font-medium" style={{ color: '#ffffff' }}>
+                <div className="flex items-center space-x-2 sm:space-x-4">
+                  <span className="text-sm sm:text-base font-medium hidden md:block" style={{ color: '#ffffff' }}>
                     {session.user?.email}
                   </span>
                   <button
                     onClick={handleSignOut}
-                    className="px-7 py-2.5 text-white text-lg rounded-lg font-semibold transition-colors"
+                    className="px-3 py-2 sm:px-5 sm:py-2.5 lg:px-7 text-white text-sm sm:text-base lg:text-lg rounded-lg font-semibold transition-colors whitespace-nowrap"
                     style={{ backgroundColor: '#FF5B35' }}
                     onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E54A24'}
                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF5B35'}
@@ -79,7 +79,7 @@ export default function Header() {
                   <>
                     <Link 
                       href="/login" 
-                      className="text-lg font-semibold transition-colors"
+                      className="text-sm sm:text-base lg:text-lg font-semibold transition-colors"
                       style={{ color: '#ffffff' }}
                       onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                       onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
@@ -88,7 +88,7 @@ export default function Header() {
                     </Link>
                     <Link 
                       href="/register" 
-                      className="px-7 py-2.5 text-lg rounded-lg font-semibold transition-colors"
+                      className="px-4 py-2 sm:px-5 sm:py-2.5 lg:px-7 text-sm sm:text-base lg:text-lg rounded-lg font-semibold transition-colors whitespace-nowrap"
                       style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
                       onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E54A24'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FF5B35'}
