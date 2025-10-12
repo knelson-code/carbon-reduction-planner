@@ -26,7 +26,7 @@ export default function RegisterPage() {
     successAudioRef.current.preload = 'auto'
     successAudioRef.current.load()
     
-    errorAudioRef.current = new Audio('/punch-sound.mp3')
+    errorAudioRef.current = new Audio('/cinematic-boom.mp3')
     errorAudioRef.current.preload = 'auto'
     errorAudioRef.current.load()
     // Force browser to fully load the audio by playing it at 0 volume
@@ -40,7 +40,7 @@ export default function RegisterPage() {
       errorAudioRef.current!.volume = 0.75 // Reduce volume by 25%
     })
     
-    eatingChipsAudioRef.current = new Audio('/eating-chips.mp3')
+    eatingChipsAudioRef.current = new Audio('/oven-timer.mp3')
     eatingChipsAudioRef.current.volume = 0.525 // Reduce volume by 47.5%
     eatingChipsAudioRef.current.preload = 'auto'
     eatingChipsAudioRef.current.load()
@@ -137,11 +137,6 @@ This is a privacy-focused system. Since you used an anonymous username, no one, 
         setError("Registration successful, but sign in failed. Please try logging in.")
         setLoading(false)
       } else {
-        // Stop eating chips sound immediately
-        if (eatingChipsAudioRef.current) {
-          eatingChipsAudioRef.current.pause()
-          eatingChipsAudioRef.current.currentTime = 0
-        }
         // Generate and download credentials file
         generateCredentialsPDF(username, password)
         setShowCredentialsModal(true)
@@ -175,7 +170,7 @@ This is a privacy-focused system. Since you used an anonymous username, no one, 
               onChange={(e) => setUsername(e.target.value)}
               required
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              placeholder="Choose an anonymous username"
+              placeholder="Anonymous username"
             />
             <p className="text-xs text-gray-500 mt-1">
               <span style={{ textDecoration: 'underline', textDecorationColor: '#FF5B35' }}>
