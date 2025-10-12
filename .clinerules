@@ -368,6 +368,13 @@ onClick={() => {
 **Where it's implemented:**
 - `app/register/page.tsx` - Snap sound on modal close
 
+**Useful Resources:**
+- **Sound Effects Library:** https://pixabay.com/sound-effects/ (free, royalty-free)
+  - Finger snap sound: https://pixabay.com/sound-effects/finger-snap-179180/
+  - Glass crack sound: https://pixabay.com/sound-effects/glass-crack-363162/
+- **Audio to Base64 Converter:** https://base64.guru/converter/encode/audio
+- **Testing Base64 Audio Playback:** https://claude.ai/public/artifacts/be77c0a5-0695-4104-8686-f8eddc2dcfe4
+
 ### Task: Update Colors Site-Wide
 1. Check STYLE_GUIDELINES.md for current color scheme
 2. Update globals.css for Tailwind custom colors
