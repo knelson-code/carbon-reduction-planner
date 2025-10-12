@@ -24,10 +24,10 @@ export default function LoginPage() {
     errorAudioRef.current.play().then(() => {
       errorAudioRef.current!.pause()
       errorAudioRef.current!.currentTime = 0
-      errorAudioRef.current!.volume = 1
+      errorAudioRef.current!.volume = 0.75 // Reduce volume by 25%
     }).catch(() => {
       // Silent fail - browser may block autoplay, but audio is still preloaded
-      errorAudioRef.current!.volume = 1
+      errorAudioRef.current!.volume = 0.75 // Reduce volume by 25%
     })
   }, [])
 

@@ -34,14 +34,14 @@ export default function RegisterPage() {
     errorAudioRef.current.play().then(() => {
       errorAudioRef.current!.pause()
       errorAudioRef.current!.currentTime = 0
-      errorAudioRef.current!.volume = 1
+      errorAudioRef.current!.volume = 0.75 // Reduce volume by 25%
     }).catch(() => {
       // Silent fail - browser may block autoplay, but audio is still preloaded
-      errorAudioRef.current!.volume = 1
+      errorAudioRef.current!.volume = 0.75 // Reduce volume by 25%
     })
     
     eatingChipsAudioRef.current = new Audio('/eating-chips.mp3')
-    eatingChipsAudioRef.current.volume = 0.7 // Reduce volume by 30%
+    eatingChipsAudioRef.current.volume = 0.525 // Reduce volume by 47.5%
     eatingChipsAudioRef.current.preload = 'auto'
     eatingChipsAudioRef.current.load()
   }, [])
