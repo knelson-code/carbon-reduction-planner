@@ -18,6 +18,7 @@ export default function RegisterPage() {
   
   const successAudioRef = useRef<HTMLAudioElement | null>(null)
   const errorAudioRef = useRef<HTMLAudioElement | null>(null)
+  const eatingChipsAudioRef = useRef<HTMLAudioElement | null>(null)
 
   // Preload sounds on component mount for instant playback
   useEffect(() => {
@@ -29,6 +30,10 @@ export default function RegisterPage() {
     errorAudioRef.current.volume = 0.67 // Reduce volume by 33%
     errorAudioRef.current.preload = 'auto'
     errorAudioRef.current.load()
+    
+    eatingChipsAudioRef.current = new Audio('/eating-chips.mp3')
+    eatingChipsAudioRef.current.preload = 'auto'
+    eatingChipsAudioRef.current.load()
   }, [])
 
   const playSuccessSound = () => {
@@ -42,6 +47,13 @@ export default function RegisterPage() {
     if (errorAudioRef.current) {
       errorAudioRef.current.currentTime = 0
       errorAudioRef.current.play().catch(err => console.log('Error playing sound:', err))
+    }
+  }
+
+  const playEatingChipsSound = () => {
+    if (eatingChipsAudioRef.current) {
+      eatingChipsAudioRef.current.currentTime = 0
+      eatingChipsAudioRef.current.play().catch(err => console.log('Error playing sound:', err))
     }
   }
 
@@ -75,6 +87,9 @@ This is a privacy-focused system. Since you used an anonymous username, no one, 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
+    
+    // Play eating chips sound while account is being created
+    playEatingChipsSound()
     
     // Check if passwords match
     if (password !== confirmPassword) {
