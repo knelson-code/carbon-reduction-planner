@@ -26,6 +26,7 @@ export default function RegisterPage() {
     successAudioRef.current.load()
     
     errorAudioRef.current = new Audio('/glass-break.mp3')
+    errorAudioRef.current.volume = 0.67 // Reduce volume by 33%
     errorAudioRef.current.preload = 'auto'
     errorAudioRef.current.load()
   }, [])

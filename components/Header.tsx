@@ -105,12 +105,13 @@ export default function Header() {
               )}
             </nav>
 
-            {/* Mobile Hamburger Button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden z-50 p-2"
-              aria-label="Toggle menu"
-            >
+            {/* Mobile Hamburger Button - Only show if there are items to display */}
+            {(session || !isHomePage) && (
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden z-50 p-2"
+                aria-label="Toggle menu"
+              >
               {mobileMenuOpen ? (
                 // X icon when menu is open
                 <svg className="w-8 h-8" fill="none" stroke="#ffffff" viewBox="0 0 24 24">
@@ -122,7 +123,8 @@ export default function Header() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               )}
-            </button>
+              </button>
+            )}
           </div>
         </div>
       </header>
