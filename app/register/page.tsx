@@ -26,7 +26,7 @@ export default function RegisterPage() {
     successAudioRef.current.preload = 'auto'
     successAudioRef.current.load()
     
-    errorAudioRef.current = new Audio('/fat-snare.mp3')
+    errorAudioRef.current = new Audio('/punch-sound.mp3')
     errorAudioRef.current.preload = 'auto'
     errorAudioRef.current.load()
     // Force browser to fully load the audio by playing it at 0 volume
