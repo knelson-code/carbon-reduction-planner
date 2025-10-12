@@ -12,6 +12,28 @@ export default function LoginPage() {
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
+  // Glass breaking sound for error scenarios (base64 audio)
+  const GLASS_BREAK_BASE64 = "//OAxAAAAAAAAAAAAFhpbmcAAAAPAAAANgAAL+UAAAcHDg4YGB0dICAkJycrKzAwMzM6OkFBSVFRVFRYWGBgZGRoaGxwcHNzd3d7e4aGio+PkpKWlpqanp6ioqaqqrKytbW5ucHBycnN0dHU1NjY3Nzf3+Tk6Ovr7+/z8/f3////AAAAUExBTUUzLjEwMARuAAAAAAAAAAAVCCQCQCEAAeAAAC/ldcGNugAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/zEMQAAAAD/AAAAABtRpyN6ykmXd6z7ADJ"
+
+  // Play error sound using Web Audio API
+  const playErrorSound = async () => {
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+      const binaryString = atob(GLASS_BREAK_BASE64)
+      const bytes = new Uint8Array(binaryString.length)
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i)
+      }
+      const audioBuffer = await audioContext.decodeAudioData(bytes.buffer)
+      const source = audioContext.createBufferSource()
+      source.buffer = audioBuffer
+      source.connect(audioContext.destination)
+      source.start(0)
+    } catch (error) {
+      console.log('Error playing sound:', error)
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
@@ -26,12 +48,16 @@ export default function LoginPage() {
 
       if (result?.error) {
         setError("Invalid username or password")
+        // Play error sound
+        setTimeout(() => playErrorSound(), 0)
       } else {
         router.push("/dashboard")
         router.refresh()
       }
     } catch {
       setError("An error occurred. Please try again.")
+      // Play error sound
+      setTimeout(() => playErrorSound(), 0)
     } finally {
       setLoading(false)
     }
