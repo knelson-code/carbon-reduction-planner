@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { useSession, signOut } from "next-auth/react"
 import { useRouter, usePathname } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 
 export default function Header() {
   const { data: session } = useSession()
@@ -12,8 +12,31 @@ export default function Header() {
   const pathname = usePathname()
   const isHomePage = pathname === "/"
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const windAudioRef = useRef<HTMLAudioElement | null>(null)
+
+  // Preload wind sound for sign out
+  useEffect(() => {
+    windAudioRef.current = new Audio('/wind-sound.mp3')
+    windAudioRef.current.preload = 'auto'
+    windAudioRef.current.load()
+    // Force browser to fully load the audio by playing it at 0 volume
+    windAudioRef.current.volume = 0
+    windAudioRef.current.play().then(() => {
+      windAudioRef.current!.pause()
+      windAudioRef.current!.currentTime = 0
+      windAudioRef.current!.volume = 1
+    }).catch(() => {
+      // Silent fail - browser may block autoplay, but audio is still preloaded
+      windAudioRef.current!.volume = 1
+    })
+  }, [])
 
   const handleSignOut = async () => {
+    // Play wind sound
+    if (windAudioRef.current) {
+      windAudioRef.current.currentTime = 0
+      windAudioRef.current.play().catch(err => console.log('Error playing sound:', err))
+    }
     await signOut({ redirect: false })
     router.push("/login")
     setMobileMenuOpen(false)
