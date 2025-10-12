@@ -29,6 +29,16 @@ export default function RegisterPage() {
     errorAudioRef.current = new Audio('/wood-effect.mp3')
     errorAudioRef.current.preload = 'auto'
     errorAudioRef.current.load()
+    // Force browser to fully load the audio by playing it at 0 volume
+    errorAudioRef.current.volume = 0
+    errorAudioRef.current.play().then(() => {
+      errorAudioRef.current!.pause()
+      errorAudioRef.current!.currentTime = 0
+      errorAudioRef.current!.volume = 1
+    }).catch(() => {
+      // Silent fail - browser may block autoplay, but audio is still preloaded
+      errorAudioRef.current!.volume = 1
+    })
     
     eatingChipsAudioRef.current = new Audio('/eating-chips.mp3')
     eatingChipsAudioRef.current.preload = 'auto'
@@ -126,6 +136,11 @@ This is a privacy-focused system. Since you used an anonymous username, no one, 
         setError("Registration successful, but sign in failed. Please try logging in.")
         setLoading(false)
       } else {
+        // Stop eating chips sound immediately
+        if (eatingChipsAudioRef.current) {
+          eatingChipsAudioRef.current.pause()
+          eatingChipsAudioRef.current.currentTime = 0
+        }
         // Generate and download credentials file
         generateCredentialsPDF(username, password)
         setShowCredentialsModal(true)

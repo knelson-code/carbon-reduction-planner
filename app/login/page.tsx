@@ -18,11 +18,22 @@ export default function LoginPage() {
     errorAudioRef.current = new Audio('/wood-effect.mp3')
     errorAudioRef.current.preload = 'auto'
     errorAudioRef.current.load()
+    
+    // Force browser to fully load the audio by playing it at 0 volume
+    errorAudioRef.current.volume = 0
+    errorAudioRef.current.play().then(() => {
+      errorAudioRef.current!.pause()
+      errorAudioRef.current!.currentTime = 0
+      errorAudioRef.current!.volume = 1
+    }).catch(() => {
+      // Silent fail - browser may block autoplay, but audio is still preloaded
+      errorAudioRef.current!.volume = 1
+    })
   }, [])
 
   const playErrorSound = () => {
     if (errorAudioRef.current) {
-      errorAudioRef.current.currentTime = 0 // Reset to start
+      errorAudioRef.current.currentTime = 0
       errorAudioRef.current.play().catch(err => console.log('Error playing sound:', err))
     }
   }
