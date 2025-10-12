@@ -15,8 +15,7 @@ export default function LoginPage() {
 
   // Preload error sound on component mount for instant playback
   useEffect(() => {
-    errorAudioRef.current = new Audio('/glass-break.mp3')
-    errorAudioRef.current.volume = 0.67 // Reduce volume by 33%
+    errorAudioRef.current = new Audio('/wood-effect.mp3')
     errorAudioRef.current.preload = 'auto'
     errorAudioRef.current.load()
   }, [])
