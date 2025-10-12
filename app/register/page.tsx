@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { signIn } from "next-auth/react"
@@ -15,55 +15,32 @@ export default function RegisterPage() {
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false)
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [showCredentialsModal, setShowCredentialsModal] = useState(false)
+  
+  const successAudioRef = useRef<HTMLAudioElement | null>(null)
+  const errorAudioRef = useRef<HTMLAudioElement | null>(null)
 
-  // Base64-encoded audio data embedded directly (finger snap sound)
-  const AUDIO_BASE64 = "//uUZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAAFAAAHgAAQEBAQEBAQEBAQEBAQEBAQEBAQICAgICAgICAgICAgICAgICAgICCAgICAgICAgICAgICAgICAgICAgPDw8PDw8PDw8PDw8PDw8PDw8PDw//////////////////////////8AAABQTEFNRTMuMTAwBLkAAAAAAAAAADUgJAaNjQAB4AAAB4DKjnWlAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//sUZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAE/wMWwc21gNn/v20weHOMn/sZihgYZjKCyAMA6A1SXkQJwuAeV2B+eIA5fmjlwDIBgbBwGcOfNE1GiYFh//sUZB4P8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEgGuSAZwcGkAaJB+83TcvgokAUBgZEqBlQ4ywHNY/y+bstNlgAigM8EHwOaKXFng3X/3Q0EGQDBYxgnkL//u0ZDwAAAAAaQUAAAgAAA0goAABGdoRQhmaAAAAADSDAAAAKxqACCAGhAG4Qf+g1TJ2Tg3NAYBmJKDgDC4CAgDQQDGABCH//T1pvTdrhfcnjUc8CQAPTFjGEHwDwRIQEGQ/////6CH0G////JgZQiAWmB7Ye+GJx6JZhoioimVXICdS6mckrkMYkMbnJtzVEi9gWAoEgCAAlMBAAEjTGxMgzYNTmMALAAF4mADAERMATGbejWhhbSBGm8MAAqUwcAOGNil2hkqasqXXMAeABjACQBklAOzbTHII1kotwMjBF3jAMQGYwBYAzTIEIAOEAFgYASmp2q0ZpQaH4YMiVvioAnI4dFgBBOtsBmux+KYK6IsGQUFypihB3uaZia0Q0+s0yFgLqgoATpkjmmGfNHLpgpJeQY1gNjmPilNRkr5VIYHeRyMMc62/t7J8kHFxvqqonOZdGTYGBTD+ZhmIToYXQE3mC2hRBgTwOqYPACRujGLUqlNngNAAS5bEm1i613xMD1B/DABQPA wP4QlMKKD6jBrADkw6UFoMSKFbTAPRDv4lfhqNQbCGk34YhcCW2uNIixh0wNOYDeCjGBdAF5gcIFMVgHBgNIMUYPaBaGCzBApgEwJuYPgCgyx/pqrqtuM/NWIhbfeNQNjNujFjASQQQkAShUDJMCiABjAsgW0wOQCGAwMEYFOCIGAzgWYQB4GAAgRxgToACYDwAky65lljlbyymaa1ceR4W+jr7u5Vj0y7ksh6MlUBoMBTAUTA//vEZOKAD/+A1f5/7BIAAA0gwAAAEg2BR/2EAAAAADSDgAAEfgFMwBoCzMDoAazASwQowGQA6MCLAWjAHAKP/////////////////x/LL/5////////////////9jUnbmf0soCXQFK8nsYSAEBjMYRGUhlAXaRiCoC4zK3BS9Lus5XazkGxYCIqKioqHoqULCwsLCwsLCwqKrBQsLHOwsLCwsLCwNmVVJFRVVhRUVFRVdhYVFRUVFTRVV/ZmZm/9mZlVVVVVW9VVVVrlVVVVmZmZrhVXZmZv9mZmWv/lWZhYWFhZtimbVVVm5VdiiTVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sUZNgP8AAAf4AAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
+  // Preload sounds on component mount for instant playback
+  useEffect(() => {
+    successAudioRef.current = new Audio('/finger-snap.mp3')
+    successAudioRef.current.preload = 'auto'
+    successAudioRef.current.load()
+    
+    errorAudioRef.current = new Audio('/glass-break.mp3')
+    errorAudioRef.current.preload = 'auto'
+    errorAudioRef.current.load()
+  }, [])
 
-  // Glass breaking sound for error scenarios (base64 audio)
-  const GLASS_BREAK_BASE64 = "//OAxAAAAAAAAAAAAFhpbmcAAAAPAAAANgAAL+UAAAcHDg4YGB0dICAkJycrKzAwMzM6OkFBSVFRVFRYWGBgZGRoaGxwcHNzd3d7e4aGio+PkpKWlpqanp6ioqaqqrKytbW5ucHBycnN0dHU1NjY3Nzf3+Tk6Ovr7+/z8/f3////AAAAUExBTUUzLjEwMARuAAAAAAAAAAAVCCQCQCEAAeAAAC/ldcGNugAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/zEMQAAAAD/AAAAABtRpyN6ykmXd6z7ADJ"
-
-  // Function to play success sound using Web Audio API (async version)
-  const playSuccessSound = async () => {
-    try {
-      // Create audio context
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-      
-      // Convert base64 to ArrayBuffer
-      const binaryString = atob(AUDIO_BASE64)
-      const bytes = new Uint8Array(binaryString.length)
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i)
-      }
-      
-      // Decode audio data
-      const audioBuffer = await audioContext.decodeAudioData(bytes.buffer)
-      
-      // Play the sound
-      const source = audioContext.createBufferSource()
-      source.buffer = audioBuffer
-      source.connect(audioContext.destination)
-      source.start(0)
-    } catch (error) {
-      console.log('Error playing sound:', error)
+  const playSuccessSound = () => {
+    if (successAudioRef.current) {
+      successAudioRef.current.currentTime = 0
+      successAudioRef.current.play().catch(err => console.log('Error playing sound:', err))
     }
   }
 
-  // Play error sound using Web Audio API
-  const playErrorSound = async () => {
-    try {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-      const binaryString = atob(GLASS_BREAK_BASE64)
-      const bytes = new Uint8Array(binaryString.length)
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i)
-      }
-      const audioBuffer = await audioContext.decodeAudioData(bytes.buffer)
-      const source = audioContext.createBufferSource()
-      source.buffer = audioBuffer
-      source.connect(audioContext.destination)
-      source.start(0)
-    } catch (error) {
-      console.log('Error playing sound:', error)
+  const playErrorSound = () => {
+    if (errorAudioRef.current) {
+      errorAudioRef.current.currentTime = 0
+      errorAudioRef.current.play().catch(err => console.log('Error playing sound:', err))
     }
   }
 
@@ -101,8 +78,7 @@ This is a privacy-focused system. Since you used an anonymous username, no one, 
     // Check if passwords match
     if (password !== confirmPassword) {
       setError("Passwords do not match")
-      // Play error sound
-      setTimeout(() => playErrorSound(), 0)
+      playErrorSound()
       return
     }
     
@@ -119,8 +95,7 @@ This is a privacy-focused system. Since you used an anonymous username, no one, 
 
       if (!response.ok) {
         setError(data.error || "Registration failed")
-        // Play error sound
-        setTimeout(() => playErrorSound(), 0)
+        playErrorSound()
         setLoading(false)
         return
       }
@@ -290,12 +265,10 @@ This is a privacy-focused system. Since you used an anonymous username, no one, 
               <p className="text-sm text-gray-600">Click here to close this pop up message</p>
               <button
                 onClick={() => {
-                  // UI changes first (instant)
                   setShowCredentialsModal(false)
                   router.push("/dashboard")
                   router.refresh()
-                  // Sound plays after as background effect
-                  setTimeout(() => playSuccessSound(), 0)
+                  playSuccessSound()
                 }}
                 className="text-3xl font-bold hover:opacity-80 transition-opacity"
                 style={{ color: '#FF5B35', lineHeight: '1' }}

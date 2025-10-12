@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
@@ -11,26 +11,19 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const errorAudioRef = useRef<HTMLAudioElement | null>(null)
 
-  // Glass breaking sound for error scenarios (base64 audio)
-  const GLASS_BREAK_BASE64 = "//OAxAAAAAAAAAAAAFhpbmcAAAAPAAAANgAAL+UAAAcHDg4YGB0dICAkJycrKzAwMzM6OkFBSVFRVFRYWGBgZGRoaGxwcHNzd3d7e4aGio+PkpKWlpqanp6ioqaqqrKytbW5ucHBycnN0dHU1NjY3Nzf3+Tk6Ovr7+/z8/f3////AAAAUExBTUUzLjEwMARuAAAAAAAAAAAVCCQCQCEAAeAAAC/ldcGNugAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/zEMQAAAAD/AAAAABtRpyN6ykmXd6z7ADJ"
+  // Preload error sound on component mount for instant playback
+  useEffect(() => {
+    errorAudioRef.current = new Audio('/glass-break.mp3')
+    errorAudioRef.current.preload = 'auto'
+    errorAudioRef.current.load()
+  }, [])
 
-  // Play error sound using Web Audio API
-  const playErrorSound = async () => {
-    try {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-      const binaryString = atob(GLASS_BREAK_BASE64)
-      const bytes = new Uint8Array(binaryString.length)
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i)
-      }
-      const audioBuffer = await audioContext.decodeAudioData(bytes.buffer)
-      const source = audioContext.createBufferSource()
-      source.buffer = audioBuffer
-      source.connect(audioContext.destination)
-      source.start(0)
-    } catch (error) {
-      console.log('Error playing sound:', error)
+  const playErrorSound = () => {
+    if (errorAudioRef.current) {
+      errorAudioRef.current.currentTime = 0 // Reset to start
+      errorAudioRef.current.play().catch(err => console.log('Error playing sound:', err))
     }
   }
 
@@ -48,16 +41,14 @@ export default function LoginPage() {
 
       if (result?.error) {
         setError("Invalid username or password")
-        // Play error sound
-        setTimeout(() => playErrorSound(), 0)
+        playErrorSound()
       } else {
         router.push("/dashboard")
         router.refresh()
       }
     } catch {
       setError("An error occurred. Please try again.")
-      // Play error sound
-      setTimeout(() => playErrorSound(), 0)
+      playErrorSound()
     } finally {
       setLoading(false)
     }
