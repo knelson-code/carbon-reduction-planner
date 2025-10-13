@@ -35,13 +35,10 @@ export default function TransitionStrategyPage() {
       <div className="flex-1 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
-          <div className="bg-white rounded-lg shadow-md p-8 mb-8 border-l-4" style={{ borderColor: "#3b82f6" }}>
-            <h1 className="text-3xl font-bold mb-2" style={{ color: "#3b82f6" }}>
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold" style={{ color: "#163E64" }}>
               Energy Transition Strategy
             </h1>
-            <p className="text-gray-600 text-lg">
-              Navigate your role in accelerating the energy transition
-            </p>
           </div>
 
           {/* Feature Cards */}
@@ -58,17 +55,18 @@ export default function TransitionStrategyPage() {
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#0B1F32'
                 e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.35)'
+                const heading = e.currentTarget.querySelector('h3')
+                if (heading) (heading as HTMLElement).style.color = '#ffffff'
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = '#f5f5f5'
                 e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 91, 53, 0.25)'
+                const heading = e.currentTarget.querySelector('h3')
+                if (heading) (heading as HTMLElement).style.color = '#163E64'
               }}
             >
-              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
-                onMouseLeave={(e) => e.currentTarget.style.color = '#163E64'}
-              >
-                Understand your role
+              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}>
+                Understand your role in a world affected by climate change
               </h3>
             </Link>
 
@@ -84,17 +82,18 @@ export default function TransitionStrategyPage() {
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#0B1F32'
                 e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.35)'
+                const heading = e.currentTarget.querySelector('h3')
+                if (heading) (heading as HTMLElement).style.color = '#ffffff'
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = '#f5f5f5'
                 e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 91, 53, 0.25)'
+                const heading = e.currentTarget.querySelector('h3')
+                if (heading) (heading as HTMLElement).style.color = '#163E64'
               }}
             >
-              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
-                onMouseLeave={(e) => e.currentTarget.style.color = '#163E64'}
-              >
-                Speed up the energy transition
+              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}>
+                Determine what you can do to speed up the energy transition
               </h3>
             </Link>
 
@@ -110,33 +109,20 @@ export default function TransitionStrategyPage() {
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#0B1F32'
                 e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.35)'
+                const heading = e.currentTarget.querySelector('h3')
+                if (heading) (heading as HTMLElement).style.color = '#ffffff'
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = '#f5f5f5'
                 e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 91, 53, 0.25)'
+                const heading = e.currentTarget.querySelector('h3')
+                if (heading) (heading as HTMLElement).style.color = '#163E64'
               }}
             >
-              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
-                onMouseLeave={(e) => e.currentTarget.style.color = '#163E64'}
-              >
-                Decide what you're willing to do
+              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}>
+                Decide what you are willing to do
               </h3>
             </Link>
-          </div>
-
-          {/* Overview Section */}
-          <div className="bg-white rounded-lg shadow-md p-8">
-            <h2 className="text-2xl font-bold mb-4" style={{ color: "#163E64" }}>
-              Module Overview
-            </h2>
-            <div className="text-gray-700">
-              <ul className="list-disc list-outside space-y-2 ml-6 text-xs leading-relaxed">
-                <li>Understand your role in a world affected by climate change</li>
-                <li>Determine what you can do to speed up the energy transition</li>
-                <li>Decide what you are willing to do</li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>
