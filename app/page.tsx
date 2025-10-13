@@ -6,6 +6,29 @@ import { useSession } from "next-auth/react";
 export default function Home() {
   const { data: session } = useSession();
   
+  const modules = [
+    {
+      title: "Climate Risk",
+      description: "Understand risks and improve decision-making under uncertainty",
+      href: "/dashboard/climate-risk"
+    },
+    {
+      title: "Transition Strategy",
+      description: "Understand your role and speed up the energy transition",
+      href: "/dashboard/transition-strategy"
+    },
+    {
+      title: "Impact Strategy",
+      description: "Identify leverage points for systemic political and economic change",
+      href: "/dashboard/impact-strategy"
+    },
+    {
+      title: "CO₂ Management",
+      description: "Track emissions across Scope 1/2/3 and plan reduction tactics",
+      href: "/dashboard/co2-management"
+    }
+  ];
+  
   return (
     <div className="flex items-center justify-center bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
@@ -70,33 +93,55 @@ export default function Home() {
         )}
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-          <div className="p-6 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
-            <h3 className="text-lg font-bold mb-2" style={{ color: '#0B1F32' }}>Climate Risk</h3>
-            <p className="leading-relaxed text-sm" style={{ color: '#0B1F32' }}>
-              Assess physical and transition risks to your operations
-            </p>
-          </div>
-          
-          <div className="p-6 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
-            <h3 className="text-lg font-bold mb-2" style={{ color: '#0B1F32' }}>Transition Strategy</h3>
-            <p className="leading-relaxed text-sm" style={{ color: '#0B1F32' }}>
-              Design pathways to net-zero with science-based targets
-            </p>
-          </div>
+          {modules.map((module) => {
+            const CardContent = (
+              <>
+                <h3 className="text-lg font-bold mb-2" style={{ color: '#0B1F32' }}>
+                  {module.title}
+                </h3>
+                <p className="leading-relaxed text-sm" style={{ color: '#0B1F32' }}>
+                  {module.description}
+                </p>
+              </>
+            );
 
-          <div className="p-6 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
-            <h3 className="text-lg font-bold mb-2" style={{ color: '#0B1F32' }}>Impact Strategy</h3>
-            <p className="leading-relaxed text-sm" style={{ color: '#0B1F32' }}>
-              Measure outcomes and communicate your climate leadership
-            </p>
-          </div>
-          
-          <div className="p-6 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
-            <h3 className="text-lg font-bold mb-2" style={{ color: '#0B1F32' }}>CO₂ Management</h3>
-            <p className="leading-relaxed text-sm" style={{ color: '#0B1F32' }}>
-              Track emissions across Scope 1/2/3 and plan reduction tactics
-            </p>
-          </div>
+            if (session) {
+              return (
+                <Link
+                  key={module.title}
+                  href={module.href}
+                  className="p-6 rounded-lg border transition-all duration-200 hover:shadow-lg"
+                  style={{ 
+                    backgroundColor: 'transparent', 
+                    borderColor: 'rgba(11, 31, 50, 0.15)' 
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#163E64'
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.15)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(11, 31, 50, 0.15)'
+                    e.currentTarget.style.boxShadow = 'none'
+                  }}
+                >
+                  {CardContent}
+                </Link>
+              );
+            }
+
+            return (
+              <div 
+                key={module.title}
+                className="p-6 rounded-lg border" 
+                style={{ 
+                  backgroundColor: 'transparent', 
+                  borderColor: 'rgba(11, 31, 50, 0.15)' 
+                }}
+              >
+                {CardContent}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
