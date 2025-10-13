@@ -36,19 +36,12 @@ export default function ImpactStrategyPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
           <div className="bg-white rounded-lg shadow-md p-8 mb-8 border-l-4" style={{ borderColor: "#8b5cf6" }}>
-            <div className="flex items-center space-x-4 mb-4">
-              <div className="w-16 h-16 rounded-lg flex items-center justify-center text-4xl" style={{ backgroundColor: "#ede9fe" }}>
-                💡
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold" style={{ color: "#8b5cf6" }}>
-                  Impact Strategy
-                </h1>
-                <p className="text-gray-600 text-lg">
-                  Measure and communicate your climate impact
-                </p>
-              </div>
-            </div>
+            <h1 className="text-3xl font-bold mb-2" style={{ color: "#8b5cf6" }}>
+              Impact Strategy
+            </h1>
+            <p className="text-gray-600 text-lg">
+              Measure and communicate your climate impact
+            </p>
           </div>
 
           {/* Feature Cards */}

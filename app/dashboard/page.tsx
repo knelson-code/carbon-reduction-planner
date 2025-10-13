@@ -78,69 +78,24 @@ export default function DashboardPage() {
       
       <div className="flex-1 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Welcome Section */}
-          <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-            <h1 className="text-3xl font-bold mb-2" style={{ color: "#163E64" }}>
-              Welcome, {session.user?.name || session.user?.email}!
-            </h1>
-            <p className="text-gray-600 text-lg">
-              Your Climate Management Platform
-            </p>
-          </div>
-
-          {/* Module Selection */}
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold mb-4" style={{ color: "#163E64" }}>
-              Select a Module
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Choose from our integrated climate management modules to begin working on your climate strategy.
-            </p>
-          </div>
-
           {/* Module Cards Grid */}
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {modules.map((module) => (
               <Link
                 key={module.title}
                 href={module.href}
-                className="group bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border-l-4"
+                className="group bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 p-6 border-l-4"
                 style={{ borderColor: module.color }}
               >
-                <div className="p-8">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center space-x-4">
-                      <div
-                        className="w-16 h-16 rounded-lg flex items-center justify-center text-3xl"
-                        style={{ backgroundColor: module.bgColor }}
-                      >
-                        {module.icon}
-                      </div>
-                      <h3
-                        className="text-2xl font-bold group-hover:opacity-80 transition-opacity"
-                        style={{ color: module.color }}
-                      >
-                        {module.title}
-                      </h3>
-                    </div>
-                    <svg
-                      className="w-6 h-6 text-gray-400 group-hover:text-gray-600 transition-colors"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </div>
-                  <p className="text-gray-600 leading-relaxed">
-                    {module.description}
-                  </p>
-                </div>
+                <h3
+                  className="text-xl font-bold mb-3 group-hover:opacity-80 transition-opacity"
+                  style={{ color: module.color }}
+                >
+                  {module.title}
+                </h3>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {module.description}
+                </p>
               </Link>
             ))}
           </div>

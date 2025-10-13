@@ -71,7 +71,6 @@ export default function Home() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
           <div className="p-6 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
-            <div className="text-3xl mb-3">🌱</div>
             <h3 className="text-lg font-bold mb-2" style={{ color: '#0B1F32' }}>CO₂ Management</h3>
             <p className="leading-relaxed text-sm" style={{ color: '#0B1F32' }}>
               Track emissions across Scope 1/2/3 and plan reduction tactics
@@ -79,7 +78,6 @@ export default function Home() {
           </div>
           
           <div className="p-6 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
-            <div className="text-3xl mb-3">⚠️</div>
             <h3 className="text-lg font-bold mb-2" style={{ color: '#0B1F32' }}>Climate Risk</h3>
             <p className="leading-relaxed text-sm" style={{ color: '#0B1F32' }}>
               Assess physical and transition risks to your operations
@@ -87,7 +85,6 @@ export default function Home() {
           </div>
           
           <div className="p-6 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
-            <div className="text-3xl mb-3">🚀</div>
             <h3 className="text-lg font-bold mb-2" style={{ color: '#0B1F32' }}>Transition Strategy</h3>
             <p className="leading-relaxed text-sm" style={{ color: '#0B1F32' }}>
               Design pathways to net-zero with science-based targets
@@ -95,7 +92,6 @@ export default function Home() {
           </div>
 
           <div className="p-6 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
-            <div className="text-3xl mb-3">💡</div>
             <h3 className="text-lg font-bold mb-2" style={{ color: '#0B1F32' }}>Impact Strategy</h3>
             <p className="leading-relaxed text-sm" style={{ color: '#0B1F32' }}>
               Measure outcomes and communicate your climate leadership

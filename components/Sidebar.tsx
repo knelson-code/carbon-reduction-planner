@@ -15,12 +15,12 @@ const menuItems: MenuItem[] = [
   {
     name: "Dashboard",
     href: "/dashboard",
-    icon: "🏠",
+    icon: "Home",
   },
   {
     name: "CO₂ Management",
     href: "/dashboard/co2-management",
-    icon: "🌱",
+    icon: "CO2",
     subItems: [
       { name: "Emissions Tracking", href: "/dashboard/co2-management/emissions" },
       { name: "Reduction Tactics", href: "/dashboard/co2-management/tactics" },
@@ -30,7 +30,7 @@ const menuItems: MenuItem[] = [
   {
     name: "Climate Risk",
     href: "/dashboard/climate-risk",
-    icon: "⚠️",
+    icon: "Risk",
     subItems: [
       { name: "Risk Assessment", href: "/dashboard/climate-risk/assessment" },
       { name: "Adaptation Planning", href: "/dashboard/climate-risk/adaptation" },
@@ -40,7 +40,7 @@ const menuItems: MenuItem[] = [
   {
     name: "Transition Strategy",
     href: "/dashboard/transition-strategy",
-    icon: "🚀",
+    icon: "Strategy",
     subItems: [
       { name: "Pathway Planning", href: "/dashboard/transition-strategy/pathways" },
       { name: "Target Setting", href: "/dashboard/transition-strategy/targets" },
@@ -50,7 +50,7 @@ const menuItems: MenuItem[] = [
   {
     name: "Impact Strategy",
     href: "/dashboard/impact-strategy",
-    icon: "💡",
+    icon: "Impact",
     subItems: [
       { name: "Impact Assessment", href: "/dashboard/impact-strategy/assessment" },
       { name: "Stakeholder Engagement", href: "/dashboard/impact-strategy/stakeholders" },
@@ -83,9 +83,9 @@ export default function Sidebar() {
     <>
       {/* Sidebar */}
       <aside
-        className="fixed left-0 top-[92px] bottom-0 bg-white border-r border-gray-200 shadow-lg transition-all duration-300 ease-in-out z-40"
+        className="fixed left-0 top-[92px] bottom-0 bg-white border-r border-gray-200 transition-all duration-300 ease-in-out z-40"
         style={{
-          width: isExpanded ? "240px" : "60px",
+          width: isExpanded ? "240px" : "24px",
         }}
         onMouseEnter={() => setIsExpanded(true)}
         onMouseLeave={() => {
@@ -98,13 +98,17 @@ export default function Sidebar() {
             <div key={item.name}>
               {/* Main Menu Item */}
               <div
-                className={`flex items-center px-4 py-3 cursor-pointer transition-colors ${
+                className={`flex items-center cursor-pointer transition-colors ${
                   isActive(item.href)
                     ? "bg-blue-50 border-l-4"
                     : "hover:bg-gray-50"
                 }`}
                 style={{
                   borderColor: isActive(item.href) ? "#163E64" : "transparent",
+                  paddingLeft: isExpanded ? "16px" : "4px",
+                  paddingRight: isExpanded ? "16px" : "4px",
+                  paddingTop: "12px",
+                  paddingBottom: "12px",
                 }}
                 onClick={() => {
                   if (item.subItems && isExpanded) {
@@ -121,19 +125,34 @@ export default function Sidebar() {
                     }
                   }}
                 >
-                  <span className="text-2xl flex-shrink-0">{item.icon}</span>
-                  {isExpanded && (
-                    <span
-                      className="ml-3 font-semibold text-sm whitespace-nowrap"
-                      style={{ color: isActive(item.href) ? "#163E64" : "#6C757D" }}
-                    >
-                      {item.name}
-                    </span>
+                  {!isExpanded && (
+                    <div className="flex items-center justify-center w-full">
+                      <span
+                        className="text-[10px] font-bold tracking-wider"
+                        style={{
+                          writingMode: "vertical-rl",
+                          textOrientation: "mixed",
+                          color: isActive(item.href) ? "#163E64" : "#6C757D",
+                        }}
+                      >
+                        {item.icon}
+                      </span>
+                    </div>
                   )}
-                  {isExpanded && item.subItems && (
-                    <span className="ml-auto text-gray-400">
-                      {expandedItems.includes(item.name) ? "▼" : "▶"}
-                    </span>
+                  {isExpanded && (
+                    <>
+                      <span
+                        className="font-semibold text-sm whitespace-nowrap"
+                        style={{ color: isActive(item.href) ? "#163E64" : "#6C757D" }}
+                      >
+                        {item.name}
+                      </span>
+                      {item.subItems && (
+                        <span className="ml-auto text-gray-400">
+                          {expandedItems.includes(item.name) ? "▼" : "▶"}
+                        </span>
+                      )}
+                    </>
                   )}
                 </Link>
               </div>
@@ -162,7 +181,7 @@ export default function Sidebar() {
       </aside>
 
       {/* Spacer to prevent content from going under sidebar */}
-      <div className="w-[60px] flex-shrink-0" />
+      <div className="w-[24px] flex-shrink-0" />
     </>
   )
 }
