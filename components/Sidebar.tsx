@@ -18,16 +18,6 @@ const menuItems: MenuItem[] = [
     icon: "Home",
   },
   {
-    name: "CO₂ Management",
-    href: "/dashboard/co2-management",
-    icon: "CO2",
-    subItems: [
-      { name: "Emissions Tracking", href: "/dashboard/co2-management/emissions" },
-      { name: "Reduction Tactics", href: "/dashboard/co2-management/tactics" },
-      { name: "Scope 1/2/3", href: "/dashboard/co2-management/scopes" },
-    ],
-  },
-  {
     name: "Climate Risk",
     href: "/dashboard/climate-risk",
     icon: "Risk",
@@ -48,13 +38,23 @@ const menuItems: MenuItem[] = [
     ],
   },
   {
-    name: "Impact Strategy",
+    name: "Aiming for Systemic Impact",
     href: "/dashboard/impact-strategy",
     icon: "Impact",
     subItems: [
       { name: "Impact Assessment", href: "/dashboard/impact-strategy/assessment" },
       { name: "Stakeholder Engagement", href: "/dashboard/impact-strategy/stakeholders" },
       { name: "Reporting", href: "/dashboard/impact-strategy/reporting" },
+    ],
+  },
+  {
+    name: "CO₂ Management",
+    href: "/dashboard/co2-management",
+    icon: "CO2",
+    subItems: [
+      { name: "Emissions Tracking", href: "/dashboard/co2-management/emissions" },
+      { name: "Reduction Tactics", href: "/dashboard/co2-management/tactics" },
+      { name: "Scope 1/2/3", href: "/dashboard/co2-management/scopes" },
     ],
   },
 ]

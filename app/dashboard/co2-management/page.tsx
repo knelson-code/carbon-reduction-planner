@@ -102,18 +102,13 @@ export default function CO2ManagementPage() {
             </h2>
             <div className="space-y-4 text-gray-700">
               <p>
-                The CO₂ Management module helps you understand, track, and reduce your organization's carbon footprint. 
-                This comprehensive tool covers all aspects of emissions management:
+                The CO₂ Management module helps you take practical action on emissions:
               </p>
-              <ul className="list-disc list-inside space-y-2 ml-4">
-                <li><strong>Scope 1:</strong> Direct emissions from owned or controlled sources</li>
-                <li><strong>Scope 2:</strong> Indirect emissions from purchased electricity, steam, heating, and cooling</li>
-                <li><strong>Scope 3:</strong> All other indirect emissions in your value chain</li>
+              <ul className="list-disc list-outside space-y-2 ml-6 text-sm">
+                <li>Measure emissions</li>
+                <li>Set reduction targets</li>
+                <li>Create detailed reduction plan</li>
               </ul>
-              <p>
-                Plan specific reduction tactics with detailed timelines, cost projections, and expected impact. 
-                Track progress over time and adjust your strategy as needed.
-              </p>
             </div>
           </div>
         </div>

@@ -9,9 +9,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* About */}
           <div>
-            <h3 className="font-bold mb-3" style={{ color: '#ffffff' }}>CO₂ Reduction Planner</h3>
+            <h3 className="font-bold mb-3" style={{ color: '#ffffff' }}>Climate Management Platform</h3>
             <p className="text-sm leading-relaxed" style={{ color: '#7a9197' }}>
-              A privacy-first tool to help organizations plan and track their carbon emission reduction efforts.
+              Comprehensive climate strategy tools for emissions management, risk assessment, transition planning, and impact measurement.
             </p>
           </div>
 

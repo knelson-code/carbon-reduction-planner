@@ -102,20 +102,13 @@ export default function TransitionStrategyPage() {
             </h2>
             <div className="space-y-4 text-gray-700">
               <p>
-                The Transition Strategy module helps you develop a comprehensive roadmap for decarbonization. 
-                This is where short-term actions meet long-term vision:
+                The Transition Strategy module helps you navigate your role in a changing world:
               </p>
-              <ul className="list-disc list-inside space-y-2 ml-4">
-                <li><strong>Science-Based Targets:</strong> Set goals aligned with climate science (1.5°C or 2°C pathways)</li>
-                <li><strong>Decarbonization Pathways:</strong> Map out how you'll achieve net-zero emissions over time</li>
-                <li><strong>Technology Roadmap:</strong> Identify and plan for emerging low-carbon technologies</li>
-                <li><strong>Investment Planning:</strong> Prioritize capital allocation for maximum climate impact</li>
-                <li><strong>Stakeholder Alignment:</strong> Ensure strategy is integrated across the organization</li>
+              <ul className="list-disc list-outside space-y-2 ml-6 text-sm">
+                <li>Understand your role in a world affected by climate change</li>
+                <li>Determine what you can do to speed up the energy transition</li>
+                <li>Decide what you are willing to do</li>
               </ul>
-              <p>
-                Your transition strategy should be ambitious yet achievable, grounded in your CO₂ Management data, 
-                informed by your Climate Risk analysis, and measured through Impact Strategy metrics.
-              </p>
             </div>
           </div>
         </div>

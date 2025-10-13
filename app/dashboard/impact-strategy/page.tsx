@@ -37,10 +37,10 @@ export default function ImpactStrategyPage() {
           {/* Header */}
           <div className="bg-white rounded-lg shadow-md p-8 mb-8 border-l-4" style={{ borderColor: "#8b5cf6" }}>
             <h1 className="text-3xl font-bold mb-2" style={{ color: "#8b5cf6" }}>
-              Impact Strategy
+              Aiming for Systemic Impact
             </h1>
             <p className="text-gray-600 text-lg">
-              Measure and communicate your climate impact
+              Focus on changes that transform systems
             </p>
           </div>
 
@@ -102,21 +102,14 @@ export default function ImpactStrategyPage() {
             </h2>
             <div className="space-y-4 text-gray-700">
               <p>
-                The Impact Strategy module focuses on measuring, communicating, and maximizing the positive outcomes 
-                of your climate work. Beyond just reducing emissions, this is about creating value:
+                The Aiming for Systemic Impact module helps you focus your efforts on changes that transform systems, 
+                not just make incremental improvements:
               </p>
-              <ul className="list-disc list-inside space-y-2 ml-4">
-                <li><strong>Outcome Measurement:</strong> Track real-world environmental, social, and economic impacts</li>
-                <li><strong>Stakeholder Value:</strong> Demonstrate how climate action creates value for all stakeholders</li>
-                <li><strong>Strategic Communication:</strong> Tell your climate story effectively to different audiences</li>
-                <li><strong>Transparency & Trust:</strong> Build credibility through honest, data-driven reporting</li>
-                <li><strong>Continuous Improvement:</strong> Learn from impact data to refine strategy over time</li>
+              <ul className="list-disc list-outside space-y-2 ml-6 text-sm">
+                <li>Build a clear vision of the specific change you are trying to produce</li>
+                <li>Identify sensitive intervention points in the political and economic system where you can have disproportionate impact</li>
+                <li>Define the actions that are most likely to produce that impact</li>
               </ul>
-              <p>
-                This module integrates data from CO₂ Management, Climate Risk, and Transition Strategy to create 
-                a comprehensive view of your climate performance and positioning. Use these insights to drive 
-                internal culture change, attract investment, and build customer loyalty.
-              </p>
             </div>
           </div>
         </div>

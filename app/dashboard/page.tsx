@@ -33,8 +33,8 @@ const modules: ModuleCard[] = [
     bgColor: "#dbeafe",
   },
   {
-    title: "Impact Strategy",
-    description: "Measure impact, engage stakeholders, and report on climate action outcomes.",
+    title: "Aiming for Systemic Impact",
+    description: "Build clear vision, identify intervention points, and define impactful actions.",
     icon: "💡",
     href: "/dashboard/impact-strategy",
     color: "#8b5cf6",

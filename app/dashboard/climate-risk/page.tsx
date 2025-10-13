@@ -102,19 +102,13 @@ export default function ClimateRiskPage() {
             </h2>
             <div className="space-y-4 text-gray-700">
               <p>
-                The Climate Risk Management module helps you identify, assess, and prepare for climate-related risks 
-                that could impact your organization. This includes both physical and transition risks:
+                The Climate Risk module helps you navigate uncertainty and make better decisions:
               </p>
-              <ul className="list-disc list-inside space-y-2 ml-4">
-                <li><strong>Physical Risks:</strong> Acute events (storms, floods) and chronic changes (sea level rise, temperature shifts)</li>
-                <li><strong>Transition Risks:</strong> Policy changes, market shifts, technology disruption, and reputational impacts</li>
-                <li><strong>Risk Quantification:</strong> Assess likelihood, potential impact, and financial implications</li>
-                <li><strong>Adaptation Strategies:</strong> Develop resilience measures and contingency plans</li>
+              <ul className="list-disc list-outside space-y-2 ml-6 text-sm">
+                <li>Identify and understand risks</li>
+                <li>Improve your ability to make decisions, even in the face of uncertainty</li>
+                <li>Incorporate these insights into your processes in a simple and clear way</li>
               </ul>
-              <p>
-                Use scenario analysis to understand how different climate futures might affect your business, 
-                and build strategies to minimize vulnerabilities and maximize opportunities.
-              </p>
             </div>
           </div>
         </div>
