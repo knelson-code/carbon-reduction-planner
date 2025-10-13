@@ -282,6 +282,15 @@ model Organization {
 
 ## 🚀 DEPLOYMENT WORKFLOW
 
+### Standard Practice: Always Commit & Push Immediately
+**"Vibe coding in prod"** - After making changes:
+1. **Make changes locally** → Edit files in VS Code
+2. **Test briefly** → Run `npm run dev` to verify it works
+3. **Commit and push immediately** → Don't wait, deploy now
+4. **Let Vercel handle it** → Auto-deploys in 1-2 minutes
+
+**This is the standard workflow for ALL changes.** No extensive testing cycles, no long review processes. Make the change, push it live, iterate if needed.
+
 ### The Pipeline
 1. **Local changes** → Edit files in VS Code
 2. **Git commit** → Via VS Code Source Control or command line
@@ -325,7 +334,8 @@ model Organization {
 ### 5. Git Workflow
 - **Never commit:** .env files, node_modules, database files
 - **Always commit:** package.json changes, schema changes, source code
-- **Use branches:** For experimental features (main branch auto-deploys)
+- **Standard practice:** ALWAYS commit and push after making changes (vibe coding in prod)
+- **Use branches:** Only for experimental features (main branch auto-deploys immediately)
 
 **IMPORTANT - Working Git Commands for Cline:**
 Due to the directory structure and Windows/Git Bash environment, use this exact command format:
@@ -516,13 +526,22 @@ onClick={() => {
 
 ## 🎯 DEVELOPMENT PRINCIPLES
 
+### Standard Workflow (ALWAYS FOLLOW)
+1. **Make changes** - Edit files as needed
+2. **Test briefly** - Run `npm run dev` to verify it works
+3. **Commit and push** - ALWAYS do this immediately after changes
+4. **Deploy live** - Vercel auto-deploys, we iterate if needed
+
+**"Vibe coding in prod"** - We don't do extensive testing cycles. Make the change, push it, improve if needed.
+
 ### When Making Changes
 1. **Always consider the big picture** - How does this affect other parts?
-2. **Test locally first** - Run `npm run dev` before pushing
-3. **Check existing patterns** - Don't reinvent, follow established patterns
-4. **Read the guidelines** - Design system exists for consistency
-5. **Think mobile-first** - Always test responsive behavior
-6. **Maintain accessibility** - Color contrast, keyboard navigation, etc.
+2. **Test locally briefly** - Run `npm run dev` to verify it works
+3. **Commit and push immediately** - Don't wait, deploy now (standard practice)
+4. **Check existing patterns** - Don't reinvent, follow established patterns
+5. **Read the guidelines** - Design system exists for consistency
+6. **Think mobile-first** - Always test responsive behavior
+7. **Maintain accessibility** - Color contrast, keyboard navigation, etc.
 
 ### When Adding Features
 1. **Check if it fits the privacy-first approach**
