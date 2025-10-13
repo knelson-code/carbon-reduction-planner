@@ -17,15 +17,7 @@ interface ModuleCard {
 
 const modules: ModuleCard[] = [
   {
-    title: "CO₂ Management",
-    description: "Track emissions, manage Scope 1/2/3 categories, and plan reduction tactics with timelines and costs.",
-    icon: "🌱",
-    href: "/dashboard/co2-management",
-    color: "#10b981",
-    bgColor: "#d1fae5",
-  },
-  {
-    title: "Climate Risk Management",
+    title: "Climate Risk",
     description: "Assess climate-related risks, plan adaptation strategies, and analyze vulnerabilities.",
     icon: "⚠️",
     href: "/dashboard/climate-risk",
@@ -47,6 +39,14 @@ const modules: ModuleCard[] = [
     href: "/dashboard/impact-strategy",
     color: "#8b5cf6",
     bgColor: "#ede9fe",
+  },
+  {
+    title: "CO₂ Management",
+    description: "Track emissions, manage Scope 1/2/3 categories, and plan reduction tactics with timelines and costs.",
+    icon: "🌱",
+    href: "/dashboard/co2-management",
+    color: "#10b981",
+    bgColor: "#d1fae5",
   },
 ]
 
@@ -85,26 +85,26 @@ export default function DashboardPage() {
               <Link
                 key={module.title}
                 href={module.href}
-                className="p-8 rounded-lg border transition-all duration-300"
+                className="p-8 rounded-lg border transition-all duration-150"
                 style={{
-                  backgroundColor: hoveredCard === module.title ? '#163E64' : '#f5f5f5',
+                  backgroundColor: hoveredCard === module.title ? '#0B1F32' : '#f5f5f5',
                   borderColor: '#163E64',
                   borderWidth: '1px',
                   boxShadow: hoveredCard === module.title 
-                    ? '0 4px 12px rgba(255, 91, 53, 0.25)' 
-                    : '0 2px 8px rgba(255, 91, 53, 0.15)',
+                    ? '0 4px 12px rgba(255, 91, 53, 0.35)' 
+                    : '0 2px 8px rgba(255, 91, 53, 0.25)',
                 }}
                 onMouseEnter={() => setHoveredCard(module.title)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
                 <h3
-                  className="text-xl font-bold mb-3 transition-colors duration-300"
+                  className="text-xl font-bold mb-3 transition-colors duration-150"
                   style={{ color: hoveredCard === module.title ? '#ffffff' : '#163E64' }}
                 >
                   {module.title}
                 </h3>
                 <p
-                  className="text-sm leading-relaxed transition-colors duration-300"
+                  className="text-sm leading-relaxed transition-colors duration-150"
                   style={{ color: hoveredCard === module.title ? '#ffffff' : '#163E64' }}
                 >
                   {module.description}
