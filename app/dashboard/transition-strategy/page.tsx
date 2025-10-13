@@ -47,51 +47,81 @@ export default function TransitionStrategyPage() {
           {/* Feature Cards */}
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             <Link
-              href="/dashboard/transition-strategy/pathways"
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all border-l-4"
-              style={{ borderColor: "#3b82f6" }}
+              href="/dashboard/transition-strategy/role"
+              className="p-8 rounded-lg border transition-all duration-150"
+              style={{
+                backgroundColor: '#f5f5f5',
+                borderColor: '#163E64',
+                borderWidth: '1px',
+                boxShadow: '0 2px 8px rgba(255, 91, 53, 0.25)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#0B1F32'
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.35)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#f5f5f5'
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 91, 53, 0.25)'
+              }}
             >
-              <h3 className="text-xl font-bold mb-2" style={{ color: "#163E64" }}>
-                Understand Your Role
+              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#163E64'}
+              >
+                Understand your role
               </h3>
-              <p className="text-gray-600 mb-4">
-                Understand your role in a world affected by climate change
-              </p>
-              <span className="text-sm font-semibold" style={{ color: "#3b82f6" }}>
-                Get Started →
-              </span>
             </Link>
 
             <Link
-              href="/dashboard/transition-strategy/targets"
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all border-l-4"
-              style={{ borderColor: "#3b82f6" }}
+              href="/dashboard/transition-strategy/speed"
+              className="p-8 rounded-lg border transition-all duration-150"
+              style={{
+                backgroundColor: '#f5f5f5',
+                borderColor: '#163E64',
+                borderWidth: '1px',
+                boxShadow: '0 2px 8px rgba(255, 91, 53, 0.25)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#0B1F32'
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.35)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#f5f5f5'
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 91, 53, 0.25)'
+              }}
             >
-              <h3 className="text-xl font-bold mb-2" style={{ color: "#163E64" }}>
-                Speed the Transition
+              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#163E64'}
+              >
+                Speed up the energy transition
               </h3>
-              <p className="text-gray-600 mb-4">
-                Determine what you can do to speed up the energy transition
-              </p>
-              <span className="text-sm font-semibold" style={{ color: "#3b82f6" }}>
-                Get Started →
-              </span>
             </Link>
 
             <Link
-              href="/dashboard/transition-strategy/progress"
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all border-l-4"
-              style={{ borderColor: "#3b82f6" }}
+              href="/dashboard/transition-strategy/decide"
+              className="p-8 rounded-lg border transition-all duration-150"
+              style={{
+                backgroundColor: '#f5f5f5',
+                borderColor: '#163E64',
+                borderWidth: '1px',
+                boxShadow: '0 2px 8px rgba(255, 91, 53, 0.25)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#0B1F32'
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.35)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#f5f5f5'
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 91, 53, 0.25)'
+              }}
             >
-              <h3 className="text-xl font-bold mb-2" style={{ color: "#163E64" }}>
-                Decide Your Actions
+              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#163E64'}
+              >
+                Decide what you're willing to do
               </h3>
-              <p className="text-gray-600 mb-4">
-                Decide what you are willing to do
-              </p>
-              <span className="text-sm font-semibold" style={{ color: "#3b82f6" }}>
-                Get Started →
-              </span>
             </Link>
           </div>
 

@@ -47,51 +47,81 @@ export default function CO2ManagementPage() {
           {/* Feature Cards */}
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             <Link
-              href="/dashboard/co2-management/emissions"
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all border-l-4"
-              style={{ borderColor: "#10b981" }}
+              href="/dashboard/co2-management/measure"
+              className="p-8 rounded-lg border transition-all duration-150"
+              style={{
+                backgroundColor: '#f5f5f5',
+                borderColor: '#163E64',
+                borderWidth: '1px',
+                boxShadow: '0 2px 8px rgba(255, 91, 53, 0.25)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#0B1F32'
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.35)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#f5f5f5'
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 91, 53, 0.25)'
+              }}
             >
-              <h3 className="text-xl font-bold mb-2" style={{ color: "#163E64" }}>
-                Emissions Tracking
+              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#163E64'}
+              >
+                Measure emissions
               </h3>
-              <p className="text-gray-600 mb-4">
-                Monitor and record your organization's carbon emissions across all sources.
-              </p>
-              <span className="text-sm font-semibold" style={{ color: "#10b981" }}>
-                Get Started →
-              </span>
             </Link>
 
             <Link
-              href="/dashboard/co2-management/tactics"
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all border-l-4"
-              style={{ borderColor: "#10b981" }}
+              href="/dashboard/co2-management/targets"
+              className="p-8 rounded-lg border transition-all duration-150"
+              style={{
+                backgroundColor: '#f5f5f5',
+                borderColor: '#163E64',
+                borderWidth: '1px',
+                boxShadow: '0 2px 8px rgba(255, 91, 53, 0.25)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#0B1F32'
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.35)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#f5f5f5'
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 91, 53, 0.25)'
+              }}
             >
-              <h3 className="text-xl font-bold mb-2" style={{ color: "#163E64" }}>
-                Reduction Tactics
+              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#163E64'}
+              >
+                Set reduction Targets
               </h3>
-              <p className="text-gray-600 mb-4">
-                Plan and implement specific actions to reduce emissions with timelines and costs.
-              </p>
-              <span className="text-sm font-semibold" style={{ color: "#10b981" }}>
-                Get Started →
-              </span>
             </Link>
 
             <Link
-              href="/dashboard/co2-management/scopes"
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all border-l-4"
-              style={{ borderColor: "#10b981" }}
+              href="/dashboard/co2-management/plan"
+              className="p-8 rounded-lg border transition-all duration-150"
+              style={{
+                backgroundColor: '#f5f5f5',
+                borderColor: '#163E64',
+                borderWidth: '1px',
+                boxShadow: '0 2px 8px rgba(255, 91, 53, 0.25)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#0B1F32'
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.35)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#f5f5f5'
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 91, 53, 0.25)'
+              }}
             >
-              <h3 className="text-xl font-bold mb-2" style={{ color: "#163E64" }}>
-                Scope 1/2/3
+              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#163E64'}
+              >
+                Create detailed reduction plan
               </h3>
-              <p className="text-gray-600 mb-4">
-                Organize emissions by direct, indirect energy, and value chain categories.
-              </p>
-              <span className="text-sm font-semibold" style={{ color: "#10b981" }}>
-                Get Started →
-              </span>
             </Link>
           </div>
 

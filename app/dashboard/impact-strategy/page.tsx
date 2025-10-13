@@ -47,51 +47,81 @@ export default function ImpactStrategyPage() {
           {/* Feature Cards */}
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             <Link
-              href="/dashboard/impact-strategy/assessment"
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all border-l-4"
-              style={{ borderColor: "#8b5cf6" }}
+              href="/dashboard/impact-strategy/vision"
+              className="p-8 rounded-lg border transition-all duration-150"
+              style={{
+                backgroundColor: '#f5f5f5',
+                borderColor: '#163E64',
+                borderWidth: '1px',
+                boxShadow: '0 2px 8px rgba(255, 91, 53, 0.25)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#0B1F32'
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.35)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#f5f5f5'
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 91, 53, 0.25)'
+              }}
             >
-              <h3 className="text-xl font-bold mb-2" style={{ color: "#163E64" }}>
-                Impact Assessment
+              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#163E64'}
+              >
+                Build a clear vision
               </h3>
-              <p className="text-gray-600 mb-4">
-                Quantify the real-world outcomes of your climate actions and investments.
-              </p>
-              <span className="text-sm font-semibold" style={{ color: "#8b5cf6" }}>
-                Get Started →
-              </span>
             </Link>
 
             <Link
-              href="/dashboard/impact-strategy/stakeholders"
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all border-l-4"
-              style={{ borderColor: "#8b5cf6" }}
+              href="/dashboard/impact-strategy/intervention"
+              className="p-8 rounded-lg border transition-all duration-150"
+              style={{
+                backgroundColor: '#f5f5f5',
+                borderColor: '#163E64',
+                borderWidth: '1px',
+                boxShadow: '0 2px 8px rgba(255, 91, 53, 0.25)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#0B1F32'
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.35)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#f5f5f5'
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 91, 53, 0.25)'
+              }}
             >
-              <h3 className="text-xl font-bold mb-2" style={{ color: "#163E64" }}>
-                Stakeholder Engagement
+              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#163E64'}
+              >
+                Identify intervention points
               </h3>
-              <p className="text-gray-600 mb-4">
-                Build support and collaboration across employees, customers, investors, and communities.
-              </p>
-              <span className="text-sm font-semibold" style={{ color: "#8b5cf6" }}>
-                Get Started →
-              </span>
             </Link>
 
             <Link
-              href="/dashboard/impact-strategy/reporting"
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all border-l-4"
-              style={{ borderColor: "#8b5cf6" }}
+              href="/dashboard/impact-strategy/actions"
+              className="p-8 rounded-lg border transition-all duration-150"
+              style={{
+                backgroundColor: '#f5f5f5',
+                borderColor: '#163E64',
+                borderWidth: '1px',
+                boxShadow: '0 2px 8px rgba(255, 91, 53, 0.25)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#0B1F32'
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.35)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#f5f5f5'
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 91, 53, 0.25)'
+              }}
             >
-              <h3 className="text-xl font-bold mb-2" style={{ color: "#163E64" }}>
-                Reporting
+              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#163E64'}
+              >
+                Define impactful actions
               </h3>
-              <p className="text-gray-600 mb-4">
-                Create compelling reports and communications that demonstrate your climate leadership.
-              </p>
-              <span className="text-sm font-semibold" style={{ color: "#8b5cf6" }}>
-                Get Started →
-              </span>
             </Link>
           </div>
 

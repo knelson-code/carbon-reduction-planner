@@ -22,9 +22,9 @@ const menuItems: MenuItem[] = [
     href: "/dashboard/climate-risk",
     icon: "Risk",
     subItems: [
-      { name: "Risk Assessment", href: "/dashboard/climate-risk/assessment" },
-      { name: "Adaptation Planning", href: "/dashboard/climate-risk/adaptation" },
-      { name: "Vulnerability Analysis", href: "/dashboard/climate-risk/vulnerability" },
+      { name: "Identify and understand risks", href: "/dashboard/climate-risk/identify" },
+      { name: "Improve decision-making under uncertainty", href: "/dashboard/climate-risk/decisions" },
+      { name: "Incorporate insights into processes", href: "/dashboard/climate-risk/integrate" },
     ],
   },
   {
@@ -32,9 +32,9 @@ const menuItems: MenuItem[] = [
     href: "/dashboard/transition-strategy",
     icon: "Strategy",
     subItems: [
-      { name: "Understand Your Role", href: "/dashboard/transition-strategy/pathways" },
-      { name: "Speed the Transition", href: "/dashboard/transition-strategy/targets" },
-      { name: "Decide Your Actions", href: "/dashboard/transition-strategy/progress" },
+      { name: "Understand your role", href: "/dashboard/transition-strategy/role" },
+      { name: "Speed up the energy transition", href: "/dashboard/transition-strategy/speed" },
+      { name: "Decide what you're willing to do", href: "/dashboard/transition-strategy/decide" },
     ],
   },
   {
@@ -42,9 +42,9 @@ const menuItems: MenuItem[] = [
     href: "/dashboard/impact-strategy",
     icon: "Impact",
     subItems: [
-      { name: "Impact Assessment", href: "/dashboard/impact-strategy/assessment" },
-      { name: "Stakeholder Engagement", href: "/dashboard/impact-strategy/stakeholders" },
-      { name: "Reporting", href: "/dashboard/impact-strategy/reporting" },
+      { name: "Build a clear vision", href: "/dashboard/impact-strategy/vision" },
+      { name: "Identify intervention points", href: "/dashboard/impact-strategy/intervention" },
+      { name: "Define impactful actions", href: "/dashboard/impact-strategy/actions" },
     ],
   },
   {
@@ -52,9 +52,9 @@ const menuItems: MenuItem[] = [
     href: "/dashboard/co2-management",
     icon: "CO2",
     subItems: [
-      { name: "Emissions Tracking", href: "/dashboard/co2-management/emissions" },
-      { name: "Reduction Tactics", href: "/dashboard/co2-management/tactics" },
-      { name: "Scope 1/2/3", href: "/dashboard/co2-management/scopes" },
+      { name: "Measure emissions", href: "/dashboard/co2-management/measure" },
+      { name: "Set reduction Targets", href: "/dashboard/co2-management/targets" },
+      { name: "Create detailed reduction plan", href: "/dashboard/co2-management/plan" },
     ],
   },
 ]
