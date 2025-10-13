@@ -11,7 +11,7 @@ export default function Footer() {
           <div>
             <h3 className="font-bold mb-3" style={{ color: '#ffffff' }}>Climate Management Platform</h3>
             <p className="text-sm leading-relaxed" style={{ color: '#7a9197' }}>
-              Comprehensive climate strategy tools for emissions management, risk assessment, transition planning, and impact measurement.
+              Strategic tools for producing systemic social and economic change on climate through political engagement and targeted intervention in key leverage points.
             </p>
           </div>
 

@@ -100,11 +100,8 @@ export default function ClimateRiskPage() {
             <h2 className="text-2xl font-bold mb-4" style={{ color: "#163E64" }}>
               Module Overview
             </h2>
-            <div className="space-y-4 text-gray-700">
-              <p>
-                The Climate Risk module helps you navigate uncertainty and make better decisions:
-              </p>
-              <ul className="list-disc list-outside space-y-2 ml-6 text-sm">
+            <div className="text-gray-700">
+              <ul className="list-disc list-outside space-y-2 ml-6 text-xs leading-relaxed">
                 <li>Identify and understand risks</li>
                 <li>Improve your ability to make decisions, even in the face of uncertainty</li>
                 <li>Incorporate these insights into your processes in a simple and clear way</li>

@@ -100,12 +100,8 @@ export default function ImpactStrategyPage() {
             <h2 className="text-2xl font-bold mb-4" style={{ color: "#163E64" }}>
               Module Overview
             </h2>
-            <div className="space-y-4 text-gray-700">
-              <p>
-                The Aiming for Systemic Impact module helps you focus your efforts on changes that transform systems, 
-                not just make incremental improvements:
-              </p>
-              <ul className="list-disc list-outside space-y-2 ml-6 text-sm">
+            <div className="text-gray-700">
+              <ul className="list-disc list-outside space-y-2 ml-6 text-xs leading-relaxed">
                 <li>Build a clear vision of the specific change you are trying to produce</li>
                 <li>Identify sensitive intervention points in the political and economic system where you can have disproportionate impact</li>
                 <li>Define the actions that are most likely to produce that impact</li>

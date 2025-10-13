@@ -100,13 +100,10 @@ export default function CO2ManagementPage() {
             <h2 className="text-2xl font-bold mb-4" style={{ color: "#163E64" }}>
               Module Overview
             </h2>
-            <div className="space-y-4 text-gray-700">
-              <p>
-                The CO₂ Management module helps you take practical action on emissions:
-              </p>
-              <ul className="list-disc list-outside space-y-2 ml-6 text-sm">
+            <div className="text-gray-700">
+              <ul className="list-disc list-outside space-y-2 ml-6 text-xs leading-relaxed">
                 <li>Measure emissions</li>
-                <li>Set reduction targets</li>
+                <li>Set reduction Targets</li>
                 <li>Create detailed reduction plan</li>
               </ul>
             </div>
