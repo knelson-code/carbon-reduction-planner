@@ -37,10 +37,10 @@ export default function TransitionStrategyPage() {
           {/* Header */}
           <div className="bg-white rounded-lg shadow-md p-8 mb-8 border-l-4" style={{ borderColor: "#3b82f6" }}>
             <h1 className="text-3xl font-bold mb-2" style={{ color: "#3b82f6" }}>
-              Transition Strategy
+              Energy Transition Strategy
             </h1>
             <p className="text-gray-600 text-lg">
-              Chart your path to net-zero emissions
+              Navigate your role in accelerating the energy transition
             </p>
           </div>
 
@@ -52,10 +52,10 @@ export default function TransitionStrategyPage() {
               style={{ borderColor: "#3b82f6" }}
             >
               <h3 className="text-xl font-bold mb-2" style={{ color: "#163E64" }}>
-                Pathway Planning
+                Understand Your Role
               </h3>
               <p className="text-gray-600 mb-4">
-                Design long-term decarbonization pathways aligned with climate science and business goals.
+                Understand your role in a world affected by climate change
               </p>
               <span className="text-sm font-semibold" style={{ color: "#3b82f6" }}>
                 Get Started →
@@ -68,10 +68,10 @@ export default function TransitionStrategyPage() {
               style={{ borderColor: "#3b82f6" }}
             >
               <h3 className="text-xl font-bold mb-2" style={{ color: "#163E64" }}>
-                Target Setting
+                Speed the Transition
               </h3>
               <p className="text-gray-600 mb-4">
-                Set ambitious, science-based targets that drive meaningful change.
+                Determine what you can do to speed up the energy transition
               </p>
               <span className="text-sm font-semibold" style={{ color: "#3b82f6" }}>
                 Get Started →
@@ -84,10 +84,10 @@ export default function TransitionStrategyPage() {
               style={{ borderColor: "#3b82f6" }}
             >
               <h3 className="text-xl font-bold mb-2" style={{ color: "#163E64" }}>
-                Progress Tracking
+                Decide Your Actions
               </h3>
               <p className="text-gray-600 mb-4">
-                Monitor progress against targets and adjust strategy as you learn.
+                Decide what you are willing to do
               </p>
               <span className="text-sm font-semibold" style={{ color: "#3b82f6" }}>
                 Get Started →

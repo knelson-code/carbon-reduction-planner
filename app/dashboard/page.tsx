@@ -17,7 +17,7 @@ interface ModuleCard {
 
 const modules: ModuleCard[] = [
   {
-    title: "Climate Risk",
+    title: "Understanding Climate Risk",
     description: "• Identify and understand risks\n• Improve your ability to make decisions, even in the face of uncertainty\n• Incorporate these insights into your processes in a simple and clear way",
     icon: "⚠️",
     href: "/dashboard/climate-risk",
@@ -25,7 +25,7 @@ const modules: ModuleCard[] = [
     bgColor: "#fef3c7",
   },
   {
-    title: "Transition Strategy",
+    title: "Energy Transition Strategy",
     description: "• Understand your role in a world affected by climate change\n• Determine what you can do to speed up the energy transition\n• Decide what you are willing to do",
     icon: "🚀",
     href: "/dashboard/transition-strategy",
@@ -33,7 +33,7 @@ const modules: ModuleCard[] = [
     bgColor: "#dbeafe",
   },
   {
-    title: "Aiming for Systemic Impact",
+    title: "Systemic Impact",
     description: "• Build a clear vision of the specific change you are trying to produce\n• Identify sensitive intervention points in the political and economic system where you can have disproportionate impact\n• Define the actions that are most likely to produce that impact",
     icon: "💡",
     href: "/dashboard/impact-strategy",

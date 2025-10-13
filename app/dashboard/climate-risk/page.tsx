@@ -37,10 +37,10 @@ export default function ClimateRiskPage() {
           {/* Header */}
           <div className="bg-white rounded-lg shadow-md p-8 mb-8 border-l-4" style={{ borderColor: "#f59e0b" }}>
             <h1 className="text-3xl font-bold mb-2" style={{ color: "#f59e0b" }}>
-              Climate Risk Management
+              Understanding Climate Risk
             </h1>
             <p className="text-gray-600 text-lg">
-              Assess and prepare for climate-related risks
+              Navigate uncertainty and make better decisions
             </p>
           </div>
 

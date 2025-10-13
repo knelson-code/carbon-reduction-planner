@@ -18,7 +18,7 @@ const menuItems: MenuItem[] = [
     icon: "Home",
   },
   {
-    name: "Climate Risk",
+    name: "Understanding Climate Risk",
     href: "/dashboard/climate-risk",
     icon: "Risk",
     subItems: [
@@ -28,17 +28,17 @@ const menuItems: MenuItem[] = [
     ],
   },
   {
-    name: "Transition Strategy",
+    name: "Energy Transition Strategy",
     href: "/dashboard/transition-strategy",
     icon: "Strategy",
     subItems: [
-      { name: "Pathway Planning", href: "/dashboard/transition-strategy/pathways" },
-      { name: "Target Setting", href: "/dashboard/transition-strategy/targets" },
-      { name: "Progress Tracking", href: "/dashboard/transition-strategy/progress" },
+      { name: "Understand Your Role", href: "/dashboard/transition-strategy/pathways" },
+      { name: "Speed the Transition", href: "/dashboard/transition-strategy/targets" },
+      { name: "Decide Your Actions", href: "/dashboard/transition-strategy/progress" },
     ],
   },
   {
-    name: "Aiming for Systemic Impact",
+    name: "Systemic Impact",
     href: "/dashboard/impact-strategy",
     icon: "Impact",
     subItems: [

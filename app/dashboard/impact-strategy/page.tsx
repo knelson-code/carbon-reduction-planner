@@ -37,10 +37,10 @@ export default function ImpactStrategyPage() {
           {/* Header */}
           <div className="bg-white rounded-lg shadow-md p-8 mb-8 border-l-4" style={{ borderColor: "#8b5cf6" }}>
             <h1 className="text-3xl font-bold mb-2" style={{ color: "#8b5cf6" }}>
-              Aiming for Systemic Impact
+              Systemic Impact
             </h1>
             <p className="text-gray-600 text-lg">
-              Focus on changes that transform systems
+              Produce systemic social and economic change
             </p>
           </div>
 
