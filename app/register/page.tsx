@@ -41,9 +41,20 @@ export default function RegisterPage() {
     })
     
     eatingChipsAudioRef.current = new Audio('/short-tapping.mp3')
-    eatingChipsAudioRef.current.volume = 0.525 // Reduce volume by 47.5%
+    eatingChipsAudioRef.current.volume = 1.0 // Full volume
     eatingChipsAudioRef.current.preload = 'auto'
     eatingChipsAudioRef.current.load()
+    // Force browser to fully load the audio by playing it at 0 volume
+    const tempVolume = eatingChipsAudioRef.current.volume
+    eatingChipsAudioRef.current.volume = 0
+    eatingChipsAudioRef.current.play().then(() => {
+      eatingChipsAudioRef.current!.pause()
+      eatingChipsAudioRef.current!.currentTime = 0
+      eatingChipsAudioRef.current!.volume = tempVolume
+    }).catch(() => {
+      // Silent fail - browser may block autoplay, but audio is still preloaded
+      eatingChipsAudioRef.current!.volume = tempVolume
+    })
   }, [])
 
   const playSuccessSound = () => {
