@@ -128,11 +128,14 @@ export default function Sidebar() {
                   {!isExpanded && (
                     <div className="flex items-center justify-center w-full">
                       <span
-                        className="text-[10px] font-bold tracking-wider"
+                        className="text-xs font-semibold tracking-wide"
                         style={{
                           writingMode: "vertical-rl",
                           textOrientation: "mixed",
-                          color: isActive(item.href) ? "#163E64" : "#6C757D",
+                          color: isActive(item.href) ? "#163E64" : "#4B5563",
+                          WebkitFontSmoothing: "antialiased",
+                          MozOsxFontSmoothing: "grayscale",
+                          textRendering: "optimizeLegibility",
                         }}
                       >
                         {item.icon}

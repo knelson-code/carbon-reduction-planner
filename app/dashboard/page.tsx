@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import Sidebar from "@/components/Sidebar"
 
@@ -53,6 +53,7 @@ const modules: ModuleCard[] = [
 export default function DashboardPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null)
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -79,36 +80,37 @@ export default function DashboardPage() {
       <div className="flex-1 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Module Cards Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {modules.map((module) => (
               <Link
                 key={module.title}
                 href={module.href}
-                className="group bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 p-6 border-l-4"
-                style={{ borderColor: module.color }}
+                className="p-8 rounded-lg border transition-all duration-300"
+                style={{
+                  backgroundColor: hoveredCard === module.title ? '#163E64' : '#f5f5f5',
+                  borderColor: '#163E64',
+                  borderWidth: '1px',
+                  boxShadow: hoveredCard === module.title 
+                    ? '0 4px 12px rgba(255, 91, 53, 0.25)' 
+                    : '0 2px 8px rgba(255, 91, 53, 0.15)',
+                }}
+                onMouseEnter={() => setHoveredCard(module.title)}
+                onMouseLeave={() => setHoveredCard(null)}
               >
                 <h3
-                  className="text-xl font-bold mb-3 group-hover:opacity-80 transition-opacity"
-                  style={{ color: module.color }}
+                  className="text-xl font-bold mb-3 transition-colors duration-300"
+                  style={{ color: hoveredCard === module.title ? '#ffffff' : '#163E64' }}
                 >
                   {module.title}
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
+                <p
+                  className="text-sm leading-relaxed transition-colors duration-300"
+                  style={{ color: hoveredCard === module.title ? '#ffffff' : '#163E64' }}
+                >
                   {module.description}
                 </p>
               </Link>
             ))}
-          </div>
-
-          {/* Quick Info Section */}
-          <div className="mt-12 bg-blue-50 rounded-lg p-6 border-l-4" style={{ borderColor: "#163E64" }}>
-            <h3 className="text-lg font-bold mb-2" style={{ color: "#163E64" }}>
-              📊 Integrated Platform
-            </h3>
-            <p className="text-gray-700">
-              All modules share data and insights. Your work in one module automatically informs and supports the others, 
-              creating a comprehensive climate management system.
-            </p>
           </div>
         </div>
       </div>
