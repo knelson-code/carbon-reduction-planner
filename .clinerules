@@ -76,11 +76,15 @@ Most climate tools in the market are:
 
 ## 🎯 PROJECT OVERVIEW (Technical)
 
-**What we're building:** A web application that helps organizations plan, track, and achieve their carbon reduction goals. Users can organize emissions by Scope 1, 2, and 3 categories, create reduction tactics with timelines and costs, and visualize progress with interactive charts.
+**What we're building:** A climate management platform focused on producing systemic social and economic change through political engagement and targeted intervention. This is NOT typical emissions compliance software - it helps organizations understand leverage points in the political/economic system where they can have disproportionate impact on climate action.
 
-**Target users:** Sustainability managers and environmental consultants at organizations
+**Target users:** Organizations seeking to make real systemic change on climate, not just track emissions for compliance
 
-**Key differentiator:** Privacy-first approach - username-only authentication (no email required), anonymous organization names
+**Key differentiator:** 
+- Privacy-first approach - username-only authentication (no email required)
+- Focus on systemic change vs. emissions accounting
+- Authentic theory of change vs. greenwashing boilerplate
+- Political/economic intervention over incremental improvements
 
 ---
 
@@ -113,7 +117,16 @@ carbon-reduction-planner/
 │   ├── globals.css              # Global styles & Tailwind
 │   ├── login/page.tsx           # Login page
 │   ├── register/page.tsx        # Registration page
-│   ├── dashboard/page.tsx       # Main dashboard (after login)
+│   ├── dashboard/
+│   │   ├── page.tsx            # Main dashboard (4 module cards)
+│   │   ├── climate-risk/
+│   │   │   └── page.tsx        # Climate Risk module page
+│   │   ├── transition-strategy/
+│   │   │   └── page.tsx        # Energy Transition Strategy module page
+│   │   ├── impact-strategy/
+│   │   │   └── page.tsx        # Systemic Impact module page
+│   │   └── co2-management/
+│   │       └── page.tsx        # CO₂ Management module page
 │   ├── organizations/           # Organization management
 │   ├── privacy/page.tsx         # Privacy policy
 │   ├── terms/page.tsx           # Terms of service
@@ -121,6 +134,7 @@ carbon-reduction-planner/
 ├── components/
 │   ├── Header.tsx               # Navigation bar (top)
 │   ├── Footer.tsx               # Footer with legal links (bottom)
+│   ├── Sidebar.tsx              # Collapsible left sidebar navigation
 │   └── Providers.tsx            # NextAuth SessionProvider wrapper
 ├── lib/
 │   ├── auth.ts                  # NextAuth configuration
@@ -134,6 +148,72 @@ carbon-reduction-planner/
     ├── GIT_WORKFLOW.md          # Git basics for beginners
     └── .clinerules              # THIS FILE - Project context
 ```
+
+---
+
+## 🧩 MODULAR ARCHITECTURE (4 CLIMATE MODULES)
+
+### Dashboard Structure
+After login, users see a dashboard with 4 main modules (not organizations):
+
+**1. Understanding Climate Risk**
+- Identify and understand risks
+- Improve decision-making under uncertainty
+- Incorporate insights into processes
+
+**2. Energy Transition Strategy**
+- Understand your role in a world affected by climate change
+- Determine what you can do to speed up the energy transition
+- Decide what you are willing to do
+
+**3. Systemic Impact**
+- Build a clear vision of the specific change you are trying to produce
+- Identify sensitive intervention points in the political/economic system
+- Define the actions that are most likely to produce that impact
+
+**4. CO₂ Management**
+- Measure emissions
+- Set reduction Targets
+- Create detailed reduction plan
+
+### Module Design System
+All modules follow a consistent design pattern:
+
+**Dashboard Cards:**
+- Grey background (#f5f5f5)
+- Dark blue border (#163E64, 1px)
+- Orange-tinted shadow (rgba(255, 91, 53, 0.25))
+- On hover: Dark navy background (#0B1F32), white text
+- Fast 150ms transition
+- Contains module title + 3 bullet points (text-xs)
+
+**Module Pages:**
+- Colored header bar at top (keeps module identity)
+- 3 sub-cards underneath that match dashboard card style exactly
+- Same hover behavior, same colors, same spacing
+- Module Overview section at bottom with bullet points
+
+**Sidebar Navigation:**
+- Ultra-thin collapsed (24px) with vertical text
+- Expands to 240px on hover
+- Shows module names + expandable sub-items
+- Sub-items match the 3 bullet points from dashboard
+
+### Critical Design Philosophy
+**NO boilerplate climate language.** This platform focuses on systemic change through political/economic intervention, not typical emissions compliance. Avoid language like:
+- ❌ "Net-zero pathways"
+- ❌ "Science-based targets"  
+- ❌ "Decarbonization roadmaps"
+- ❌ Generic sustainability jargon
+
+Instead use authentic framing:
+- ✅ "Understand your role"
+- ✅ "Speed up the energy transition"
+- ✅ "Identify intervention points"
+- ✅ "Produce systemic change"
+
+### Footer Philosophy
+"Strategic tools for producing systemic social and economic change on climate through political engagement and targeted intervention in key leverage points."
 
 ---
 
