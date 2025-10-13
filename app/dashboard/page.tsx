@@ -80,7 +80,7 @@ export default function DashboardPage() {
       <div className="flex-1 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Module Cards Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {modules.map((module) => (
               <Link
                 key={module.title}
@@ -111,6 +111,69 @@ export default function DashboardPage() {
                 </p>
               </Link>
             ))}
+          </div>
+
+          {/* Getting Started Section */}
+          <div className="flex gap-6 items-start">
+            {/* Orange Triangle */}
+            <div 
+              className="flex-shrink-0 flex items-center justify-center p-8"
+              style={{
+                width: '200px',
+                height: '200px',
+                clipPath: 'polygon(0 0, 0 100%, 100% 50%)',
+                border: '3px solid #FF5B35',
+                position: 'relative'
+              }}
+            >
+              <span 
+                className="font-bold text-center"
+                style={{ 
+                  color: '#FF5B35',
+                  fontSize: '16px',
+                  position: 'absolute',
+                  left: '30px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  width: '120px'
+                }}
+              >
+                Some stuff you should know...
+              </span>
+            </div>
+
+            {/* Blue Rectangle */}
+            <div 
+              className="flex-1 p-8 rounded-lg"
+              style={{
+                border: '2px solid #163E64',
+                backgroundColor: 'transparent'
+              }}
+            >
+              <p className="font-semibold mb-4" style={{ color: '#163E64', fontSize: '18px' }}>
+                Before you get started, you should at a minimum
+              </p>
+              <ul className="space-y-3">
+                <li>
+                  <Link 
+                    href="/dashboard/impact-strategy/defining-objectives"
+                    className="text-base hover:underline transition-colors"
+                    style={{ color: '#163E64' }}
+                  >
+                    • Think about what you're trying to accomplish
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/dashboard/impact-strategy/theory-of-change"
+                    className="text-base hover:underline transition-colors"
+                    style={{ color: '#163E64' }}
+                  >
+                    • Think about whether the actions you're attempting are logically likely to produce the change you're trying to achieve
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
