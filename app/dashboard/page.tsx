@@ -115,50 +115,52 @@ export default function DashboardPage() {
 
           {/* Getting Started Section */}
           <div className="flex gap-6 items-start">
-            {/* Orange Triangle */}
+            {/* Gray Triangle */}
             <div 
-              className="flex-shrink-0 flex items-center justify-center p-8"
+              className="flex-shrink-0 flex items-center justify-center"
               style={{
                 width: '200px',
                 height: '200px',
                 clipPath: 'polygon(0 0, 0 100%, 100% 50%)',
-                border: '3px solid #FF5B35',
+                backgroundColor: '#9CA3AF',
                 position: 'relative'
               }}
             >
               <span 
-                className="font-bold text-center"
+                className="font-bold text-center leading-tight"
                 style={{ 
                   color: '#FF5B35',
-                  fontSize: '16px',
+                  fontSize: '15px',
                   position: 'absolute',
-                  left: '30px',
+                  left: '25px',
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  width: '120px'
+                  width: '110px'
                 }}
               >
-                Some stuff you should know...
+                So there's some stuff you should know...
               </span>
             </div>
 
             {/* Blue Rectangle */}
             <div 
-              className="flex-1 p-8 rounded-lg"
+              className="flex-1 p-4 rounded-lg"
               style={{
-                border: '2px solid #163E64',
-                backgroundColor: 'transparent'
+                backgroundColor: '#163E64',
               }}
             >
-              <p className="font-semibold mb-4" style={{ color: '#163E64', fontSize: '18px' }}>
-                Before you get started, you should at a minimum
+              <p className="mb-3 text-sm leading-relaxed" style={{ color: '#ffffff' }}>
+                If you complete all of these activities, you'll have a very robust transition strategy, and a clear understanding of your role in a world affected by climate change, and what you intend to do about that.
               </p>
-              <ul className="space-y-3">
+              <p className="mb-3 text-sm leading-relaxed" style={{ color: '#ffffff' }}>
+                This software is completely modular. You can jump in anywhere you like. However, we strongly recommend that at a minimum, you begin with these two points:
+              </p>
+              <ul className="space-y-2">
                 <li>
                   <Link 
-                    href="/dashboard/impact-strategy/defining-objectives"
-                    className="text-base hover:underline transition-colors"
-                    style={{ color: '#163E64' }}
+                    href="/dashboard/transition-strategy/defining-objectives"
+                    className="text-sm underline transition-colors hover:opacity-80"
+                    style={{ color: '#ffffff' }}
                   >
                     • Think about what you're trying to accomplish
                   </Link>
@@ -166,8 +168,8 @@ export default function DashboardPage() {
                 <li>
                   <Link 
                     href="/dashboard/impact-strategy/theory-of-change"
-                    className="text-base hover:underline transition-colors"
-                    style={{ color: '#163E64' }}
+                    className="text-sm underline transition-colors hover:opacity-80"
+                    style={{ color: '#ffffff' }}
                   >
                     • Think about whether the actions you're attempting are logically likely to produce the change you're trying to achieve
                   </Link>

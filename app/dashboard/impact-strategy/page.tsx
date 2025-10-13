@@ -125,7 +125,7 @@ export default function ImpactStrategyPage() {
             </Link>
           </div>
 
-          {/* Additional Resources */}
+          {/* Getting Started Section */}
           <div className="mt-12 bg-white rounded-lg shadow-md p-8">
             <h2 className="text-2xl font-bold mb-4" style={{ color: "#163E64" }}>
               Getting Started
@@ -134,15 +134,6 @@ export default function ImpactStrategyPage() {
               Before diving in, consider these foundational concepts:
             </p>
             <ul className="space-y-3">
-              <li>
-                <Link 
-                  href="/dashboard/impact-strategy/defining-objectives"
-                  className="text-base hover:underline transition-colors"
-                  style={{ color: '#163E64' }}
-                >
-                  • Think about what you're trying to accomplish
-                </Link>
-              </li>
               <li>
                 <Link 
                   href="/dashboard/impact-strategy/theory-of-change"
