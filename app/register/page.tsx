@@ -26,7 +26,7 @@ export default function RegisterPage() {
     successAudioRef.current.preload = 'auto'
     successAudioRef.current.load()
     
-    errorAudioRef.current = new Audio('/cinematic-boom.mp3')
+    errorAudioRef.current = new Audio('/error-sound.mp3')
     errorAudioRef.current.preload = 'auto'
     errorAudioRef.current.load()
     // Force browser to fully load the audio by playing it at 0 volume
@@ -40,7 +40,7 @@ export default function RegisterPage() {
       errorAudioRef.current!.volume = 0.75 // Reduce volume by 25%
     })
     
-    eatingChipsAudioRef.current = new Audio('/oven-timer.mp3')
+    eatingChipsAudioRef.current = new Audio('/tapping-sound.mp3')
     eatingChipsAudioRef.current.volume = 0.525 // Reduce volume by 47.5%
     eatingChipsAudioRef.current.preload = 'auto'
     eatingChipsAudioRef.current.load()
