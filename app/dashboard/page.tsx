@@ -18,7 +18,7 @@ interface ModuleCard {
 const modules: ModuleCard[] = [
   {
     title: "Climate Risk",
-    description: "Assess climate-related risks, plan adaptation strategies, and analyze vulnerabilities.",
+    description: "• Identify and understand risks\n• Improve your ability to make decisions, even in the face of uncertainty\n• Incorporate these insights into your processes in a simple and clear way",
     icon: "⚠️",
     href: "/dashboard/climate-risk",
     color: "#f59e0b",
@@ -26,7 +26,7 @@ const modules: ModuleCard[] = [
   },
   {
     title: "Transition Strategy",
-    description: "Design decarbonization pathways, set science-based targets, and track progress toward net-zero.",
+    description: "• Understand your role in a world affected by climate change\n• Determine what you can do to speed up the energy transition\n• Decide what you are willing to do",
     icon: "🚀",
     href: "/dashboard/transition-strategy",
     color: "#3b82f6",
@@ -34,7 +34,7 @@ const modules: ModuleCard[] = [
   },
   {
     title: "Aiming for Systemic Impact",
-    description: "Build clear vision, identify intervention points, and define impactful actions.",
+    description: "• Build a clear vision of the specific change you are trying to produce\n• Identify sensitive intervention points in the political and economic system where you can have disproportionate impact\n• Define the actions that are most likely to produce that impact",
     icon: "💡",
     href: "/dashboard/impact-strategy",
     color: "#8b5cf6",
@@ -42,7 +42,7 @@ const modules: ModuleCard[] = [
   },
   {
     title: "CO₂ Management",
-    description: "Track emissions, manage Scope 1/2/3 categories, and plan reduction tactics with timelines and costs.",
+    description: "• Measure emissions\n• Set reduction Targets\n• Create detailed reduction plan",
     icon: "🌱",
     href: "/dashboard/co2-management",
     color: "#10b981",
@@ -104,7 +104,7 @@ export default function DashboardPage() {
                   {module.title}
                 </h3>
                 <p
-                  className="text-sm leading-relaxed transition-colors duration-150"
+                  className="text-xs leading-relaxed transition-colors duration-150 whitespace-pre-line"
                   style={{ color: hoveredCard === module.title ? '#ffffff' : '#163E64' }}
                 >
                   {module.description}
