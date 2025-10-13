@@ -10,10 +10,10 @@ export default function Home() {
     <div className="flex items-center justify-center bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
         <h1 className="text-5xl font-bold mb-6" style={{ color: '#0B1F32' }}>
-          CO₂ Reduction Planner
+          Climate Management Platform
         </h1>
         <p className="text-xl mb-8 max-w-2xl mx-auto leading-relaxed" style={{ color: '#5a6c6f' }}>
-          Plan, track, and achieve your organization&apos;s carbon reduction goals with comprehensive emissions management and tactical planning.
+          Comprehensive climate strategy tools for emissions management, risk assessment, transition planning, and impact measurement.
         </p>
         
         {session ? (
@@ -69,25 +69,36 @@ export default function Home() {
           </div>
         )}
 
-        <div className="grid md:grid-cols-3 gap-8 mt-12">
-          <div className="p-8 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
-            <h3 className="text-xl font-bold mb-3" style={{ color: '#0B1F32' }}>Track Emissions</h3>
-            <p className="leading-relaxed" style={{ color: '#0B1F32' }}>
-              Organize emissions by Scope 1, 2, and 3 categories with detailed baseline tracking
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+          <div className="p-6 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
+            <div className="text-3xl mb-3">🌱</div>
+            <h3 className="text-lg font-bold mb-2" style={{ color: '#0B1F32' }}>CO₂ Management</h3>
+            <p className="leading-relaxed text-sm" style={{ color: '#0B1F32' }}>
+              Track emissions across Scope 1/2/3 and plan reduction tactics
             </p>
           </div>
           
-          <div className="p-8 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
-            <h3 className="text-xl font-bold mb-3" style={{ color: '#0B1F32' }}>Plan Reductions</h3>
-            <p className="leading-relaxed" style={{ color: '#0B1F32' }}>
-              Create reduction tactics with timelines, costs, and implementation strategies
+          <div className="p-6 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
+            <div className="text-3xl mb-3">⚠️</div>
+            <h3 className="text-lg font-bold mb-2" style={{ color: '#0B1F32' }}>Climate Risk</h3>
+            <p className="leading-relaxed text-sm" style={{ color: '#0B1F32' }}>
+              Assess physical and transition risks to your operations
             </p>
           </div>
           
-          <div className="p-8 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
-            <h3 className="text-xl font-bold mb-3" style={{ color: '#0B1F32' }}>Visualize Progress</h3>
-            <p className="leading-relaxed" style={{ color: '#0B1F32' }}>
-              See projected emissions vs. targets with interactive charts and forecasts
+          <div className="p-6 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
+            <div className="text-3xl mb-3">🚀</div>
+            <h3 className="text-lg font-bold mb-2" style={{ color: '#0B1F32' }}>Transition Strategy</h3>
+            <p className="leading-relaxed text-sm" style={{ color: '#0B1F32' }}>
+              Design pathways to net-zero with science-based targets
+            </p>
+          </div>
+
+          <div className="p-6 rounded-lg border" style={{ backgroundColor: 'transparent', borderColor: 'rgba(11, 31, 50, 0.15)' }}>
+            <div className="text-3xl mb-3">💡</div>
+            <h3 className="text-lg font-bold mb-2" style={{ color: '#0B1F32' }}>Impact Strategy</h3>
+            <p className="leading-relaxed text-sm" style={{ color: '#0B1F32' }}>
+              Measure outcomes and communicate your climate leadership
             </p>
           </div>
         </div>

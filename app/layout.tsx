@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CO₂ Reduction Planner",
-  description: "Plan and track your organization's carbon reduction initiatives",
+  title: "Climate Management Platform",
+  description: "Comprehensive climate strategy tools for CO₂ management, risk assessment, transition planning, and impact measurement",
 };
 
 export default function RootLayout({

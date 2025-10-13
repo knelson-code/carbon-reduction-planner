@@ -58,7 +58,7 @@ export default function Header() {
               />
               {!isHomePage && (
                 <span className="text-2xl font-bold hidden sm:block" style={{ color: '#ffffff' }}>
-                  CO₂ Reduction Planner
+                  Climate Management Platform
                 </span>
               )}
             </Link>
