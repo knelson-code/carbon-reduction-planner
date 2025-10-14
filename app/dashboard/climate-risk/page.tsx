@@ -36,9 +36,12 @@ export default function ClimateRiskPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold" style={{ color: "#163E64" }}>
+            <h1 className="text-3xl font-bold mb-2" style={{ color: "#163E64" }}>
               Climate and Risk
             </h1>
+            <h2 className="text-lg" style={{ color: "#163E64" }}>
+              In this section you can learn to:
+            </h2>
           </div>
 
           {/* Feature Cards */}
@@ -123,6 +126,56 @@ export default function ClimateRiskPage() {
                 Incorporate these insights into your processes in a simple and clear way
               </h3>
             </Link>
+          </div>
+
+          {/* Progress Timeline */}
+          <div className="mt-12 bg-white rounded-lg shadow-md p-8">
+            <div className="flex items-start justify-between relative">
+              {/* Horizontal line */}
+              <div 
+                className="absolute top-5 left-0 right-0 h-0.5"
+                style={{ backgroundColor: '#163E64', zIndex: 0 }}
+              />
+              
+              {/* Timeline items */}
+              <div className="flex justify-between w-full relative z-10">
+                {[
+                  { label: 'The nature of the problem', completed: false },
+                  { label: 'Scientific background', completed: false },
+                  { label: 'History of the fight against climate change', completed: false },
+                  { label: 'Social, cultural, political and economic roots of the problem', completed: false },
+                  { label: 'Psychology of climate change, and willful blindness', completed: false },
+                  { label: 'Physical risk', completed: false },
+                  { label: 'Transition Risk', completed: false },
+                  { label: 'Legal and reputational risk', completed: false },
+                  { label: 'Systemic risk', completed: false },
+                  { label: 'Analyzing and assigning value to risks', completed: false },
+                  { label: 'Prioritizing risks', completed: false },
+                ].map((item, index) => (
+                  <div key={index} className="flex flex-col items-center" style={{ flex: '0 0 auto', minWidth: '80px' }}>
+                    {/* Circle */}
+                    <button
+                      className="w-10 h-10 rounded-full border-2 flex items-center justify-center transition-colors hover:opacity-70"
+                      style={{
+                        backgroundColor: item.completed ? '#163E64' : 'white',
+                        borderColor: '#163E64',
+                      }}
+                    >
+                      {item.completed && (
+                        <div className="w-4 h-4 rounded-full" style={{ backgroundColor: 'white' }} />
+                      )}
+                    </button>
+                    {/* Label */}
+                    <p 
+                      className="text-xs text-center mt-2 max-w-[100px]"
+                      style={{ color: '#163E64' }}
+                    >
+                      {item.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
