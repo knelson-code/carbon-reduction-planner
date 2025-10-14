@@ -199,7 +199,7 @@ export default function DefiningObjectivesPage() {
                         onChange={(e) => handleLabelEdit(category.id, e.target.value)}
                         className="w-full px-2 py-0.5 text-sm focus:outline-none focus:ring-2 rounded"
                         style={{
-                          color: '#0B1F32',
+                          color: '#163E64',
                           borderColor: '#163E64',
                         }}
                       />
@@ -207,7 +207,7 @@ export default function DefiningObjectivesPage() {
                       <div
                         className="px-2 py-0.5 text-sm"
                         style={{
-                          color: '#0B1F32',
+                          color: '#163E64',
                         }}
                       >
                         {category.label}
@@ -255,13 +255,13 @@ export default function DefiningObjectivesPage() {
             {/* Star Pool Box with Completion Button */}
             <div className="flex flex-col gap-3 items-center">
               <div
-                className="w-80 h-96 border-2 rounded-lg relative bg-gray-50"
+                className="w-80 h-96 border-2 rounded-lg relative bg-white"
                 style={{ borderColor: '#163E64' }}
                 onDragOver={handleDragOver}
                 onDrop={(e) => handleDrop(e)}
               >
                 {/* Instructions at top of star box */}
-                <div className="absolute top-0 left-0 right-0 p-3 text-center bg-white rounded-t-lg" style={{ pointerEvents: 'none', borderBottom: '1px solid #163E64' }}>
+                <div className="absolute top-0 left-0 right-0 p-3 text-center rounded-t-lg" style={{ pointerEvents: 'none', borderBottom: '1px solid #163E64' }}>
                   <p className="text-xs leading-tight" style={{ color: '#163E64' }}>
                     <strong>Instructions:</strong> Drag stars from the box on the right to prioritize your objectives. 
                     The more stars you assign to an objective, the higher priority it is for your organization.
