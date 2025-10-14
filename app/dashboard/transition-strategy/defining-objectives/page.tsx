@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState, useCallback } from "react"
+import Link from "next/link"
 import Sidebar from "@/components/Sidebar"
 
 interface Category {
@@ -385,6 +386,15 @@ export default function DefiningObjectivesPage() {
         })}
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          {/* Back to Transition Strategy link */}
+          <Link 
+            href="/dashboard/transition-strategy"
+            className="inline-block mb-3 text-sm font-light hover:opacity-80 transition-opacity"
+            style={{ color: '#FF5B35' }}
+          >
+            ← Back to the Transition Strategy
+          </Link>
+
           {/* Title */}
           <h1 className="text-2xl font-bold mb-1 text-center" style={{ color: '#0B1F32' }}>
             Think about your objectives
@@ -518,6 +528,17 @@ export default function DefiningObjectivesPage() {
                 {isCompleted ? '✓ Activity Completed' : 'Mark this activity as complete'}
               </button>
             </div>
+          </div>
+
+          {/* Bottom disclaimer link */}
+          <div className="mt-8 text-center">
+            <Link 
+              href="/dashboard/transition-strategy/personal-priorities"
+              className="text-xs font-light hover:opacity-80 transition-opacity"
+              style={{ color: '#FF5B35' }}
+            >
+              Hey, wait. I'm not happy about this because my priorities and my organization's priorities aren't exactly the same.
+            </Link>
           </div>
         </div>
       </div>
