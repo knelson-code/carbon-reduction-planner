@@ -341,16 +341,18 @@ export default function DefiningObjectivesPage() {
         setWasJustCompleted(true)
       }
       
-      // Remove confetti and award points after animation (2 seconds)
+      // Award points after 2 seconds (while confetti still animating)
+      if (!wasAlreadyCompleted) {
+        setTimeout(() => {
+          awardPoints()
+        }, 2000)
+      }
+      
+      // Remove confetti after full 3 second animation
       setTimeout(() => {
         setConfetti([])
         setConfettiOrigin(null)
-        
-        // Award points only on first completion
-        if (!wasAlreadyCompleted) {
-          awardPoints()
-        }
-      }, 2000)
+      }, 3000)
     }
     
     await saveData(newCompletedState)
