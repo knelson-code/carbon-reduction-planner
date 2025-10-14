@@ -134,11 +134,11 @@ export default function TransitionStrategyPage() {
           {/* Progress Timeline */}
           <div className="mt-12 mx-4 bg-white rounded-lg shadow-md p-8">
             <div className="overflow-x-auto">
-              <div className="flex items-start justify-between relative min-w-max">
+              <div className="flex items-start justify-between relative min-w-max pt-2">
               {/* Horizontal line */}
               <div 
                 className="absolute left-0 right-0 h-0.5"
-                style={{ backgroundColor: '#163E64', top: '20px', zIndex: 0 }}
+                style={{ backgroundColor: '#163E64', top: '22px', zIndex: 0 }}
               />
               
               {/* Timeline items */}

@@ -96,7 +96,7 @@ export default function DefiningObjectivesPage() {
 
     const completeSound = new Audio('/completion-sound.mp3')
     completeSound.preload = 'auto'
-    completeSound.volume = 0.5 // 50% volume
+    completeSound.volume = 0.3 // 30% volume
     completeSound.load()
     setCompletionAudio(completeSound)
   }, [])
