@@ -46,86 +46,44 @@ export default function ImpactStrategyPage() {
 
           {/* Feature Cards */}
           <div className="grid md:grid-cols-3 gap-6 mb-8">
-            <Link
-              href="/dashboard/impact-strategy/vision"
-              className="p-8 rounded-lg border transition-all duration-150"
+            <div
+              className="p-6 rounded-lg border flex items-center justify-center text-center"
               style={{
-                backgroundColor: '#f5f5f5',
+                backgroundColor: '#0B1F32',
                 borderColor: '#163E64',
                 borderWidth: '1px',
-                boxShadow: '0 2px 8px rgba(255, 91, 53, 0.25)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#0B1F32'
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.35)'
-                const heading = e.currentTarget.querySelector('h3')
-                if (heading) (heading as HTMLElement).style.color = '#ffffff'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = '#f5f5f5'
-                e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 91, 53, 0.25)'
-                const heading = e.currentTarget.querySelector('h3')
-                if (heading) (heading as HTMLElement).style.color = '#163E64'
               }}
             >
-              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}>
+              <h3 className="text-base font-semibold" style={{ color: '#ffffff' }}>
                 Build a clear vision of the specific change you are trying to produce
               </h3>
-            </Link>
+            </div>
 
-            <Link
-              href="/dashboard/impact-strategy/intervention"
-              className="p-8 rounded-lg border transition-all duration-150"
+            <div
+              className="p-6 rounded-lg border flex items-center justify-center text-center"
               style={{
-                backgroundColor: '#f5f5f5',
+                backgroundColor: '#0B1F32',
                 borderColor: '#163E64',
                 borderWidth: '1px',
-                boxShadow: '0 2px 8px rgba(255, 91, 53, 0.25)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#0B1F32'
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.35)'
-                const heading = e.currentTarget.querySelector('h3')
-                if (heading) (heading as HTMLElement).style.color = '#ffffff'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = '#f5f5f5'
-                e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 91, 53, 0.25)'
-                const heading = e.currentTarget.querySelector('h3')
-                if (heading) (heading as HTMLElement).style.color = '#163E64'
               }}
             >
-              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}>
+              <h3 className="text-base font-semibold" style={{ color: '#ffffff' }}>
                 Identify sensitive intervention points in the political and economic system where you can have disproportionate impact
               </h3>
-            </Link>
+            </div>
 
-            <Link
-              href="/dashboard/impact-strategy/actions"
-              className="p-8 rounded-lg border transition-all duration-150"
+            <div
+              className="p-6 rounded-lg border flex items-center justify-center text-center"
               style={{
-                backgroundColor: '#f5f5f5',
+                backgroundColor: '#0B1F32',
                 borderColor: '#163E64',
                 borderWidth: '1px',
-                boxShadow: '0 2px 8px rgba(255, 91, 53, 0.25)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#0B1F32'
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.35)'
-                const heading = e.currentTarget.querySelector('h3')
-                if (heading) (heading as HTMLElement).style.color = '#ffffff'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = '#f5f5f5'
-                e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 91, 53, 0.25)'
-                const heading = e.currentTarget.querySelector('h3')
-                if (heading) (heading as HTMLElement).style.color = '#163E64'
               }}
             >
-              <h3 className="text-xl font-bold mb-3" style={{ color: '#163E64' }}>
+              <h3 className="text-base font-semibold" style={{ color: '#ffffff' }}>
                 Define the actions that are most likely to produce that impact
               </h3>
-            </Link>
+            </div>
           </div>
 
           {/* Progress Timeline */}
@@ -140,36 +98,51 @@ export default function ImpactStrategyPage() {
               {/* Timeline items */}
               <div className="flex justify-between w-full relative z-10 gap-4">
                 {[
-                  { label: 'Systems Point 1', completed: false },
-                  { label: 'Systems Point 2', completed: false },
-                  { label: 'Systems Point 3', completed: false },
-                  { label: 'Systems Point 4', completed: false },
-                  { label: 'Systems Point 5', completed: false },
-                  { label: 'Systems Point 6', completed: false },
-                  { label: 'Systems Point 7', completed: false },
-                  { label: 'Systems Point 8', completed: false },
+                  { label: 'Systems Point 1', completed: false, href: '/dashboard/impact-strategy/point-1' },
+                  { label: 'Systems Point 2', completed: false, href: '/dashboard/impact-strategy/point-2' },
+                  { label: 'Systems Point 3', completed: false, href: '/dashboard/impact-strategy/point-3' },
+                  { label: 'Systems Point 4', completed: false, href: '/dashboard/impact-strategy/point-4' },
+                  { label: 'Systems Point 5', completed: false, href: '/dashboard/impact-strategy/point-5' },
+                  { label: 'Systems Point 6', completed: false, href: '/dashboard/impact-strategy/point-6' },
+                  { label: 'Systems Point 7', completed: false, href: '/dashboard/impact-strategy/point-7' },
+                  { label: 'Systems Point 8', completed: false, href: '/dashboard/impact-strategy/point-8' },
                 ].map((item, index) => (
-                  <div key={index} className="flex flex-col items-center flex-shrink-0" style={{ minWidth: '80px', maxWidth: '100px' }}>
+                  <Link 
+                    key={index} 
+                    href={item.href}
+                    className="flex flex-col items-center flex-shrink-0 group cursor-pointer" 
+                    style={{ minWidth: '80px', maxWidth: '100px' }}
+                  >
                     {/* Circle */}
-                    <button
-                      className="w-10 h-10 rounded-full border-2 flex items-center justify-center transition-colors hover:opacity-70"
+                    <div
+                      className="w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-200"
                       style={{
                         backgroundColor: item.completed ? '#163E64' : 'white',
                         borderColor: '#163E64',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = '#FF5B35'
+                        e.currentTarget.style.borderColor = '#FF5B35'
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = item.completed ? '#163E64' : 'white'
+                        e.currentTarget.style.borderColor = '#163E64'
                       }}
                     >
                       {item.completed && (
                         <div className="w-4 h-4 rounded-full" style={{ backgroundColor: 'white' }} />
                       )}
-                    </button>
+                    </div>
                     {/* Label */}
                     <p 
-                      className="text-xs text-center mt-2"
+                      className="text-xs text-center mt-2 transition-colors duration-200"
                       style={{ color: '#163E64' }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
+                      onMouseLeave={(e) => e.currentTarget.style.color = '#163E64'}
                     >
                       {item.label}
                     </p>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
