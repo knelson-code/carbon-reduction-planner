@@ -17,7 +17,8 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   
-  organizations Organization[]
+  organizations       Organization[]
+  activityCompletions ActivityCompletion[]
 }
 
 model Organization {
@@ -79,4 +80,19 @@ model ReductionTactic {
   
   categoryId                String
   category                  EmissionCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+model ActivityCompletion {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  activityId  String   // e.g. "transition-strategy-defining-objectives"
+  isCompleted Boolean  @default(false)
+  data        Json?    // Flexible JSON field for activity-specific data
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([userId, activityId])
 }

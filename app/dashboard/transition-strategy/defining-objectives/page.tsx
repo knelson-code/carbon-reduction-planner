@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import Sidebar from "@/components/Sidebar"
 
 interface Category {
@@ -40,12 +40,50 @@ export default function DefiningObjectivesPage() {
   const [draggedStarId, setDraggedStarId] = useState<number | null>(null)
   const [popAudio, setPopAudio] = useState<HTMLAudioElement | null>(null)
   const [isCompleted, setIsCompleted] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [isSaving, setIsSaving] = useState(false)
+
+  const ACTIVITY_ID = "transition-strategy-defining-objectives"
 
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login")
     }
   }, [status, router])
+
+  // Load saved data on mount
+  useEffect(() => {
+    const loadData = async () => {
+      if (status === "authenticated") {
+        try {
+          const response = await fetch(`/api/activities?activityId=${ACTIVITY_ID}`)
+          if (response.ok) {
+            const { isCompleted: savedCompleted, data: savedData } = await response.json()
+            
+            if (savedData) {
+              // Restore categories (including custom labels and star counts)
+              if (savedData.categories) {
+                setCategories(savedData.categories)
+              }
+              
+              // Restore star positions
+              if (savedData.stars) {
+                setStars(savedData.stars)
+              }
+            }
+            
+            setIsCompleted(savedCompleted)
+          }
+        } catch (error) {
+          console.error("Failed to load activity data:", error)
+        } finally {
+          setIsLoading(false)
+        }
+      }
+    }
+
+    loadData()
+  }, [status])
 
   // Preload pop sound
   useEffect(() => {
@@ -55,19 +93,57 @@ export default function DefiningObjectivesPage() {
     setPopAudio(audio)
   }, [])
 
-  // Initialize 20 stars with random positions in the star box
+  // Initialize 20 stars with random positions in the star box (only if no saved data)
   useEffect(() => {
-    const initialStars: Star[] = []
-    for (let i = 0; i < 20; i++) {
-      initialStars.push({
-        id: i,
-        x: Math.random() * 240 + 10, // Random x within box, with padding
-        y: Math.random() * 200 + 100, // Random y, starting below instructions
-        categoryId: null
-      })
+    if (!isLoading && stars.length === 0) {
+      const initialStars: Star[] = []
+      for (let i = 0; i < 20; i++) {
+        initialStars.push({
+          id: i,
+          x: Math.random() * 240 + 10, // Random x within box, with padding
+          y: Math.random() * 200 + 100, // Random y, starting below instructions
+          categoryId: null
+        })
+      }
+      setStars(initialStars)
     }
-    setStars(initialStars)
-  }, [])
+  }, [isLoading, stars.length])
+
+  // Auto-save function
+  const saveData = useCallback(async (completed: boolean = isCompleted) => {
+    if (isSaving) return
+    
+    setIsSaving(true)
+    try {
+      await fetch('/api/activities', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          activityId: ACTIVITY_ID,
+          isCompleted: completed,
+          data: {
+            categories,
+            stars,
+          },
+        }),
+      })
+    } catch (error) {
+      console.error("Failed to save activity data:", error)
+    } finally {
+      setIsSaving(false)
+    }
+  }, [categories, stars, isCompleted, isSaving])
+
+  // Auto-save when data changes (debounced)
+  useEffect(() => {
+    if (!isLoading && stars.length > 0) {
+      const timer = setTimeout(() => {
+        saveData()
+      }, 1000) // Save 1 second after last change
+
+      return () => clearTimeout(timer)
+    }
+  }, [categories, stars, isLoading, saveData])
 
   const handleDragStart = (e: React.DragEvent, starId: number) => {
     setDraggedStarId(starId)
@@ -144,7 +220,13 @@ export default function DefiningObjectivesPage() {
     ))
   }
 
-  if (status === "loading") {
+  const handleMarkComplete = async () => {
+    const newCompletedState = !isCompleted
+    setIsCompleted(newCompletedState)
+    await saveData(newCompletedState)
+  }
+
+  if (status === "loading" || isLoading) {
     return (
       <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
         <div className="text-lg text-gray-600">Loading...</div>
@@ -288,14 +370,15 @@ export default function DefiningObjectivesPage() {
 
               {/* Mark as Complete Button - Narrower and centered */}
               <button
-                onClick={() => setIsCompleted(!isCompleted)}
-                className="px-6 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
+                onClick={handleMarkComplete}
+                disabled={isSaving}
+                className="px-6 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90 disabled:opacity-50"
                 style={{
                   backgroundColor: '#0B1F32',
                   color: '#ffffff',
                 }}
               >
-                {isCompleted ? '✓ Activity Completed' : 'Mark this activity as complete'}
+                {isSaving ? 'Saving...' : isCompleted ? '✓ Activity Completed' : 'Mark this activity as complete'}
               </button>
             </div>
           </div>

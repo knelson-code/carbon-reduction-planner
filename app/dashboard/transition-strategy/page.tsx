@@ -2,19 +2,64 @@
 
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Sidebar from "@/components/Sidebar"
 import Link from "next/link"
+
+interface TimelineItem {
+  label: string
+  completed: boolean
+  href: string
+  activityId?: string
+}
 
 export default function TransitionStrategyPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
+  const [timelineItems, setTimelineItems] = useState<TimelineItem[]>([
+    { label: 'Think about what you\'re trying to accomplish', completed: false, href: '/dashboard/transition-strategy/defining-objectives', activityId: 'transition-strategy-defining-objectives' },
+    { label: 'Transition Point 2', completed: false, href: '/dashboard/transition-strategy/point-2' },
+    { label: 'Transition Point 3', completed: false, href: '/dashboard/transition-strategy/point-3' },
+    { label: 'Transition Point 4', completed: false, href: '/dashboard/transition-strategy/point-4' },
+    { label: 'Transition Point 5', completed: false, href: '/dashboard/transition-strategy/point-5' },
+    { label: 'Transition Point 6', completed: false, href: '/dashboard/transition-strategy/point-6' },
+    { label: 'Transition Point 7', completed: false, href: '/dashboard/transition-strategy/point-7' },
+    { label: 'Transition Point 8', completed: false, href: '/dashboard/transition-strategy/point-8' },
+  ])
 
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login")
     }
   }, [status, router])
+
+  // Load completion statuses
+  useEffect(() => {
+    const loadCompletionStatuses = async () => {
+      if (status === "authenticated") {
+        try {
+          // Fetch completion status for items with activityId
+          const promises = timelineItems.map(async (item) => {
+            if (item.activityId) {
+              const response = await fetch(`/api/activities?activityId=${item.activityId}`)
+              if (response.ok) {
+                const { isCompleted } = await response.json()
+                return { ...item, completed: isCompleted }
+              }
+            }
+            return item
+          })
+
+          const updatedItems = await Promise.all(promises)
+          setTimelineItems(updatedItems)
+        } catch (error) {
+          console.error("Failed to load completion statuses:", error)
+        }
+      }
+    }
+
+    loadCompletionStatuses()
+  }, [status])
 
   if (status === "loading") {
     return (
@@ -98,16 +143,7 @@ export default function TransitionStrategyPage() {
               
               {/* Timeline items */}
               <div className="flex justify-between w-full relative z-10 gap-4">
-                {[
-                  { label: 'Think about what you\'re trying to accomplish', completed: false, href: '/dashboard/transition-strategy/defining-objectives' },
-                  { label: 'Transition Point 2', completed: false, href: '/dashboard/transition-strategy/point-2' },
-                  { label: 'Transition Point 3', completed: false, href: '/dashboard/transition-strategy/point-3' },
-                  { label: 'Transition Point 4', completed: false, href: '/dashboard/transition-strategy/point-4' },
-                  { label: 'Transition Point 5', completed: false, href: '/dashboard/transition-strategy/point-5' },
-                  { label: 'Transition Point 6', completed: false, href: '/dashboard/transition-strategy/point-6' },
-                  { label: 'Transition Point 7', completed: false, href: '/dashboard/transition-strategy/point-7' },
-                  { label: 'Transition Point 8', completed: false, href: '/dashboard/transition-strategy/point-8' },
-                ].map((item, index) => (
+                {timelineItems.map((item, index) => (
                   <Link 
                     key={index} 
                     href={item.href}
