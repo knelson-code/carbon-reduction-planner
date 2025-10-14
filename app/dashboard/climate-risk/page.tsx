@@ -37,7 +37,7 @@ export default function ClimateRiskPage() {
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold" style={{ color: "#163E64" }}>
-              Climate Risk
+              Climate and Risk
             </h1>
           </div>
 

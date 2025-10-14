@@ -17,7 +17,7 @@ interface ModuleCard {
 
 const modules: ModuleCard[] = [
   {
-    title: "Climate Risk",
+    title: "Climate and Risk",
     description: "• Identify and understand risks\n• Improve your ability to make decisions, even in the face of uncertainty\n• Incorporate these insights into your processes in a simple and clear way",
     icon: "⚠️",
     href: "/dashboard/climate-risk",
@@ -153,7 +153,7 @@ export default function DashboardPage() {
             {isAccordionOpen && (
               <div className="mt-4 space-y-3" style={{ color: '#163E64' }}>
                 <p className="text-sm leading-relaxed">
-                  If you complete all of these activities, you'll have a very robust transition strategy, and a clear understanding of your role in a world affected by climate change, and what you intend to do about that.
+                  If you complete all of these activities, you'll have a robust transition strategy. That means understanding of your role in a world affected by climate change, and having a clear plan for what you intend to do about it.
                 </p>
                 <p className="text-sm leading-relaxed">
                   This software is completely modular. You can jump in anywhere you like. However, we strongly recommend that at a minimum, you begin with these three points:
