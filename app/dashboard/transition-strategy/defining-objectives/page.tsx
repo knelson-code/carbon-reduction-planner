@@ -106,9 +106,9 @@ export default function DefiningObjectivesPage() {
     completeSound.load()
     setCompletionAudio(completeSound)
 
-    const pointsSound = new Audio('/eating-chips.mp3')
+    const pointsSound = new Audio('/2game-bonus-02-294436.mp3')
     pointsSound.preload = 'auto'
-    pointsSound.volume = 1.0 // Max volume for testing
+    pointsSound.volume = 1.0 // Max volume
     pointsSound.playbackRate = 2.0 // Play at double speed
     pointsSound.loop = true // Loop while counting
     pointsSound.load()
