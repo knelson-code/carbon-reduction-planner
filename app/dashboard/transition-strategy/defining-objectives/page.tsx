@@ -92,7 +92,7 @@ export default function DefiningObjectivesPage() {
     loadData()
   }, [status])
 
-  // Preload pop sound, completion sound, and points sound
+  // Preload pop sound and completion sound
   useEffect(() => {
     const popSound = new Audio('/sharp-pop.mp3')
     popSound.preload = 'auto'
@@ -108,11 +108,8 @@ export default function DefiningObjectivesPage() {
 
     const pointsSound = new Audio('/111111.mp3')
     pointsSound.preload = 'auto'
-    pointsSound.volume = 0.5 // 50% volume
-    pointsSound.playbackRate = 16.8 // Play at 16.8x speed (matches 20 pts/sec counter)
-    pointsSound.loop = true // Loop while counting
+    pointsSound.volume = 0.5
     pointsSound.load()
-    console.log('Points sound loaded:', pointsSound.src)
     setPointsAudio(pointsSound)
   }, [])
 
@@ -289,16 +286,11 @@ export default function DefiningObjectivesPage() {
       completionAudio.currentTime = 0
       completionAudio.play().catch(err => console.log('Completion audio play failed:', err))
       
-      // Start points sound after 1 second delay (matches when counter starts)
+      // Start points sound after 1 second delay
       setTimeout(() => {
         if (pointsAudio) {
-          console.log('Attempting to play points sound (after 1s delay)...')
           pointsAudio.currentTime = 0
-          pointsAudio.play()
-            .then(() => console.log('Points sound playing successfully!'))
-            .catch(err => console.error('Points audio play FAILED:', err))
-        } else {
-          console.error('Points audio is NULL!')
+          pointsAudio.play().catch(err => console.log('Points audio play failed:', err))
         }
       }, 1000)
       
@@ -355,13 +347,13 @@ export default function DefiningObjectivesPage() {
         setConfettiOrigin(null)
       }, 3000)
       
-      // Stop points sound after counter finishes (3.5 seconds total: 1s delay + 2.5s playing)
+      // Stop points sound after 4 seconds
       setTimeout(() => {
         if (pointsAudio) {
           pointsAudio.pause()
           pointsAudio.currentTime = 0
         }
-      }, 3500)
+      }, 4000)
     }
     
     await saveData(newCompletedState)
