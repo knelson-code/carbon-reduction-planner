@@ -109,7 +109,7 @@ export default function DefiningObjectivesPage() {
     const pointsSound = new Audio('/111111.mp3')
     pointsSound.preload = 'auto'
     pointsSound.volume = 0.5 // 50% volume
-    pointsSound.playbackRate = 4.0 // Play at 4x speed
+    pointsSound.playbackRate = 8.0 // Play at 8x speed (faster tempo, more repetitions)
     pointsSound.loop = true // Loop while counting
     pointsSound.load()
     console.log('Points sound loaded:', pointsSound.src)
@@ -289,10 +289,10 @@ export default function DefiningObjectivesPage() {
       completionAudio.currentTime = 0
       completionAudio.play().catch(err => console.log('Completion audio play failed:', err))
       
-      // Start points sound after 2 second delay
+      // Start points sound after 1 second delay (matches when counter starts)
       setTimeout(() => {
         if (pointsAudio) {
-          console.log('Attempting to play points sound (after 2s delay)...')
+          console.log('Attempting to play points sound (after 1s delay)...')
           pointsAudio.currentTime = 0
           pointsAudio.play()
             .then(() => console.log('Points sound playing successfully!'))
@@ -300,7 +300,7 @@ export default function DefiningObjectivesPage() {
         } else {
           console.error('Points audio is NULL!')
         }
-      }, 2000)
+      }, 1000)
       
       // Get button position for confetti origin
       const button = e.currentTarget
@@ -355,13 +355,13 @@ export default function DefiningObjectivesPage() {
         setConfettiOrigin(null)
       }, 3000)
       
-      // Stop points sound after counter finishes (~6.85 seconds total: 2s delay + 4.85s playing)
+      // Stop points sound after counter finishes (~5.85 seconds total: 1s delay + 4.85s playing)
       setTimeout(() => {
         if (pointsAudio) {
           pointsAudio.pause()
           pointsAudio.currentTime = 0
         }
-      }, 6850)
+      }, 5850)
     }
     
     await saveData(newCompletedState)
