@@ -45,7 +45,7 @@ export default function DefiningObjectivesPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [particles, setParticles] = useState<Array<{id: number, angle: number, distance: number, x: number, y: number}>>([])
-  const [confetti, setConfetti] = useState<Array<{id: number, color: string, delay: number, angle: number, peakHeight: number, finalRotateZ: number, finalRotateY: number}>>([])
+  const [confetti, setConfetti] = useState<Array<{id: number, color: string, delay: number, xOffset: number, angle: number, peakHeight: number, peakTime: number, finalRotateZ: number, finalRotateY: number}>>([])
   const [confettiOrigin, setConfettiOrigin] = useState<{x: number, y: number} | null>(null)
 
   const ACTIVITY_ID = "transition-strategy-defining-objectives"
@@ -182,19 +182,19 @@ export default function DefiningObjectivesPage() {
         popAudio.play().catch(err => console.log('Audio play failed:', err))
       }
       
-      // Create orange particle burst effect from drop location
-      // Position particles at leftmost star position (where user dropped it)
+      // Create orange particle burst effect from perimeter of star circle
       const rect = e.currentTarget.getBoundingClientRect()
       const currentStarsInCategory = stars.filter(s => s.categoryId === categoryId).length
-      const starRowX = rect.right - (currentStarsInCategory * 32) - 20 // Calculate leftmost star position
-      const dropY = rect.top + rect.height / 2 // Middle of category box
+      const starCenterX = rect.right - (currentStarsInCategory * 32) - 20 // Leftmost star center
+      const starCenterY = rect.top + rect.height / 2 // Middle of category box
+      const starRadius = 14 // Half of star size (28px / 2)
       
       const newParticles = Array.from({ length: 20 }, (_, i) => ({
         id: Date.now() + i,
         angle: Math.random() * Math.PI * 2, // Random direction
-        distance: 20 + Math.random() * 30, // Random distance 20-50px
-        x: starRowX,
-        y: dropY
+        distance: 20 + Math.random() * 30, // Random distance beyond perimeter
+        x: starCenterX + Math.cos(Math.random() * Math.PI * 2) * starRadius, // Start from perimeter
+        y: starCenterY + Math.sin(Math.random() * Math.PI * 2) * starRadius, // Start from perimeter
       }))
       setParticles(newParticles)
       
@@ -267,20 +267,28 @@ export default function DefiningObjectivesPage() {
       const rect = button.getBoundingClientRect()
       setConfettiOrigin({
         x: rect.left + rect.width / 2,
-        y: rect.top + rect.height / 2
+        y: rect.top
       })
       
-      // Create confetti burst with varied trajectories
+      // Create confetti burst with varied trajectories and timing
       const colors = ['#FF5B35', '#0B1F32', '#9CA3AF']
-      const newConfetti = Array.from({ length: 50 }, (_, i) => ({
-        id: Date.now() + i,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        delay: Math.random() * 0.15,
-        angle: Math.random() * Math.PI * 2, // Random angle all around
-        peakHeight: -(40 + Math.random() * 80), // Random peak height 40-120px upward
-        finalRotateZ: 360 + Math.random() * 720, // Random final Z rotation
-        finalRotateY: 360 + Math.random() * 1080, // Random final Y rotation
-      }))
+      const buttonWidth = rect.width
+      const newConfetti = Array.from({ length: 50 }, (_, i) => {
+        const peakHeight = -(40 + Math.random() * 80) // Random peak height 40-120px upward
+        const peakTime = 0.4 + (Math.abs(peakHeight) / 120) * 0.6 // Timing varies with height: 0.4-1.0s
+        
+        return {
+          id: Date.now() + i,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          delay: 0,
+          xOffset: (Math.random() - 0.5) * buttonWidth, // Spread across button width
+          angle: Math.random() * Math.PI * 2, // Random angle all around
+          peakHeight,
+          peakTime, // How long to reach peak (varies with peak height)
+          finalRotateZ: 360 + Math.random() * 720,
+          finalRotateY: 360 + Math.random() * 1080,
+        }
+      })
       setConfetti(newConfetti)
       
       // Remove confetti after animation
@@ -377,7 +385,7 @@ export default function DefiningObjectivesPage() {
         {/* Confetti Effect */}
         {confetti.length > 0 && confettiOrigin && confetti.map((piece) => {
           const distance = 100 + Math.random() * 150
-          const tx = Math.cos(piece.angle) * distance
+          const tx = Math.cos(piece.angle) * distance + piece.xOffset
           const txMid = tx * 0.4 // Midpoint for upward trajectory
           
           return (
@@ -389,11 +397,11 @@ export default function DefiningObjectivesPage() {
                 width: '10px',
                 height: '10px',
                 backgroundColor: piece.color,
-                left: `${confettiOrigin.x}px`,
+                left: `${confettiOrigin.x + piece.xOffset}px`,
                 top: `${confettiOrigin.y}px`,
                 pointerEvents: 'none',
                 zIndex: 9999,
-                animationDelay: `${piece.delay}s`,
+                animationDuration: `${piece.peakTime * 2.5}s`, // Total duration based on peak time
                 '--tx': `${tx}px`,
                 '--tx-mid': `${txMid}px`,
                 '--peak-y': `${piece.peakHeight}px`,
@@ -555,7 +563,7 @@ export default function DefiningObjectivesPage() {
             <Link 
               href="/dashboard/transition-strategy/personal-priorities"
               className="text-xs font-light hover:opacity-80 transition-opacity"
-              style={{ color: '#FF5B35' }}
+              style={{ color: '#0B1F32' }}
             >
               Hey, wait. I'm not happy about this because my priorities and my organization's priorities aren't exactly the same.
             </Link>
