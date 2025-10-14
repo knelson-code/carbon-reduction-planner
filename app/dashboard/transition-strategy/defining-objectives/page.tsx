@@ -41,7 +41,9 @@ export default function DefiningObjectivesPage() {
   const [draggedStarId, setDraggedStarId] = useState<number | null>(null)
   const [popAudio, setPopAudio] = useState<HTMLAudioElement | null>(null)
   const [completionAudio, setCompletionAudio] = useState<HTMLAudioElement | null>(null)
+  const [pointsAudio, setPointsAudio] = useState<HTMLAudioElement | null>(null)
   const [isCompleted, setIsCompleted] = useState(false)
+  const [wasJustCompleted, setWasJustCompleted] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [particles, setParticles] = useState<Array<{id: number, angle: number, distance: number, x: number, y: number}>>([])
@@ -90,19 +92,26 @@ export default function DefiningObjectivesPage() {
     loadData()
   }, [status])
 
-  // Preload pop sound and completion sound
+  // Preload pop sound, completion sound, and points sound
   useEffect(() => {
     const popSound = new Audio('/sharp-pop.mp3')
     popSound.preload = 'auto'
-    popSound.volume = 0.56 // 56% volume (reduced by 20%)
+    popSound.volume = 0.56
     popSound.load()
     setPopAudio(popSound)
 
     const completeSound = new Audio('/completion-sound.mp3')
     completeSound.preload = 'auto'
-    completeSound.volume = 0.24 // 24% volume (reduced by 20%)
+    completeSound.volume = 0.24
     completeSound.load()
     setCompletionAudio(completeSound)
+
+    const pointsSound = new Audio('/points-sound.mp3')
+    pointsSound.preload = 'auto'
+    pointsSound.volume = 0.6
+    pointsSound.loop = true // Loop while counting
+    pointsSound.load()
+    setPointsAudio(pointsSound)
   }, [])
 
   // Initialize 20 stars with random positions in the star box (only if no saved data)
@@ -253,6 +262,36 @@ export default function DefiningObjectivesPage() {
     ))
   }
 
+  const awardPoints = async () => {
+    try {
+      // Play points sound while counting
+      if (pointsAudio) {
+        pointsAudio.currentTime = 0
+        pointsAudio.play().catch(err => console.log('Points audio play failed:', err))
+      }
+
+      // Award 50 points
+      await fetch('/api/score', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ points: 50 }),
+      })
+
+      // Stop points sound after 1.5 seconds (duration of counter animation in Header)
+      setTimeout(() => {
+        if (pointsAudio) {
+          pointsAudio.pause()
+          pointsAudio.currentTime = 0
+        }
+      }, 1500)
+
+      // Trigger header to refresh score
+      window.dispatchEvent(new Event('scoreUpdated'))
+    } catch (error) {
+      console.error('Error awarding points:', error)
+    }
+  }
+
   const handleMarkComplete = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const newCompletedState = !isCompleted
     setIsCompleted(newCompletedState)
@@ -272,17 +311,22 @@ export default function DefiningObjectivesPage() {
       
       // Create confetti burst with varied trajectories and timing
       const colors = ['#FF5B35', '#0B1F32', '#9CA3AF']
-      const buttonWidth = rect.width
+      const buttonWidth = rect.width * 1.5 // Wider spread
       const newConfetti = Array.from({ length: 50 }, (_, i) => {
         const peakHeight = -(40 + Math.random() * 80) // Random peak height 40-120px upward
         const peakTime = 0.4 + (Math.abs(peakHeight) / 120) * 0.6 // Timing varies with height: 0.4-1.0s
+        
+        // More random upward angles - bias toward upward but with variation
+        const baseAngle = -Math.PI / 2 // Straight up
+        const angleVariation = (Math.random() - 0.5) * Math.PI * 1.2 // ±108 degrees
+        const angle = baseAngle + angleVariation
         
         return {
           id: Date.now() + i,
           color: colors[Math.floor(Math.random() * colors.length)],
           delay: 0,
-          xOffset: (Math.random() - 0.5) * buttonWidth, // Spread across button width
-          angle: Math.random() * Math.PI * 2, // Random angle all around
+          xOffset: (Math.random() - 0.5) * buttonWidth, // Wider spread
+          angle, // More random upward directions
           peakHeight,
           peakTime, // How long to reach peak (varies with peak height)
           finalRotateZ: 360 + Math.random() * 720,
@@ -291,10 +335,21 @@ export default function DefiningObjectivesPage() {
       })
       setConfetti(newConfetti)
       
-      // Remove confetti after animation
+      // Track if this was first completion (for points award)
+      const wasAlreadyCompleted = isCompleted
+      if (!wasAlreadyCompleted) {
+        setWasJustCompleted(true)
+      }
+      
+      // Remove confetti and award points after animation
       setTimeout(() => {
         setConfetti([])
         setConfettiOrigin(null)
+        
+        // Award points only on first completion
+        if (!wasAlreadyCompleted) {
+          awardPoints()
+        }
       }, 3000)
     }
     

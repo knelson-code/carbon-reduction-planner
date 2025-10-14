@@ -12,6 +12,8 @@ export default function Header() {
   const pathname = usePathname()
   const isHomePage = pathname === "/"
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [score, setScore] = useState(0)
+  const [displayScore, setDisplayScore] = useState(0)
   const windAudioRef = useRef<HTMLAudioElement | null>(null)
 
   // Preload wind sound for sign out
@@ -30,6 +32,57 @@ export default function Header() {
       windAudioRef.current!.volume = 1
     })
   }, [])
+
+  // Fetch user score
+  useEffect(() => {
+    const fetchScore = async () => {
+      if (session) {
+        try {
+          const response = await fetch('/api/score')
+          if (response.ok) {
+            const data = await response.json()
+            setScore(data.score)
+            setDisplayScore(data.score)
+          }
+        } catch (error) {
+          console.error('Error fetching score:', error)
+        }
+      }
+    }
+
+    fetchScore()
+
+    // Listen for score updates from activity pages
+    const handleScoreUpdate = () => {
+      fetchScore()
+    }
+
+    window.addEventListener('scoreUpdated', handleScoreUpdate)
+    return () => window.removeEventListener('scoreUpdated', handleScoreUpdate)
+  }, [session])
+
+  // Animate score counting up when score changes
+  useEffect(() => {
+    if (displayScore < score) {
+      const duration = 1500 // 1.5 seconds
+      const steps = 50
+      const increment = (score - displayScore) / steps
+      const stepDuration = duration / steps
+
+      let currentStep = 0
+      const interval = setInterval(() => {
+        currentStep++
+        if (currentStep >= steps) {
+          setDisplayScore(score)
+          clearInterval(interval)
+        } else {
+          setDisplayScore(prev => Math.min(prev + increment, score))
+        }
+      }, stepDuration)
+
+      return () => clearInterval(interval)
+    }
+  }, [score, displayScore])
 
   const handleSignOut = async () => {
     // Play wind sound
@@ -85,6 +138,9 @@ export default function Header() {
                   >
                     Organizations
                   </Link>
+                  <div className="text-lg font-semibold" style={{ color: '#FF5B35' }}>
+                    Your Score: {Math.round(displayScore)}
+                  </div>
                   <div className="flex items-center space-x-4">
                     <span className="text-base font-medium" style={{ color: '#ffffff' }}>
                       {session.user?.email}
