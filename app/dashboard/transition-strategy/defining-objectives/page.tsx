@@ -274,19 +274,19 @@ export default function DefiningObjectivesPage() {
       // Trigger header to refresh score (starts counter animation)
       window.dispatchEvent(new Event('scoreUpdated'))
 
-      // Play points sound while counting (50 points at 10/second = 5 seconds)
+      // Play points sound while counting (50 points at 13/second = ~3.85 seconds)
       if (pointsAudio) {
         pointsAudio.currentTime = 0
         pointsAudio.play().catch(err => console.log('Points audio play failed:', err))
       }
 
-      // Stop points sound after 5 seconds (when counter finishes)
+      // Stop points sound after ~3.85 seconds (when counter finishes)
       setTimeout(() => {
         if (pointsAudio) {
           pointsAudio.pause()
           pointsAudio.currentTime = 0
         }
-      }, 5000)
+      }, 3850)
     } catch (error) {
       console.error('Error awarding points:', error)
     }
@@ -341,7 +341,7 @@ export default function DefiningObjectivesPage() {
         setWasJustCompleted(true)
       }
       
-      // Remove confetti and award points after animation
+      // Remove confetti and award points after animation (2 seconds)
       setTimeout(() => {
         setConfetti([])
         setConfettiOrigin(null)
@@ -350,7 +350,7 @@ export default function DefiningObjectivesPage() {
         if (!wasAlreadyCompleted) {
           awardPoints()
         }
-      }, 3000)
+      }, 2000)
     }
     
     await saveData(newCompletedState)

@@ -66,12 +66,12 @@ export default function Header() {
     return () => window.removeEventListener('scoreUpdated', handleScoreUpdate)
   }, [session])
 
-  // Animate score counting up when score changes (10 points per second)
+  // Animate score counting up when score changes (13 points per second - 30% faster)
   useEffect(() => {
     if (displayScore < score) {
       const pointsToAdd = score - displayScore
-      const incrementsPerSecond = 10
-      const stepDuration = 1000 / incrementsPerSecond // 100ms per point
+      const incrementsPerSecond = 13
+      const stepDuration = 1000 / incrementsPerSecond // ~77ms per point
 
       const interval = setInterval(() => {
         setDisplayScore(prev => {
@@ -142,7 +142,7 @@ export default function Header() {
                   >
                     Organizations
                   </Link>
-                  <div className="text-lg font-semibold" style={{ color: '#FF5B35' }}>
+                  <div className="text-lg font-semibold" style={{ color: '#ffffff' }}>
                     Your Score: {Math.round(displayScore)}
                   </div>
                   <div className="flex items-center space-x-4">
