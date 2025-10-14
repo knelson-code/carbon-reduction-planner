@@ -39,12 +39,21 @@ export default function DefiningObjectivesPage() {
   
   const [stars, setStars] = useState<Star[]>([])
   const [draggedStarId, setDraggedStarId] = useState<number | null>(null)
+  const [popAudio, setPopAudio] = useState<HTMLAudioElement | null>(null)
 
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login")
     }
   }, [status, router])
+
+  // Preload pop sound
+  useEffect(() => {
+    const audio = new Audio('/pop-sound.mp3')
+    audio.preload = 'auto'
+    audio.load()
+    setPopAudio(audio)
+  }, [])
 
   // Initialize 20 stars with random positions in the star box
   useEffect(() => {
@@ -78,6 +87,12 @@ export default function DefiningObjectivesPage() {
       // Dropped on a category - star sticks there
       const draggedStar = stars.find(s => s.id === draggedStarId)
       const previousCategoryId = draggedStar?.categoryId
+
+      // Play pop sound
+      if (popAudio) {
+        popAudio.currentTime = 0
+        popAudio.play().catch(err => console.log('Audio play failed:', err))
+      }
 
       setStars(prev => prev.map(star => 
         star.id === draggedStarId 
@@ -160,11 +175,11 @@ export default function DefiningObjectivesPage() {
           </h2>
 
           {/* Instructions */}
-          <div className="mb-8 p-4 rounded" style={{ backgroundColor: '#163E64' }}>
-            <p className="text-sm" style={{ color: '#ffffff' }}>
+          <div className="mb-8 p-4">
+            <p className="text-sm" style={{ color: '#163E64' }}>
               <strong>Instructions:</strong> Drag stars from the box on the right to prioritize your objectives. 
               The more stars you assign to an objective, the higher priority it is for your organization. 
-              You can drag stars anywhere, but they only stick when placed next to an objective.
+              You can drag stars anywhere, but they only stick when placed inside an objective box.
             </p>
           </div>
 
@@ -175,7 +190,10 @@ export default function DefiningObjectivesPage() {
               {categories.map((category) => (
                 <div
                   key={category.id}
-                  className="flex items-center gap-4"
+                  className="flex items-center gap-4 p-3 rounded"
+                  style={{
+                    backgroundColor: '#0B1F32',
+                  }}
                   onDragOver={handleDragOver}
                   onDrop={(e) => handleDrop(e, category.id)}
                 >
@@ -185,19 +203,15 @@ export default function DefiningObjectivesPage() {
                       type="text"
                       value={category.label}
                       onChange={(e) => handleLabelEdit(category.id, e.target.value)}
-                      className="flex-1 px-3 py-2 rounded text-sm focus:outline-none focus:ring-2"
+                      className="flex-1 px-2 py-1 bg-transparent text-sm focus:outline-none focus:ring-2 focus:ring-white rounded"
                       style={{
-                        backgroundColor: '#4B5563',
                         color: '#ffffff',
-                        borderColor: '#4B5563',
-                        borderWidth: '1px',
                       }}
                     />
                   ) : (
                     <div
-                      className="flex-1 px-3 py-2 rounded text-sm"
+                      className="flex-1 px-2 py-1 text-sm"
                       style={{
-                        backgroundColor: '#4B5563',
                         color: '#ffffff',
                       }}
                     >
@@ -206,7 +220,7 @@ export default function DefiningObjectivesPage() {
                   )}
 
                   {/* Stars for this category */}
-                  <div className="flex gap-2 min-w-[100px]">
+                  <div className="flex gap-2 flex-wrap justify-end" style={{ minWidth: '200px' }}>
                     {stars
                       .filter(star => star.categoryId === category.id)
                       .map((star) => (
