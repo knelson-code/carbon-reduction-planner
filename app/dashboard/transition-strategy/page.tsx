@@ -167,7 +167,7 @@ export default function TransitionStrategyPage() {
                       }}
                     >
                       {item.completed && (
-                        <div className="w-6 h-6 rounded-full" style={{ backgroundColor: 'white' }} />
+                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'white' }} />
                       )}
                     </div>
                     {/* Label */}

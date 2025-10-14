@@ -371,8 +371,7 @@ export default function DefiningObjectivesPage() {
               {/* Mark as Complete Button - Narrower and centered */}
               <button
                 onClick={handleMarkComplete}
-                disabled={isSaving}
-                className="px-6 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90 disabled:opacity-50"
+                className="px-6 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
                 style={{
                   backgroundColor: '#0B1F32',
                   color: '#ffffff',
