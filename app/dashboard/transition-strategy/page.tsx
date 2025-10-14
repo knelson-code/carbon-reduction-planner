@@ -87,7 +87,7 @@ export default function TransitionStrategyPage() {
           </div>
 
           {/* Progress Timeline */}
-          <div className="mt-12 bg-white rounded-lg shadow-md p-8">
+          <div className="mt-12 mx-4 bg-white rounded-lg shadow-md p-8">
             <div className="overflow-x-auto">
               <div className="flex items-start justify-between relative min-w-max">
               {/* Horizontal line */}
