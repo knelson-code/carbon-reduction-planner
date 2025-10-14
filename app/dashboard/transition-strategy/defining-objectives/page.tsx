@@ -12,6 +12,13 @@ interface Category {
   stars: number
 }
 
+interface Star {
+  id: number
+  x: number
+  y: number
+  categoryId: string | null
+}
+
 export default function DefiningObjectivesPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -25,13 +32,13 @@ export default function DefiningObjectivesPage() {
     { id: 'reputation', label: 'Maintain our reputation and social license', isEditable: false, stars: 0 },
     { id: 'risks', label: 'Be prepared for climate risks', isEditable: false, stars: 0 },
     { id: 'justice', label: 'Fight for climate justice', isEditable: false, stars: 0 },
-    { id: 'other1', label: 'Other', isEditable: true, stars: 0 },
-    { id: 'other2', label: 'Other', isEditable: true, stars: 0 },
-    { id: 'other3', label: 'Other', isEditable: true, stars: 0 },
+    { id: 'other1', label: 'Other (Type a new name here)', isEditable: true, stars: 0 },
+    { id: 'other2', label: 'Other (Type a new name here)', isEditable: true, stars: 0 },
+    { id: 'other3', label: 'Other (Type a new name here)', isEditable: true, stars: 0 },
   ])
   
-  const [availableStars, setAvailableStars] = useState(10)
-  const [draggedStar, setDraggedStar] = useState<{ from: string | null, index: number }>({ from: null, index: -1 })
+  const [stars, setStars] = useState<Star[]>([])
+  const [draggedStarId, setDraggedStarId] = useState<number | null>(null)
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -39,55 +46,81 @@ export default function DefiningObjectivesPage() {
     }
   }, [status, router])
 
-  const handleDragStart = (e: React.DragEvent, from: string | null, index: number) => {
-    setDraggedStar({ from, index })
-    e.dataTransfer.effectAllowed = 'move'
+  // Initialize 20 stars with random positions in the star box
+  useEffect(() => {
+    const initialStars: Star[] = []
+    for (let i = 0; i < 20; i++) {
+      initialStars.push({
+        id: i,
+        x: Math.random() * 250, // Random x within ~300px box
+        y: Math.random() * 400, // Random y within box height
+        categoryId: null
+      })
+    }
+    setStars(initialStars)
+  }, [])
+
+  const handleDragStart = (e: React.DragEvent, starId: number) => {
+    setDraggedStarId(starId)
+  }
+
+  const handleDrag = (e: React.DragEvent) => {
+    if (e.clientX === 0 && e.clientY === 0) return // Ignore end of drag
+    // Stars can be dragged anywhere - no restrictions
+  }
+
+  const handleDrop = (e: React.DragEvent, categoryId?: string) => {
+    e.preventDefault()
+    
+    if (draggedStarId === null) return
+
+    if (categoryId) {
+      // Dropped on a category - star sticks there
+      const draggedStar = stars.find(s => s.id === draggedStarId)
+      const previousCategoryId = draggedStar?.categoryId
+
+      setStars(prev => prev.map(star => 
+        star.id === draggedStarId 
+          ? { ...star, categoryId, x: 0, y: 0 } 
+          : star
+      ))
+      
+      setCategories(prev => prev.map(cat => {
+        if (cat.id === categoryId) {
+          return { ...cat, stars: cat.stars + 1 }
+        }
+        if (cat.id === previousCategoryId) {
+          return { ...cat, stars: Math.max(0, cat.stars - 1) }
+        }
+        return cat
+      }))
+    } else {
+      // Dropped back in star box - return to box
+      const rect = e.currentTarget.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+      
+      setStars(prev => prev.map(star => {
+        if (star.id === draggedStarId) {
+          // Remove from category if it was in one
+          if (star.categoryId) {
+            setCategories(prev => prev.map(cat =>
+              cat.id === star.categoryId
+                ? { ...cat, stars: Math.max(0, cat.stars - 1) }
+                : cat
+            ))
+          }
+          return { ...star, categoryId: null, x, y }
+        }
+        return star
+      }))
+    }
+    
+    setDraggedStarId(null)
   }
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault()
-    e.dataTransfer.dropEffect = 'move'
-  }
-
-  const handleDrop = (e: React.DragEvent, categoryId: string) => {
-    e.preventDefault()
-    
-    if (draggedStar.from === null) {
-      // Moving from available stars pool
-      if (availableStars > 0) {
-        setCategories(prev => prev.map(cat => 
-          cat.id === categoryId ? { ...cat, stars: cat.stars + 1 } : cat
-        ))
-        setAvailableStars(prev => prev - 1)
-      }
-    } else {
-      // Moving from another category
-      setCategories(prev => prev.map(cat => {
-        if (cat.id === draggedStar.from) {
-          return { ...cat, stars: cat.stars - 1 }
-        }
-        if (cat.id === categoryId) {
-          return { ...cat, stars: cat.stars + 1 }
-        }
-        return cat
-      }))
-    }
-    
-    setDraggedStar({ from: null, index: -1 })
-  }
-
-  const handleDropToAvailable = (e: React.DragEvent) => {
-    e.preventDefault()
-    
-    if (draggedStar.from !== null) {
-      // Return star to available pool
-      setCategories(prev => prev.map(cat => 
-        cat.id === draggedStar.from ? { ...cat, stars: cat.stars - 1 } : cat
-      ))
-      setAvailableStars(prev => prev + 1)
-    }
-    
-    setDraggedStar({ from: null, index: -1 })
   }
 
   const handleLabelEdit = (id: string, newLabel: string) => {
@@ -108,20 +141,36 @@ export default function DefiningObjectivesPage() {
     return null
   }
 
+  const freeStars = stars.filter(star => star.categoryId === null)
+
   return (
     <div className="flex min-h-[calc(100vh-92px)]">
       <Sidebar />
       
-      <div className="flex-1" style={{ backgroundColor: '#0B1F32' }}>
+      <div className="flex-1 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Title */}
-          <h1 className="text-2xl font-bold mb-8 text-center" style={{ color: '#ffffff' }}>
-            What are you trying to achieve with through your action on climate?
+          <h1 className="text-3xl font-bold mb-2 text-center" style={{ color: '#163E64' }}>
+            Think about your objectives
           </h1>
+          
+          {/* Subtitle */}
+          <h2 className="text-lg mb-4 text-center" style={{ color: '#163E64' }}>
+            What are you trying to achieve with the time you spend working on climate change?
+          </h2>
+
+          {/* Instructions */}
+          <div className="mb-8 p-4 rounded" style={{ backgroundColor: '#163E64' }}>
+            <p className="text-sm" style={{ color: '#ffffff' }}>
+              <strong>Instructions:</strong> Drag stars from the box on the right to prioritize your objectives. 
+              The more stars you assign to an objective, the higher priority it is for your organization. 
+              You can drag stars anywhere, but they only stick when placed next to an objective.
+            </p>
+          </div>
 
           {/* Activity Area */}
-          <div className="flex gap-12 items-start">
-            {/* Categories with Stars */}
+          <div className="flex gap-8 items-start">
+            {/* Categories */}
             <div className="flex-1 space-y-3">
               {categories.map((category) => (
                 <div
@@ -136,18 +185,17 @@ export default function DefiningObjectivesPage() {
                       type="text"
                       value={category.label}
                       onChange={(e) => handleLabelEdit(category.id, e.target.value)}
-                      className="w-96 px-3 py-2 rounded text-sm focus:outline-none focus:ring-2"
+                      className="flex-1 px-3 py-2 rounded text-sm focus:outline-none focus:ring-2"
                       style={{
                         backgroundColor: '#4B5563',
                         color: '#ffffff',
                         borderColor: '#4B5563',
                         borderWidth: '1px',
                       }}
-                      placeholder="Enter custom goal..."
                     />
                   ) : (
                     <div
-                      className="w-96 px-3 py-2 rounded text-sm"
+                      className="flex-1 px-3 py-2 rounded text-sm"
                       style={{
                         backgroundColor: '#4B5563',
                         color: '#ffffff',
@@ -158,56 +206,52 @@ export default function DefiningObjectivesPage() {
                   )}
 
                   {/* Stars for this category */}
-                  <div className="flex gap-2">
-                    {Array.from({ length: category.stars }).map((_, index) => (
-                      <div
-                        key={index}
-                        draggable
-                        onDragStart={(e) => handleDragStart(e, category.id, index)}
-                        className="w-10 h-10 rounded-full flex items-center justify-center cursor-move"
-                        style={{
-                          backgroundColor: '#ffffff',
-                          border: '2px solid #163E64',
-                        }}
-                      >
-                        <span style={{ color: '#FF5B35', fontSize: '24px' }}>★</span>
-                      </div>
-                    ))}
+                  <div className="flex gap-2 min-w-[100px]">
+                    {stars
+                      .filter(star => star.categoryId === category.id)
+                      .map((star) => (
+                        <div
+                          key={star.id}
+                          draggable
+                          onDragStart={(e) => handleDragStart(e, star.id)}
+                          className="w-8 h-8 rounded-full flex items-center justify-center cursor-move"
+                          style={{
+                            backgroundColor: '#ffffff',
+                            border: '2px solid #163E64',
+                          }}
+                        >
+                          <span style={{ color: '#FF5B35', fontSize: '20px' }}>★</span>
+                        </div>
+                      ))}
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Available Stars Pool */}
+            {/* Star Pool Box */}
             <div
-              className="flex flex-col gap-2 flex-shrink-0"
+              className="w-80 h-96 border-2 rounded-lg relative bg-gray-50"
+              style={{ borderColor: '#163E64' }}
               onDragOver={handleDragOver}
-              onDrop={handleDropToAvailable}
+              onDrop={(e) => handleDrop(e)}
             >
-              {Array.from({ length: availableStars }).map((_, index) => (
+              {freeStars.map((star) => (
                 <div
-                  key={index}
+                  key={star.id}
                   draggable
-                  onDragStart={(e) => handleDragStart(e, null, index)}
-                  className="w-10 h-10 rounded-full flex items-center justify-center cursor-move"
+                  onDragStart={(e) => handleDragStart(e, star.id)}
+                  className="w-8 h-8 rounded-full flex items-center justify-center cursor-move absolute"
                   style={{
                     backgroundColor: '#ffffff',
                     border: '2px solid #163E64',
+                    left: `${star.x}px`,
+                    top: `${star.y}px`,
                   }}
                 >
-                  <span style={{ color: '#FF5B35', fontSize: '24px' }}>★</span>
+                  <span style={{ color: '#FF5B35', fontSize: '20px' }}>★</span>
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* Instructions */}
-          <div className="mt-8 p-4 rounded" style={{ backgroundColor: '#163E64' }}>
-            <p className="text-sm" style={{ color: '#ffffff' }}>
-              <strong>Instructions:</strong> Drag stars from the right side to prioritize your goals. 
-              The more stars you assign to a category, the higher priority it is for your organization. 
-              You can also drag stars between categories or back to the pool on the right.
-            </p>
           </div>
         </div>
       </div>
