@@ -115,13 +115,13 @@ export default function DashboardPage() {
           </div>
 
           {/* Getting Started Accordion Section */}
-          <div className="mb-8">
+          <div className="mb-8 mt-14 mx-auto max-w-4xl px-8">
             {/* Accordion Header */}
             <button
               onClick={() => setIsAccordionOpen(!isAccordionOpen)}
               className="w-full flex items-center gap-3 pb-2"
               style={{
-                borderBottom: '2px solid #163E64',
+                borderBottom: '1px solid #163E64',
               }}
             >
               <span 
@@ -161,6 +161,15 @@ export default function DashboardPage() {
                 <ul className="space-y-2 pl-4">
                   <li>
                     <Link 
+                      href="/dashboard/climate-risk"
+                      className="text-sm underline hover:opacity-70 transition-opacity"
+                      style={{ color: '#163E64' }}
+                    >
+                      • Think about the nature of the problem
+                    </Link>
+                  </li>
+                  <li>
+                    <Link 
                       href="/dashboard/transition-strategy/defining-objectives"
                       className="text-sm underline hover:opacity-70 transition-opacity"
                       style={{ color: '#163E64' }}
@@ -175,15 +184,6 @@ export default function DashboardPage() {
                       style={{ color: '#163E64' }}
                     >
                       • Think about whether the actions you're attempting are logically likely to produce the change you're trying to achieve
-                    </Link>
-                  </li>
-                  <li>
-                    <Link 
-                      href="/dashboard/climate-risk"
-                      className="text-sm underline hover:opacity-70 transition-opacity"
-                      style={{ color: '#163E64' }}
-                    >
-                      • Climate change is not a scientific problem. The science is clear. It's a social, economic and political problem.
                     </Link>
                   </li>
                 </ul>
