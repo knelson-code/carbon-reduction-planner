@@ -44,7 +44,7 @@ export default function DefiningObjectivesPage() {
   const [isCompleted, setIsCompleted] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
-  const [particles, setParticles] = useState<Array<{id: number, angle: number}>>([])
+  const [particles, setParticles] = useState<Array<{id: number, angle: number, distance: number, x: number, y: number}>>([])
   const [confetti, setConfetti] = useState<Array<{id: number, color: string, delay: number, angle: number}>>([])
   const [confettiOrigin, setConfettiOrigin] = useState<{x: number, y: number} | null>(null)
 
@@ -94,13 +94,13 @@ export default function DefiningObjectivesPage() {
   useEffect(() => {
     const popSound = new Audio('/sharp-pop.mp3')
     popSound.preload = 'auto'
-    popSound.volume = 0.7 // 70% volume
+    popSound.volume = 0.56 // 56% volume (reduced by 20%)
     popSound.load()
     setPopAudio(popSound)
 
     const completeSound = new Audio('/completion-sound.mp3')
     completeSound.preload = 'auto'
-    completeSound.volume = 0.3 // 30% volume
+    completeSound.volume = 0.24 // 24% volume (reduced by 20%)
     completeSound.load()
     setCompletionAudio(completeSound)
   }, [])
@@ -182,17 +182,24 @@ export default function DefiningObjectivesPage() {
         popAudio.play().catch(err => console.log('Audio play failed:', err))
       }
       
-      // Create orange particle burst effect
-      const newParticles = Array.from({ length: 8 }, (_, i) => ({
+      // Create orange particle burst effect from drop location
+      const rect = e.currentTarget.getBoundingClientRect()
+      const dropX = rect.right - 20 // Near right side of category box
+      const dropY = rect.top + rect.height / 2 // Middle of category box
+      
+      const newParticles = Array.from({ length: 20 }, (_, i) => ({
         id: Date.now() + i,
-        angle: (Math.PI * 2 * i) / 8
+        angle: Math.random() * Math.PI * 2, // Random direction
+        distance: 20 + Math.random() * 30, // Random distance 20-50px
+        x: dropX,
+        y: dropY
       }))
       setParticles(newParticles)
       
       // Remove particles after animation
       setTimeout(() => {
         setParticles([])
-      }, 500)
+      }, 600)
 
       setStars(prev => prev.map(star => 
         star.id === draggedStarId 
@@ -309,14 +316,17 @@ export default function DefiningObjectivesPage() {
             }
             100% {
               opacity: 0;
-              transform: translate(var(--tx), var(--ty)) scale(0.3);
+              transform: translate(var(--tx), var(--ty)) scale(0);
             }
           }
           
-          @keyframes confettiFall {
+          @keyframes confettiBurst {
             0% {
               opacity: 1;
-              transform: translate(0, 0) rotateZ(0deg) rotateY(0deg);
+              transform: translate(0, -10px) rotateZ(0deg) rotateY(0deg);
+            }
+            15% {
+              transform: translate(var(--tx-mid), -30px) rotateZ(180deg) rotateY(360deg);
             }
             100% {
               opacity: 0;
@@ -325,19 +335,18 @@ export default function DefiningObjectivesPage() {
           }
           
           .particle {
-            animation: particleBurst 0.5s ease-out forwards;
+            animation: particleBurst 0.6s ease-out forwards;
           }
           
           .confetti-piece {
-            animation: confettiFall 3s ease-in forwards;
+            animation: confettiBurst 3s ease-in forwards;
           }
         `}</style>
 
         {/* Orange Particle Effects */}
         {particles.map((particle) => {
-          const distance = 40
-          const tx = Math.cos(particle.angle) * distance
-          const ty = Math.sin(particle.angle) * distance
+          const tx = Math.cos(particle.angle) * particle.distance
+          const ty = Math.sin(particle.angle) * particle.distance
           
           return (
             <div
@@ -345,12 +354,12 @@ export default function DefiningObjectivesPage() {
               className="particle"
               style={{
                 position: 'fixed',
-                width: '6px',
-                height: '6px',
+                width: '3px',
+                height: '3px',
                 borderRadius: '50%',
                 backgroundColor: '#FF5B35',
-                left: '50%',
-                top: '50%',
+                left: `${particle.x}px`,
+                top: `${particle.y}px`,
                 pointerEvents: 'none',
                 zIndex: 9999,
                 '--tx': `${tx}px`,
@@ -364,6 +373,7 @@ export default function DefiningObjectivesPage() {
         {confetti.length > 0 && confettiOrigin && confetti.map((piece) => {
           const distance = 150 + Math.random() * 100
           const tx = Math.cos(piece.angle) * distance * (Math.random() * 0.5 + 0.5)
+          const txMid = tx * 0.3 // Midpoint for upward burst
           
           return (
             <div
@@ -380,6 +390,7 @@ export default function DefiningObjectivesPage() {
                 zIndex: 9999,
                 animationDelay: `${piece.delay}s`,
                 '--tx': `${tx}px`,
+                '--tx-mid': `${txMid}px`,
               } as React.CSSProperties}
             />
           )
