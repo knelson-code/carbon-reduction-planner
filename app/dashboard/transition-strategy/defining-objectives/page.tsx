@@ -39,6 +39,7 @@ export default function DefiningObjectivesPage() {
   const [stars, setStars] = useState<Star[]>([])
   const [draggedStarId, setDraggedStarId] = useState<number | null>(null)
   const [popAudio, setPopAudio] = useState<HTMLAudioElement | null>(null)
+  const [isCompleted, setIsCompleted] = useState(false)
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -165,12 +166,12 @@ export default function DefiningObjectivesPage() {
       <div className="flex-1 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           {/* Title */}
-          <h1 className="text-2xl font-bold mb-2 text-center" style={{ color: '#163E64' }}>
+          <h1 className="text-2xl font-bold mb-1 text-center" style={{ color: '#163E64' }}>
             Think about your objectives
           </h1>
           
           {/* Subtitle */}
-          <h2 className="text-base mb-3 text-center font-semibold" style={{ color: '#163E64' }}>
+          <h2 className="text-base mb-2 text-center font-semibold" style={{ color: '#163E64' }}>
             What are you trying to achieve with the time you spend working on climate change?
           </h2>
 
@@ -214,8 +215,8 @@ export default function DefiningObjectivesPage() {
                     )}
                   </div>
 
-                  {/* Percentage - Fixed width for alignment */}
-                  <div className="w-12 text-right">
+                  {/* Percentage - Positioned closer to text */}
+                  <div className="w-10 text-right mr-2">
                     {category.stars > 0 && totalAssignedStars > 0 && (
                       <div
                         className="text-sm font-semibold"
@@ -229,7 +230,7 @@ export default function DefiningObjectivesPage() {
                   </div>
 
                   {/* Stars for this category */}
-                  <div className="flex gap-2 flex-wrap justify-end" style={{ minWidth: '160px' }}>
+                  <div className="flex gap-2 flex-wrap justify-end flex-1">
                     {stars
                       .filter(star => star.categoryId === category.id)
                       .map((star) => (
@@ -240,7 +241,7 @@ export default function DefiningObjectivesPage() {
                           className="w-8 h-8 rounded-full flex items-center justify-center cursor-move"
                           style={{
                             backgroundColor: '#ffffff',
-                            border: '2px solid #163E64',
+                            border: '2px solid #ffffff',
                           }}
                         >
                           <span style={{ color: '#FF5B35', fontSize: '20px' }}>★</span>
@@ -251,38 +252,51 @@ export default function DefiningObjectivesPage() {
               ))}
             </div>
 
-            {/* Star Pool Box */}
-            <div
-              className="w-80 h-96 border-2 rounded-lg relative bg-gray-50"
-              style={{ borderColor: '#163E64' }}
-              onDragOver={handleDragOver}
-              onDrop={(e) => handleDrop(e)}
-            >
-              {/* Instructions at top of star box */}
-              <div className="absolute top-0 left-0 right-0 p-3 text-center" style={{ pointerEvents: 'none' }}>
-                <p className="text-xs leading-tight" style={{ color: '#163E64' }}>
-                  <strong>Instructions:</strong> Drag stars from the box on the right to prioritize your objectives. 
-                  The more stars you assign to an objective, the higher priority it is for your organization. 
-                  You can drag stars anywhere, but they only stick when placed inside an objective box.
-                </p>
+            {/* Star Pool Box with Completion Button */}
+            <div className="flex flex-col gap-3">
+              <div
+                className="w-80 h-96 border-2 rounded-lg relative bg-gray-50"
+                style={{ borderColor: '#163E64' }}
+                onDragOver={handleDragOver}
+                onDrop={(e) => handleDrop(e)}
+              >
+                {/* Instructions at top of star box */}
+                <div className="absolute top-0 left-0 right-0 p-3 text-center" style={{ pointerEvents: 'none' }}>
+                  <p className="text-xs leading-tight" style={{ color: '#163E64' }}>
+                    <strong>Instructions:</strong> Drag stars from the box on the right to prioritize your objectives. 
+                    The more stars you assign to an objective, the higher priority it is for your organization.
+                  </p>
+                </div>
+
+                {freeStars.map((star) => (
+                  <div
+                    key={star.id}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, star.id)}
+                    className="w-8 h-8 rounded-full flex items-center justify-center cursor-move absolute"
+                    style={{
+                      backgroundColor: '#ffffff',
+                      border: '2px solid #ffffff',
+                      left: `${star.x}px`,
+                      top: `${star.y}px`,
+                    }}
+                  >
+                    <span style={{ color: '#FF5B35', fontSize: '20px' }}>★</span>
+                  </div>
+                ))}
               </div>
 
-              {freeStars.map((star) => (
-                <div
-                  key={star.id}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, star.id)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center cursor-move absolute"
-                  style={{
-                    backgroundColor: '#ffffff',
-                    border: '2px solid #163E64',
-                    left: `${star.x}px`,
-                    top: `${star.y}px`,
-                  }}
-                >
-                  <span style={{ color: '#FF5B35', fontSize: '20px' }}>★</span>
-                </div>
-              ))}
+              {/* Mark as Complete Button */}
+              <button
+                onClick={() => setIsCompleted(!isCompleted)}
+                className="w-80 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
+                style={{
+                  backgroundColor: '#163E64',
+                  color: '#ffffff',
+                }}
+              >
+                {isCompleted ? '✓ Completed' : 'Mark as complete'}
+              </button>
             </div>
           </div>
         </div>
