@@ -160,30 +160,33 @@ export default function DashboardPage() {
                 </p>
                 <ul className="space-y-2 pl-4">
                   <li>
+                    <span style={{ color: '#163E64' }}>• </span>
                     <Link 
                       href="/dashboard/climate-risk"
                       className="text-sm underline hover:opacity-70 transition-opacity"
                       style={{ color: '#163E64' }}
                     >
-                      • Think about the nature of the problem
+                      Think about the nature of the problem
                     </Link>
                   </li>
                   <li>
+                    <span style={{ color: '#163E64' }}>• </span>
                     <Link 
                       href="/dashboard/transition-strategy/defining-objectives"
                       className="text-sm underline hover:opacity-70 transition-opacity"
                       style={{ color: '#163E64' }}
                     >
-                      • Think about what you're trying to accomplish
+                      Think about what you're trying to accomplish
                     </Link>
                   </li>
                   <li>
+                    <span style={{ color: '#163E64' }}>• </span>
                     <Link 
                       href="/dashboard/impact-strategy/theory-of-change"
                       className="text-sm underline hover:opacity-70 transition-opacity"
                       style={{ color: '#163E64' }}
                     >
-                      • Think about whether the actions you're attempting are logically likely to produce the change you're trying to achieve
+                      Think about whether the actions you're attempting are logically likely to produce the change you're trying to achieve
                     </Link>
                   </li>
                 </ul>
