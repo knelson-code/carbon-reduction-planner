@@ -172,17 +172,17 @@ export default function DefiningObjectivesPage() {
           
           {/* Subtitle */}
           <h2 className="text-base mb-2 text-center font-semibold" style={{ color: '#163E64' }}>
-            What are you trying to achieve with the time you spend working on climate change?
+            What are you trying to achieve with your work on climate change?
           </h2>
 
           {/* Activity Area */}
           <div className="flex gap-4 items-start">
             {/* Categories */}
-            <div className="flex-1 space-y-2">
+            <div className="flex-1 space-y-1.5">
               {categories.map((category) => (
                 <div
                   key={category.id}
-                  className="flex items-center gap-3 p-2 rounded border"
+                  className="flex items-center gap-2 p-1.5 rounded border"
                   style={{
                     backgroundColor: '#ffffff',
                     borderColor: '#163E64',
@@ -197,7 +197,7 @@ export default function DefiningObjectivesPage() {
                         type="text"
                         value={category.label}
                         onChange={(e) => handleLabelEdit(category.id, e.target.value)}
-                        className="w-full px-2 py-1 text-sm focus:outline-none focus:ring-2 rounded"
+                        className="w-full px-2 py-0.5 text-sm focus:outline-none focus:ring-2 rounded"
                         style={{
                           color: '#0B1F32',
                           borderColor: '#163E64',
@@ -205,7 +205,7 @@ export default function DefiningObjectivesPage() {
                       />
                     ) : (
                       <div
-                        className="px-2 py-1 text-sm"
+                        className="px-2 py-0.5 text-sm"
                         style={{
                           color: '#0B1F32',
                         }}
@@ -216,7 +216,7 @@ export default function DefiningObjectivesPage() {
                   </div>
 
                   {/* Percentage - Positioned closer to text */}
-                  <div className="w-10 text-right mr-2">
+                  <div className="w-10 text-right mr-1">
                     {category.stars > 0 && totalAssignedStars > 0 && (
                       <div
                         className="text-sm font-semibold"
@@ -230,7 +230,7 @@ export default function DefiningObjectivesPage() {
                   </div>
 
                   {/* Stars for this category */}
-                  <div className="flex gap-2 flex-wrap justify-end flex-1">
+                  <div className="flex gap-1.5 flex-wrap justify-end flex-1">
                     {stars
                       .filter(star => star.categoryId === category.id)
                       .map((star) => (
@@ -238,13 +238,13 @@ export default function DefiningObjectivesPage() {
                           key={star.id}
                           draggable
                           onDragStart={(e) => handleDragStart(e, star.id)}
-                          className="w-8 h-8 rounded-full flex items-center justify-center cursor-move"
+                          className="w-7 h-7 rounded-full flex items-center justify-center cursor-move"
                           style={{
                             backgroundColor: '#ffffff',
                             border: '2px solid #ffffff',
                           }}
                         >
-                          <span style={{ color: '#FF5B35', fontSize: '20px' }}>★</span>
+                          <span style={{ color: '#FF5B35', fontSize: '18px' }}>★</span>
                         </div>
                       ))}
                   </div>
@@ -253,7 +253,7 @@ export default function DefiningObjectivesPage() {
             </div>
 
             {/* Star Pool Box with Completion Button */}
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 items-center">
               <div
                 className="w-80 h-96 border-2 rounded-lg relative bg-gray-50"
                 style={{ borderColor: '#163E64' }}
@@ -261,7 +261,7 @@ export default function DefiningObjectivesPage() {
                 onDrop={(e) => handleDrop(e)}
               >
                 {/* Instructions at top of star box */}
-                <div className="absolute top-0 left-0 right-0 p-3 text-center" style={{ pointerEvents: 'none' }}>
+                <div className="absolute top-0 left-0 right-0 p-3 text-center bg-white rounded-t-lg" style={{ pointerEvents: 'none', borderBottom: '1px solid #163E64' }}>
                   <p className="text-xs leading-tight" style={{ color: '#163E64' }}>
                     <strong>Instructions:</strong> Drag stars from the box on the right to prioritize your objectives. 
                     The more stars you assign to an objective, the higher priority it is for your organization.
@@ -286,16 +286,16 @@ export default function DefiningObjectivesPage() {
                 ))}
               </div>
 
-              {/* Mark as Complete Button */}
+              {/* Mark as Complete Button - Narrower and centered */}
               <button
                 onClick={() => setIsCompleted(!isCompleted)}
-                className="w-80 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
+                className="px-6 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
                 style={{
                   backgroundColor: '#163E64',
                   color: '#ffffff',
                 }}
               >
-                {isCompleted ? '✓ Completed' : 'Mark as complete'}
+                {isCompleted ? '✓ Activity Completed' : 'Mark this activity as complete'}
               </button>
             </div>
           </div>
