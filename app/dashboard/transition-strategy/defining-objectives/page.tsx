@@ -45,7 +45,7 @@ export default function DefiningObjectivesPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [particles, setParticles] = useState<Array<{id: number, angle: number, distance: number, x: number, y: number}>>([])
-  const [confetti, setConfetti] = useState<Array<{id: number, color: string, delay: number, angle: number}>>([])
+  const [confetti, setConfetti] = useState<Array<{id: number, color: string, delay: number, angle: number, peakHeight: number, finalRotateZ: number, finalRotateY: number}>>([])
   const [confettiOrigin, setConfettiOrigin] = useState<{x: number, y: number} | null>(null)
 
   const ACTIVITY_ID = "transition-strategy-defining-objectives"
@@ -183,15 +183,17 @@ export default function DefiningObjectivesPage() {
       }
       
       // Create orange particle burst effect from drop location
+      // Position particles at leftmost star position (where user dropped it)
       const rect = e.currentTarget.getBoundingClientRect()
-      const dropX = rect.right - 20 // Near right side of category box
+      const currentStarsInCategory = stars.filter(s => s.categoryId === categoryId).length
+      const starRowX = rect.right - (currentStarsInCategory * 32) - 20 // Calculate leftmost star position
       const dropY = rect.top + rect.height / 2 // Middle of category box
       
       const newParticles = Array.from({ length: 20 }, (_, i) => ({
         id: Date.now() + i,
         angle: Math.random() * Math.PI * 2, // Random direction
         distance: 20 + Math.random() * 30, // Random distance 20-50px
-        x: dropX,
+        x: starRowX,
         y: dropY
       }))
       setParticles(newParticles)
@@ -268,13 +270,16 @@ export default function DefiningObjectivesPage() {
         y: rect.top + rect.height / 2
       })
       
-      // Create confetti burst
+      // Create confetti burst with varied trajectories
       const colors = ['#FF5B35', '#0B1F32', '#9CA3AF']
       const newConfetti = Array.from({ length: 50 }, (_, i) => ({
         id: Date.now() + i,
         color: colors[Math.floor(Math.random() * colors.length)],
-        delay: Math.random() * 0.1,
-        angle: (Math.random() * Math.PI * 2)
+        delay: Math.random() * 0.15,
+        angle: Math.random() * Math.PI * 2, // Random angle all around
+        peakHeight: -(40 + Math.random() * 80), // Random peak height 40-120px upward
+        finalRotateZ: 360 + Math.random() * 720, // Random final Z rotation
+        finalRotateY: 360 + Math.random() * 1080, // Random final Y rotation
       }))
       setConfetti(newConfetti)
       
@@ -323,14 +328,14 @@ export default function DefiningObjectivesPage() {
           @keyframes confettiBurst {
             0% {
               opacity: 1;
-              transform: translate(0, -10px) rotateZ(0deg) rotateY(0deg);
+              transform: translate(0, -20px) rotateZ(0deg) rotateY(0deg);
             }
-            15% {
-              transform: translate(var(--tx-mid), -30px) rotateZ(180deg) rotateY(360deg);
+            20% {
+              transform: translate(var(--tx-mid), var(--peak-y)) rotateZ(180deg) rotateY(360deg);
             }
             100% {
               opacity: 0;
-              transform: translate(var(--tx), 400px) rotateZ(720deg) rotateY(1080deg);
+              transform: translate(var(--tx), 500px) rotateZ(var(--final-rotate-z)) rotateY(var(--final-rotate-y));
             }
           }
           
@@ -371,9 +376,9 @@ export default function DefiningObjectivesPage() {
 
         {/* Confetti Effect */}
         {confetti.length > 0 && confettiOrigin && confetti.map((piece) => {
-          const distance = 150 + Math.random() * 100
-          const tx = Math.cos(piece.angle) * distance * (Math.random() * 0.5 + 0.5)
-          const txMid = tx * 0.3 // Midpoint for upward burst
+          const distance = 100 + Math.random() * 150
+          const tx = Math.cos(piece.angle) * distance
+          const txMid = tx * 0.4 // Midpoint for upward trajectory
           
           return (
             <div
@@ -391,25 +396,29 @@ export default function DefiningObjectivesPage() {
                 animationDelay: `${piece.delay}s`,
                 '--tx': `${tx}px`,
                 '--tx-mid': `${txMid}px`,
+                '--peak-y': `${piece.peakHeight}px`,
+                '--final-rotate-z': `${piece.finalRotateZ}deg`,
+                '--final-rotate-y': `${piece.finalRotateY}deg`,
               } as React.CSSProperties}
             />
           )
         })}
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          {/* Back to Transition Strategy link */}
-          <Link 
-            href="/dashboard/transition-strategy"
-            className="inline-block mb-3 text-sm font-light hover:opacity-80 transition-opacity"
-            style={{ color: '#FF5B35' }}
-          >
-            ← Back to the Transition Strategy
-          </Link>
-
-          {/* Title */}
-          <h1 className="text-2xl font-bold mb-1 text-center" style={{ color: '#0B1F32' }}>
-            Think about your objectives
-          </h1>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
+          {/* Title with Back link */}
+          <div className="flex items-center justify-between mb-1">
+            <Link 
+              href="/dashboard/transition-strategy"
+              className="text-sm font-light hover:opacity-80 transition-opacity"
+              style={{ color: '#FF5B35' }}
+            >
+              ← Back to Transition Strategy
+            </Link>
+            <h1 className="text-2xl font-bold flex-1 text-center" style={{ color: '#0B1F32' }}>
+              Think about your objectives
+            </h1>
+            <div style={{ width: '180px' }}></div> {/* Spacer for centering */}
+          </div>
           
           {/* Subtitle */}
           <h2 className="text-base mb-2 text-center" style={{ color: '#0B1F32' }}>
@@ -542,7 +551,7 @@ export default function DefiningObjectivesPage() {
           </div>
 
           {/* Bottom disclaimer link */}
-          <div className="mt-8 text-center">
+          <div className="mt-3 text-center">
             <Link 
               href="/dashboard/transition-strategy/personal-priorities"
               className="text-xs font-light hover:opacity-80 transition-opacity"
