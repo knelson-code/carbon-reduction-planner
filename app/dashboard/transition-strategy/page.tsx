@@ -152,23 +152,23 @@ export default function TransitionStrategyPage() {
                   >
                     {/* Circle */}
                     <div
-                      className="w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-200"
+                      className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200"
                       style={{
                         backgroundColor: item.completed ? '#0B1F32' : 'white',
-                        borderColor: '#0B1F32',
+                        border: item.completed ? '3px solid white' : '2px solid #0B1F32',
+                        outline: item.completed ? '2px solid #0B1F32' : 'none',
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.backgroundColor = '#FF5B35'
-                        e.currentTarget.style.borderColor = '#FF5B35'
+                        e.currentTarget.style.border = '3px solid white'
+                        e.currentTarget.style.outline = '2px solid #FF5B35'
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.backgroundColor = item.completed ? '#0B1F32' : 'white'
-                        e.currentTarget.style.borderColor = '#0B1F32'
+                        e.currentTarget.style.border = item.completed ? '3px solid white' : '2px solid #0B1F32'
+                        e.currentTarget.style.outline = item.completed ? '2px solid #0B1F32' : 'none'
                       }}
                     >
-                      {item.completed && (
-                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: 'white' }} />
-                      )}
                     </div>
                     {/* Label */}
                     <p 
