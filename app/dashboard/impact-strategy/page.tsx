@@ -87,8 +87,9 @@ export default function ImpactStrategyPage() {
           </div>
 
           {/* Progress Timeline */}
-          <div className="mt-12 bg-white rounded-lg shadow-md p-8 overflow-x-auto">
-            <div className="flex items-start justify-between relative min-w-max">
+          <div className="mt-12 bg-white rounded-lg shadow-md p-8">
+            <div className="overflow-x-auto">
+              <div className="flex items-start justify-between relative min-w-max">
               {/* Horizontal line */}
               <div 
                 className="absolute top-5 left-0 right-0 h-0.5"
@@ -144,6 +145,7 @@ export default function ImpactStrategyPage() {
                     </p>
                   </Link>
                 ))}
+              </div>
               </div>
             </div>
           </div>
