@@ -108,7 +108,7 @@ export default function DefiningObjectivesPage() {
 
     const pointsSound = new Audio('/points-sound.mp3')
     pointsSound.preload = 'auto'
-    pointsSound.volume = 0.6
+    pointsSound.volume = 0.8 // Increased volume
     pointsSound.playbackRate = 2.0 // Play at double speed
     pointsSound.loop = true // Loop while counting
     pointsSound.load()
@@ -274,20 +274,6 @@ export default function DefiningObjectivesPage() {
 
       // Trigger header to refresh score (starts counter animation)
       window.dispatchEvent(new Event('scoreUpdated'))
-
-      // Play points sound while counting (50 points at 13/second = ~3.85 seconds)
-      if (pointsAudio) {
-        pointsAudio.currentTime = 0
-        pointsAudio.play().catch(err => console.log('Points audio play failed:', err))
-      }
-
-      // Stop points sound after ~3.85 seconds (when counter finishes)
-      setTimeout(() => {
-        if (pointsAudio) {
-          pointsAudio.pause()
-          pointsAudio.currentTime = 0
-        }
-      }, 3850)
     } catch (error) {
       console.error('Error awarding points:', error)
     }
@@ -301,6 +287,12 @@ export default function DefiningObjectivesPage() {
     if (newCompletedState && completionAudio) {
       completionAudio.currentTime = 0
       completionAudio.play().catch(err => console.log('Completion audio play failed:', err))
+      
+      // Start points sound immediately after completion sound
+      if (pointsAudio) {
+        pointsAudio.currentTime = 0
+        pointsAudio.play().catch(err => console.log('Points audio play failed:', err))
+      }
       
       // Get button position for confetti origin
       const button = e.currentTarget
@@ -354,6 +346,14 @@ export default function DefiningObjectivesPage() {
         setConfetti([])
         setConfettiOrigin(null)
       }, 3000)
+      
+      // Stop points sound after counter finishes (~4.85 seconds total)
+      setTimeout(() => {
+        if (pointsAudio) {
+          pointsAudio.pause()
+          pointsAudio.currentTime = 0
+        }
+      }, 4850)
     }
     
     await saveData(newCompletedState)
