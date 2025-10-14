@@ -66,12 +66,12 @@ export default function Header() {
     return () => window.removeEventListener('scoreUpdated', handleScoreUpdate)
   }, [session])
 
-  // Animate score counting up when score changes (13 points per second - 30% faster)
+  // Animate score counting up when score changes (14.3 points per second - reaches 50 in 3.5s)
   useEffect(() => {
     if (displayScore < score) {
       const pointsToAdd = score - displayScore
-      const incrementsPerSecond = 13
-      const stepDuration = 1000 / incrementsPerSecond // ~77ms per point
+      const incrementsPerSecond = 14.3
+      const stepDuration = 1000 / incrementsPerSecond // ~70ms per point
 
       const interval = setInterval(() => {
         setDisplayScore(prev => {

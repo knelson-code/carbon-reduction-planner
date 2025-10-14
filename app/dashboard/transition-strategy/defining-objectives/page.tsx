@@ -109,7 +109,7 @@ export default function DefiningObjectivesPage() {
     const pointsSound = new Audio('/111111.mp3')
     pointsSound.preload = 'auto'
     pointsSound.volume = 0.5 // 50% volume
-    pointsSound.playbackRate = 8.0 // Play at 8x speed (faster tempo, more repetitions)
+    pointsSound.playbackRate = 8.8 // Play at 8.8x speed (matches faster counter: 14.3 pts/sec)
     pointsSound.loop = true // Loop while counting
     pointsSound.load()
     console.log('Points sound loaded:', pointsSound.src)
@@ -355,13 +355,13 @@ export default function DefiningObjectivesPage() {
         setConfettiOrigin(null)
       }, 3000)
       
-      // Stop points sound after counter finishes (~5.85 seconds total: 1s delay + 4.85s playing)
+      // Stop points sound after counter finishes (4.5 seconds total: 1s delay + 3.5s playing)
       setTimeout(() => {
         if (pointsAudio) {
           pointsAudio.pause()
           pointsAudio.currentTime = 0
         }
-      }, 5850)
+      }, 4500)
     }
     
     await saveData(newCompletedState)
