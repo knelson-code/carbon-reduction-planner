@@ -54,6 +54,7 @@ export default function DashboardPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const [hoveredCard, setHoveredCard] = useState<string | null>(null)
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false)
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -113,69 +114,81 @@ export default function DashboardPage() {
             ))}
           </div>
 
-          {/* Getting Started Section */}
-          <div className="flex gap-6 items-start">
-            {/* Gray Triangle */}
-            <div 
-              className="flex-shrink-0 flex items-center justify-center"
+          {/* Getting Started Accordion Section */}
+          <div className="mb-8">
+            {/* Accordion Header */}
+            <button
+              onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+              className="w-full flex items-center gap-3 pb-2"
               style={{
-                width: '200px',
-                height: '200px',
-                clipPath: 'polygon(0 0, 0 100%, 100% 50%)',
-                backgroundColor: '#9CA3AF',
-                position: 'relative'
+                borderBottom: '2px solid #163E64',
               }}
             >
               <span 
-                className="font-bold text-center leading-tight"
-                style={{ 
-                  color: '#FF5B35',
-                  fontSize: '15px',
-                  position: 'absolute',
-                  left: '25px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  width: '110px'
-                }}
+                className="flex-1 text-left font-semibold"
+                style={{ color: '#163E64', fontSize: '18px' }}
               >
                 So there's some stuff you should know...
               </span>
-            </div>
+              {/* Orange Triangle Indicator */}
+              <div
+                className="transition-transform duration-200"
+                style={{
+                  transform: isAccordionOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                }}
+              >
+                <div
+                  style={{
+                    width: 0,
+                    height: 0,
+                    borderLeft: '8px solid transparent',
+                    borderRight: '8px solid transparent',
+                    borderTop: '10px solid #FF5B35',
+                  }}
+                />
+              </div>
+            </button>
 
-            {/* Blue Rectangle */}
-            <div 
-              className="flex-1 p-4 rounded-lg"
-              style={{
-                backgroundColor: '#163E64',
-              }}
-            >
-              <p className="mb-3 text-sm leading-relaxed" style={{ color: '#ffffff' }}>
-                If you complete all of these activities, you'll have a very robust transition strategy, and a clear understanding of your role in a world affected by climate change, and what you intend to do about that.
-              </p>
-              <p className="mb-3 text-sm leading-relaxed" style={{ color: '#ffffff' }}>
-                This software is completely modular. You can jump in anywhere you like. However, we strongly recommend that at a minimum, you begin with these two points:
-              </p>
-              <ul className="space-y-2">
-                <li>
-                  <Link 
-                    href="/dashboard/transition-strategy/defining-objectives"
-                    className="text-sm underline transition-colors hover:opacity-80"
-                    style={{ color: '#ffffff' }}
-                  >
-                    • Think about what you're trying to accomplish
-                  </Link>
-                </li>
-                <li>
-                  <Link 
-                    href="/dashboard/impact-strategy/theory-of-change"
-                    className="text-sm underline transition-colors hover:opacity-80"
-                    style={{ color: '#ffffff' }}
-                  >
-                    • Think about whether the actions you're attempting are logically likely to produce the change you're trying to achieve
-                  </Link>
-                </li>
-              </ul>
-            </div>
+            {/* Accordion Content */}
+            {isAccordionOpen && (
+              <div className="mt-4 space-y-3" style={{ color: '#163E64' }}>
+                <p className="text-sm leading-relaxed">
+                  If you complete all of these activities, you'll have a very robust transition strategy, and a clear understanding of your role in a world affected by climate change, and what you intend to do about that.
+                </p>
+                <p className="text-sm leading-relaxed">
+                  This software is completely modular. You can jump in anywhere you like. However, we strongly recommend that at a minimum, you begin with these three points:
+                </p>
+                <ul className="space-y-2 pl-4">
+                  <li>
+                    <Link 
+                      href="/dashboard/transition-strategy/defining-objectives"
+                      className="text-sm underline hover:opacity-70 transition-opacity"
+                      style={{ color: '#163E64' }}
+                    >
+                      • Think about what you're trying to accomplish
+                    </Link>
+                  </li>
+                  <li>
+                    <Link 
+                      href="/dashboard/impact-strategy/theory-of-change"
+                      className="text-sm underline hover:opacity-70 transition-opacity"
+                      style={{ color: '#163E64' }}
+                    >
+                      • Think about whether the actions you're attempting are logically likely to produce the change you're trying to achieve
+                    </Link>
+                  </li>
+                  <li>
+                    <Link 
+                      href="/dashboard/climate-risk"
+                      className="text-sm underline hover:opacity-70 transition-opacity"
+                      style={{ color: '#163E64' }}
+                    >
+                      • Climate change is not a scientific problem. The science is clear. It's a social, economic and political problem.
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>
