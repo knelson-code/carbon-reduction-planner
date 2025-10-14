@@ -137,8 +137,8 @@ export default function TransitionStrategyPage() {
               <div className="flex items-start justify-between relative min-w-max">
               {/* Horizontal line */}
               <div 
-                className="absolute top-5 left-0 right-0 h-0.5"
-                style={{ backgroundColor: '#163E64', zIndex: 0 }}
+                className="absolute left-0 right-0 h-0.5"
+                style={{ backgroundColor: '#163E64', top: '20px', zIndex: 0 }}
               />
               
               {/* Timeline items */}

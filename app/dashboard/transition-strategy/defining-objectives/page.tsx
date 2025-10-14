@@ -39,6 +39,7 @@ export default function DefiningObjectivesPage() {
   const [stars, setStars] = useState<Star[]>([])
   const [draggedStarId, setDraggedStarId] = useState<number | null>(null)
   const [popAudio, setPopAudio] = useState<HTMLAudioElement | null>(null)
+  const [completionAudio, setCompletionAudio] = useState<HTMLAudioElement | null>(null)
   const [isCompleted, setIsCompleted] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
@@ -85,12 +86,19 @@ export default function DefiningObjectivesPage() {
     loadData()
   }, [status])
 
-  // Preload pop sound
+  // Preload pop sound and completion sound
   useEffect(() => {
-    const audio = new Audio('/pop-sound.mp3')
-    audio.preload = 'auto'
-    audio.load()
-    setPopAudio(audio)
+    const popSound = new Audio('/sharp-pop.mp3')
+    popSound.preload = 'auto'
+    popSound.volume = 0.7 // 70% volume
+    popSound.load()
+    setPopAudio(popSound)
+
+    const completeSound = new Audio('/completion-sound.mp3')
+    completeSound.preload = 'auto'
+    completeSound.volume = 0.5 // 50% volume
+    completeSound.load()
+    setCompletionAudio(completeSound)
   }, [])
 
   // Initialize 20 stars with random positions in the star box (only if no saved data)
@@ -223,6 +231,13 @@ export default function DefiningObjectivesPage() {
   const handleMarkComplete = async () => {
     const newCompletedState = !isCompleted
     setIsCompleted(newCompletedState)
+    
+    // Play completion sound when marking as complete
+    if (newCompletedState && completionAudio) {
+      completionAudio.currentTime = 0
+      completionAudio.play().catch(err => console.log('Completion audio play failed:', err))
+    }
+    
     await saveData(newCompletedState)
   }
 
