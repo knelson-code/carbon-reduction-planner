@@ -153,22 +153,12 @@ export default function DashboardPage() {
             {isAccordionOpen && (
               <div className="mt-4 space-y-3" style={{ color: '#163E64' }}>
                 <p className="text-sm leading-relaxed">
-                  If you complete all of these activities, you'll have a robust transition strategy. That means understanding of your role in a world affected by climate change, and having a clear plan for what you intend to do about it.
+                  If you complete all of these activities, you'll have a robust transition strategy. That means understanding your role in a world affected by climate change, and having a clear plan for what you intend to do about it.
                 </p>
                 <p className="text-sm leading-relaxed">
-                  This software is completely modular. You can jump in anywhere you like. However, we strongly recommend that at a minimum, you begin with these three points:
+                  This software is completely modular. You can jump in anywhere you like. However, we recommend that before getting started, you take a look at these three points:
                 </p>
                 <ul className="space-y-2 pl-4">
-                  <li>
-                    <span style={{ color: '#163E64' }}>• </span>
-                    <Link 
-                      href="/dashboard/climate-risk"
-                      className="text-sm underline hover:opacity-70 transition-opacity"
-                      style={{ color: '#163E64' }}
-                    >
-                      Think about the nature of the problem
-                    </Link>
-                  </li>
                   <li>
                     <span style={{ color: '#163E64' }}>• </span>
                     <Link 
@@ -186,7 +176,17 @@ export default function DashboardPage() {
                       className="text-sm underline hover:opacity-70 transition-opacity"
                       style={{ color: '#163E64' }}
                     >
-                      Think about whether the actions you're attempting are logically likely to produce the change you're trying to achieve
+                      Think about whether the actions you're planning are logically likely to produce the change you're trying to achieve
+                    </Link>
+                  </li>
+                  <li>
+                    <span style={{ color: '#163E64' }}>• </span>
+                    <Link 
+                      href="/dashboard/climate-risk"
+                      className="text-sm underline hover:opacity-70 transition-opacity"
+                      style={{ color: '#163E64' }}
+                    >
+                      Think about the nature of the problem
                     </Link>
                   </li>
                 </ul>
