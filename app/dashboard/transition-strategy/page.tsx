@@ -98,7 +98,7 @@ export default function TransitionStrategyPage() {
               {/* Timeline items */}
               <div className="flex justify-between w-full relative z-10 gap-4">
                 {[
-                  { label: 'Transition Point 1', completed: false, href: '/dashboard/transition-strategy/point-1' },
+                  { label: 'Think about what you\'re trying to accomplish', completed: false, href: '/dashboard/transition-strategy/defining-objectives' },
                   { label: 'Transition Point 2', completed: false, href: '/dashboard/transition-strategy/point-2' },
                   { label: 'Transition Point 3', completed: false, href: '/dashboard/transition-strategy/point-3' },
                   { label: 'Transition Point 4', completed: false, href: '/dashboard/transition-strategy/point-4' },
