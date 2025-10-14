@@ -34,7 +34,6 @@ export default function DefiningObjectivesPage() {
     { id: 'justice', label: 'Fight for climate justice', isEditable: false, stars: 0 },
     { id: 'other1', label: 'Other (Type a new name here)', isEditable: true, stars: 0 },
     { id: 'other2', label: 'Other (Type a new name here)', isEditable: true, stars: 0 },
-    { id: 'other3', label: 'Other (Type a new name here)', isEditable: true, stars: 0 },
   ])
   
   const [stars, setStars] = useState<Star[]>([])
@@ -157,36 +156,37 @@ export default function DefiningObjectivesPage() {
   }
 
   const freeStars = stars.filter(star => star.categoryId === null)
+  const totalAssignedStars = categories.reduce((sum, cat) => sum + cat.stars, 0)
 
   return (
     <div className="flex min-h-[calc(100vh-92px)]">
       <Sidebar />
       
       <div className="flex-1 bg-white">
-        <div className="max-w-5xl mx-auto px-8 sm:px-6 lg:px-12 py-8">
+        <div className="max-w-5xl mx-auto px-8 sm:px-6 lg:px-12 py-4">
           {/* Title */}
-          <h1 className="text-3xl font-bold mb-2 text-center" style={{ color: '#163E64' }}>
+          <h1 className="text-2xl font-bold mb-3 text-center" style={{ color: '#163E64' }}>
             Think about your objectives
           </h1>
-          
-          {/* Subtitle */}
-          <h2 className="text-lg mb-4 text-center" style={{ color: '#163E64' }}>
-            What are you trying to achieve with the time you spend working on climate change?
-          </h2>
 
           {/* Instructions */}
-          <div className="mb-8 p-4">
-            <p className="text-sm" style={{ color: '#163E64' }}>
+          <div className="mb-2 px-2">
+            <p className="text-sm text-center" style={{ color: '#163E64' }}>
               <strong>Instructions:</strong> Drag stars from the box on the right to prioritize your objectives. 
               The more stars you assign to an objective, the higher priority it is for your organization. 
               You can drag stars anywhere, but they only stick when placed inside an objective box.
             </p>
           </div>
+          
+          {/* Subtitle */}
+          <h2 className="text-base mb-3 text-center font-semibold" style={{ color: '#163E64' }}>
+            What are you trying to achieve with the time you spend working on climate change?
+          </h2>
 
           {/* Activity Area */}
-          <div className="flex gap-8 items-start">
+          <div className="flex gap-6 items-start">
             {/* Categories */}
-            <div className="flex-1 space-y-3">
+            <div className="flex-1 space-y-2">
               {categories.map((category) => (
                 <div
                   key={category.id}
@@ -198,26 +198,38 @@ export default function DefiningObjectivesPage() {
                   onDrop={(e) => handleDrop(e, category.id)}
                 >
                   {/* Category Label */}
-                  {category.isEditable ? (
-                    <input
-                      type="text"
-                      value={category.label}
-                      onChange={(e) => handleLabelEdit(category.id, e.target.value)}
-                      className="flex-1 px-2 py-1 bg-transparent text-sm focus:outline-none focus:ring-2 focus:ring-white rounded"
-                      style={{
-                        color: '#ffffff',
-                      }}
-                    />
-                  ) : (
-                    <div
-                      className="flex-1 px-2 py-1 text-sm"
-                      style={{
-                        color: '#ffffff',
-                      }}
-                    >
-                      {category.label}
-                    </div>
-                  )}
+                  <div className="flex-1 flex items-center gap-2">
+                    {category.isEditable ? (
+                      <input
+                        type="text"
+                        value={category.label}
+                        onChange={(e) => handleLabelEdit(category.id, e.target.value)}
+                        className="flex-1 px-2 py-1 bg-transparent text-sm focus:outline-none focus:ring-2 focus:ring-white rounded"
+                        style={{
+                          color: '#ffffff',
+                        }}
+                      />
+                    ) : (
+                      <div
+                        className="flex-1 px-2 py-1 text-sm"
+                        style={{
+                          color: '#ffffff',
+                        }}
+                      >
+                        {category.label}
+                      </div>
+                    )}
+                    {category.stars > 0 && totalAssignedStars > 0 && (
+                      <div
+                        className="text-sm font-semibold px-2"
+                        style={{
+                          color: '#FF5B35',
+                        }}
+                      >
+                        {Math.round((category.stars / totalAssignedStars) * 100)}%
+                      </div>
+                    )}
+                  </div>
 
                   {/* Stars for this category */}
                   <div className="flex gap-2 flex-wrap justify-end" style={{ minWidth: '200px' }}>
