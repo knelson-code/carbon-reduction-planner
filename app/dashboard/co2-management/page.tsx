@@ -45,7 +45,7 @@ export default function CO2ManagementPage() {
           </div>
 
           {/* Feature Cards */}
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <div className="grid md:grid-cols-3 gap-6 mb-8 mx-4">
             <div
               className="p-6 rounded-lg border flex items-center justify-center text-center"
               style={{
