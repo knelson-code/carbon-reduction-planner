@@ -17,7 +17,7 @@ interface ModuleCard {
 
 const modules: ModuleCard[] = [
   {
-    title: "Understanding Climate Risk",
+    title: "Climate Risk",
     description: "• Identify and understand risks\n• Improve your ability to make decisions, even in the face of uncertainty\n• Incorporate these insights into your processes in a simple and clear way",
     icon: "⚠️",
     href: "/dashboard/climate-risk",
@@ -25,7 +25,7 @@ const modules: ModuleCard[] = [
     bgColor: "#fef3c7",
   },
   {
-    title: "Energy Transition Strategy",
+    title: "Energy Transition",
     description: "• Understand your role in a world affected by climate change\n• Determine what you can do to speed up the energy transition\n• Decide what you are willing to do",
     icon: "🚀",
     href: "/dashboard/transition-strategy",
@@ -33,7 +33,7 @@ const modules: ModuleCard[] = [
     bgColor: "#dbeafe",
   },
   {
-    title: "Systemic Impact",
+    title: "Systemic Focus",
     description: "• Build a clear vision of the specific change you are trying to produce\n• Identify sensitive intervention points in the political and economic system where you can have disproportionate impact\n• Define the actions that are most likely to produce that impact",
     icon: "💡",
     href: "/dashboard/impact-strategy",
@@ -105,7 +105,7 @@ export default function DashboardPage() {
                   {module.title}
                 </h3>
                 <p
-                  className="text-xs leading-relaxed transition-colors duration-150 whitespace-pre-line"
+                  className="hidden md:block text-xs leading-relaxed transition-colors duration-150 whitespace-pre-line"
                   style={{ color: hoveredCard === module.title ? '#ffffff' : '#163E64' }}
                 >
                   {module.description}

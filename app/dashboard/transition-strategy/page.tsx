@@ -37,7 +37,7 @@ export default function TransitionStrategyPage() {
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold" style={{ color: "#163E64" }}>
-              Energy Transition Strategy
+              Energy Transition
             </h1>
           </div>
 

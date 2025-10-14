@@ -37,7 +37,7 @@ export default function ImpactStrategyPage() {
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold" style={{ color: "#163E64" }}>
-              Systemic Impact
+              Systemic Focus
             </h1>
           </div>
 
