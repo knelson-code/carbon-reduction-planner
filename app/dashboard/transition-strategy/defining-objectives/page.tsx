@@ -60,8 +60,8 @@ export default function DefiningObjectivesPage() {
     for (let i = 0; i < 20; i++) {
       initialStars.push({
         id: i,
-        x: Math.random() * 250, // Random x within ~300px box
-        y: Math.random() * 400, // Random y within box height
+        x: Math.random() * 240 + 10, // Random x within box, with padding
+        y: Math.random() * 200 + 100, // Random y, starting below instructions
         categoryId: null
       })
     }
@@ -163,20 +163,11 @@ export default function DefiningObjectivesPage() {
       <Sidebar />
       
       <div className="flex-1 bg-white">
-        <div className="max-w-5xl mx-auto px-8 sm:px-6 lg:px-12 py-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           {/* Title */}
-          <h1 className="text-2xl font-bold mb-3 text-center" style={{ color: '#163E64' }}>
+          <h1 className="text-2xl font-bold mb-2 text-center" style={{ color: '#163E64' }}>
             Think about your objectives
           </h1>
-
-          {/* Instructions */}
-          <div className="mb-2 px-2">
-            <p className="text-sm text-center" style={{ color: '#163E64' }}>
-              <strong>Instructions:</strong> Drag stars from the box on the right to prioritize your objectives. 
-              The more stars you assign to an objective, the higher priority it is for your organization. 
-              You can drag stars anywhere, but they only stick when placed inside an objective box.
-            </p>
-          </div>
           
           {/* Subtitle */}
           <h2 className="text-base mb-3 text-center font-semibold" style={{ color: '#163E64' }}>
@@ -184,44 +175,50 @@ export default function DefiningObjectivesPage() {
           </h2>
 
           {/* Activity Area */}
-          <div className="flex gap-6 items-start">
+          <div className="flex gap-4 items-start">
             {/* Categories */}
             <div className="flex-1 space-y-2">
               {categories.map((category) => (
                 <div
                   key={category.id}
-                  className="flex items-center gap-4 p-3 rounded"
+                  className="flex items-center gap-3 p-2 rounded border"
                   style={{
-                    backgroundColor: '#0B1F32',
+                    backgroundColor: '#ffffff',
+                    borderColor: '#163E64',
                   }}
                   onDragOver={handleDragOver}
                   onDrop={(e) => handleDrop(e, category.id)}
                 >
                   {/* Category Label */}
-                  <div className="flex-1 flex items-center gap-2">
+                  <div className="flex-1">
                     {category.isEditable ? (
                       <input
                         type="text"
                         value={category.label}
                         onChange={(e) => handleLabelEdit(category.id, e.target.value)}
-                        className="flex-1 px-2 py-1 bg-transparent text-sm focus:outline-none focus:ring-2 focus:ring-white rounded"
+                        className="w-full px-2 py-1 text-sm focus:outline-none focus:ring-2 rounded"
                         style={{
-                          color: '#ffffff',
+                          color: '#0B1F32',
+                          borderColor: '#163E64',
                         }}
                       />
                     ) : (
                       <div
-                        className="flex-1 px-2 py-1 text-sm"
+                        className="px-2 py-1 text-sm"
                         style={{
-                          color: '#ffffff',
+                          color: '#0B1F32',
                         }}
                       >
                         {category.label}
                       </div>
                     )}
+                  </div>
+
+                  {/* Percentage - Fixed width for alignment */}
+                  <div className="w-12 text-right">
                     {category.stars > 0 && totalAssignedStars > 0 && (
                       <div
-                        className="text-sm font-semibold px-2"
+                        className="text-sm font-semibold"
                         style={{
                           color: '#FF5B35',
                         }}
@@ -232,7 +229,7 @@ export default function DefiningObjectivesPage() {
                   </div>
 
                   {/* Stars for this category */}
-                  <div className="flex gap-2 flex-wrap justify-end" style={{ minWidth: '200px' }}>
+                  <div className="flex gap-2 flex-wrap justify-end" style={{ minWidth: '160px' }}>
                     {stars
                       .filter(star => star.categoryId === category.id)
                       .map((star) => (
@@ -261,6 +258,15 @@ export default function DefiningObjectivesPage() {
               onDragOver={handleDragOver}
               onDrop={(e) => handleDrop(e)}
             >
+              {/* Instructions at top of star box */}
+              <div className="absolute top-0 left-0 right-0 p-3 text-center" style={{ pointerEvents: 'none' }}>
+                <p className="text-xs leading-tight" style={{ color: '#163E64' }}>
+                  <strong>Instructions:</strong> Drag stars from the box on the right to prioritize your objectives. 
+                  The more stars you assign to an objective, the higher priority it is for your organization. 
+                  You can drag stars anywhere, but they only stick when placed inside an objective box.
+                </p>
+              </div>
+
               {freeStars.map((star) => (
                 <div
                   key={star.id}
