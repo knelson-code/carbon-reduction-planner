@@ -35,14 +35,17 @@ export default function Header() {
 
   // Fetch user score
   useEffect(() => {
-    const fetchScore = async () => {
+    const fetchScore = async (isInitialLoad = false) => {
       if (session) {
         try {
           const response = await fetch('/api/score')
           if (response.ok) {
             const data = await response.json()
             setScore(data.score)
-            setDisplayScore(data.score)
+            // Only set displayScore on initial load, not on updates
+            if (isInitialLoad) {
+              setDisplayScore(data.score)
+            }
           }
         } catch (error) {
           console.error('Error fetching score:', error)
@@ -50,11 +53,13 @@ export default function Header() {
       }
     }
 
-    fetchScore()
+    // Initial load - set both score and displayScore
+    fetchScore(true)
 
     // Listen for score updates from activity pages
     const handleScoreUpdate = () => {
-      fetchScore()
+      // On updates, only fetch score (not displayScore) to trigger animation
+      fetchScore(false)
     }
 
     window.addEventListener('scoreUpdated', handleScoreUpdate)
