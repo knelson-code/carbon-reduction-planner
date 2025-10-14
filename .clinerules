@@ -614,6 +614,174 @@ onClick={() => {
 
 ---
 
+## 🌟 RECENT MAJOR FEATURES (October 2025)
+
+### Energy Transition Strategy Module - Defining Objectives Page
+**Location:** `app/dashboard/transition-strategy/defining-objectives/page.tsx`
+
+**Purpose:** Interactive drag-and-drop interface for users to prioritize their climate objectives using star ratings.
+
+#### Core Functionality
+
+**Star Prioritization System:**
+- 20 draggable stars in a pool
+- 10 objective categories users can assign stars to
+- Real-time percentage calculations based on star distribution
+- Pop sound effect plays when star is placed in objective
+- Stars can be dragged anywhere but only stick when placed in objectives
+- Stars return to pool when dragged back to star box
+
+**Objective Categories (in priority order):**
+1. Be prepared for climate risks
+2. Save the planet
+3. Fight for climate justice
+4. Legal compliance
+5. Save money / increasing efficiency
+6. Improve sales / business value / access to funding
+7. Win ESG points: (CDP, Ecovadis, etc.)
+8. Maintain our reputation and social license
+9. Other (Type a new name here) - Option 1
+10. Other (Type a new name here) - Option 2
+
+**Editable Objectives:**
+- Last 2 objectives are editable (users can type custom names)
+- Input fields match objective box styling
+
+#### Audio Implementation
+
+**Pop Sound on Star Placement:**
+```typescript
+// Preload audio in useEffect
+const audio = new Audio('/pop-sound.mp3')
+audio.preload = 'auto'
+audio.load()
+
+// Play on drop
+if (popAudio) {
+  popAudio.currentTime = 0
+  popAudio.play().catch(err => console.log('Audio play failed:', err))
+}
+```
+
+**Key Details:**
+- Sound file located at `/public/pop-sound.mp3`
+- Preloaded on component mount for instant playback
+- Plays only when star successfully placed in objective
+- No sound when dragging or returning to pool
+
+#### Design System
+
+**Page Layout:**
+- Title: "Think about your objectives" (bold, #0B1F32)
+- Subtitle: "What are you trying to achieve with your work on climate change?" (regular weight, #0B1F32)
+- Two-column layout: objectives on left, star pool on right
+
+**Objective Boxes:**
+- Background: #f5f5f5 (light grey)
+- Border: 1px solid #0B1F32
+- Compact padding: p-1.5
+- Space between rows: space-y-1.5
+- Text color: #0B1F32
+- Percentage color: #FF5B35 (orange)
+- Percentage position: Fixed width (w-10), right-aligned, positioned close to text
+
+**Star Appearance:**
+- Size in objectives: w-7 h-7 (28px)
+- Size in pool: w-8 h-8 (32px)
+- Color: #FF5B35 (orange star ★)
+- Background: white circle
+- Border: 2px solid white (nearly invisible, blends with backgrounds)
+- Spacing: gap-1.5 between stars
+
+**Star Pool Box:**
+- Size: 320px × 384px (w-80 h-96)
+- Background: bg-gray-50 (light grey)
+- Border: 2px solid #0B1F32
+- Rounded corners
+
+**Instructions:**
+- Located at top of star box
+- White background section at top
+- Border bottom: 1px solid #0B1F32
+- Text: Small (text-xs), #0B1F32 color
+- Content: "Instructions: Drag stars from the box on the right to prioritize your objectives. The more stars you assign to an objective, the higher priority it is for your organization."
+- Pointer events disabled (non-interactive overlay)
+
+**Completion Button:**
+- Background: #0B1F32 (matches header)
+- Text: White
+- Width: Auto (px-6 padding, not full width)
+- Centered below star box
+- Text: "Mark this activity as complete"
+- Completed state: "✓ Activity Completed"
+- Hover: opacity-90 effect
+
+#### State Management
+
+```typescript
+// Category state with star counts
+const [categories, setCategories] = useState<Category[]>([...])
+
+// Star positions and assignments
+const [stars, setStars] = useState<Star[]>([])
+
+// Currently dragged star
+const [draggedStarId, setDraggedStarId] = useState<number | null>(null)
+
+// Completion tracking
+const [isCompleted, setIsCompleted] = useState(false)
+```
+
+**Star Initialization:**
+- 20 stars placed randomly in pool on mount
+- Random x: 10-250px range
+- Random y: 100-300px range (below instructions)
+
+**Drag and Drop Logic:**
+- `handleDragStart`: Captures star ID
+- `handleDrop`: Updates star position/assignment
+- `handleDragOver`: Prevents default to allow drop
+- Percentage calculation: `Math.round((stars / total) * 100)`
+
+#### Key Technical Details
+
+**Color Consistency:**
+- ALL blues use #0B1F32 (exact match to header)
+- Never use #163E64 or #0B1F32 inconsistently
+- Orange accents: #FF5B35 for stars and percentages
+
+**Compact Spacing:**
+- Objective padding: p-1.5 (6px)
+- Text padding: py-0.5 (2px vertical)
+- Row spacing: space-y-1.5 (6px)
+- Star gap: gap-1.5 (6px)
+- Enables all 10 objectives visible without scrolling
+
+**Responsive Behavior:**
+- Container: max-w-6xl (prevents horizontal scroll)
+- Two-column flex layout
+- Star box fixed width (320px)
+- Objectives flex-1 (takes remaining space)
+
+#### Critical Design Rules for This Page
+
+1. **Header color match:** ALL blues must be #0B1F32
+2. **Light grey backgrounds:** Objectives and star box use grey (#f5f5f5, bg-gray-50)
+3. **White star circles:** Barely visible borders, blends with backgrounds
+4. **Percentage alignment:** Fixed width column, positioned close to text
+5. **Compact layout:** All 10 objectives fit on screen without scrolling
+6. **Audio feedback:** Pop sound on successful star placement only
+7. **Climate priorities first:** Risk, planet, justice objectives at top
+
+#### Future Enhancements (Planned)
+
+- **Cross-page completion tracking:** Link completion state to transition strategy timeline
+- **Data persistence:** Save star assignments to database
+- **Progress indicators:** Show completion across all sub-activities
+- **Timeline integration:** Mark circle on transition strategy page when complete
+
+---
+
 ## ✅ CHECKLIST FOR NEW TASKS
 
 When starting work on a task, verify:
