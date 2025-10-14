@@ -106,12 +106,13 @@ export default function DefiningObjectivesPage() {
     completeSound.load()
     setCompletionAudio(completeSound)
 
-    const pointsSound = new Audio('/points-sound.mp3')
+    const pointsSound = new Audio('/eating-chips.mp3')
     pointsSound.preload = 'auto'
-    pointsSound.volume = 0.8 // Increased volume
+    pointsSound.volume = 1.0 // Max volume for testing
     pointsSound.playbackRate = 2.0 // Play at double speed
     pointsSound.loop = true // Loop while counting
     pointsSound.load()
+    console.log('Points sound loaded:', pointsSound.src)
     setPointsAudio(pointsSound)
   }, [])
 
@@ -290,8 +291,13 @@ export default function DefiningObjectivesPage() {
       
       // Start points sound immediately after completion sound
       if (pointsAudio) {
+        console.log('Attempting to play points sound...')
         pointsAudio.currentTime = 0
-        pointsAudio.play().catch(err => console.log('Points audio play failed:', err))
+        pointsAudio.play()
+          .then(() => console.log('Points sound playing successfully!'))
+          .catch(err => console.error('Points audio play FAILED:', err))
+      } else {
+        console.error('Points audio is NULL!')
       }
       
       // Get button position for confetti origin
