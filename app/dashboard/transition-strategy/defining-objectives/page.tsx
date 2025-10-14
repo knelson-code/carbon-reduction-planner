@@ -264,29 +264,29 @@ export default function DefiningObjectivesPage() {
 
   const awardPoints = async () => {
     try {
-      // Play points sound while counting
-      if (pointsAudio) {
-        pointsAudio.currentTime = 0
-        pointsAudio.play().catch(err => console.log('Points audio play failed:', err))
-      }
-
-      // Award 50 points
+      // Award 50 points first
       await fetch('/api/score', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ points: 50 }),
       })
 
-      // Stop points sound after 1.5 seconds (duration of counter animation in Header)
+      // Trigger header to refresh score (starts counter animation)
+      window.dispatchEvent(new Event('scoreUpdated'))
+
+      // Play points sound while counting (50 points at 10/second = 5 seconds)
+      if (pointsAudio) {
+        pointsAudio.currentTime = 0
+        pointsAudio.play().catch(err => console.log('Points audio play failed:', err))
+      }
+
+      // Stop points sound after 5 seconds (when counter finishes)
       setTimeout(() => {
         if (pointsAudio) {
           pointsAudio.pause()
           pointsAudio.currentTime = 0
         }
-      }, 1500)
-
-      // Trigger header to refresh score
-      window.dispatchEvent(new Event('scoreUpdated'))
+      }, 5000)
     } catch (error) {
       console.error('Error awarding points:', error)
     }

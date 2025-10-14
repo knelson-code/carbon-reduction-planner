@@ -61,23 +61,22 @@ export default function Header() {
     return () => window.removeEventListener('scoreUpdated', handleScoreUpdate)
   }, [session])
 
-  // Animate score counting up when score changes
+  // Animate score counting up when score changes (10 points per second)
   useEffect(() => {
     if (displayScore < score) {
-      const duration = 1500 // 1.5 seconds
-      const steps = 50
-      const increment = (score - displayScore) / steps
-      const stepDuration = duration / steps
+      const pointsToAdd = score - displayScore
+      const incrementsPerSecond = 10
+      const stepDuration = 1000 / incrementsPerSecond // 100ms per point
 
-      let currentStep = 0
       const interval = setInterval(() => {
-        currentStep++
-        if (currentStep >= steps) {
-          setDisplayScore(score)
-          clearInterval(interval)
-        } else {
-          setDisplayScore(prev => Math.min(prev + increment, score))
-        }
+        setDisplayScore(prev => {
+          const next = prev + 1
+          if (next >= score) {
+            clearInterval(interval)
+            return score
+          }
+          return next
+        })
       }, stepDuration)
 
       return () => clearInterval(interval)
