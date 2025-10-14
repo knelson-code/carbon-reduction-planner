@@ -113,16 +113,16 @@ export default function DefiningObjectivesPage() {
       <Sidebar />
       
       <div className="flex-1" style={{ backgroundColor: '#0B1F32' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Title */}
-          <h1 className="text-3xl font-bold mb-8 text-center" style={{ color: '#ffffff' }}>
+          <h1 className="text-2xl font-bold mb-8 text-center" style={{ color: '#ffffff' }}>
             What are you trying to achieve with through your action on climate?
           </h1>
 
           {/* Activity Area */}
-          <div className="relative">
+          <div className="flex gap-12 items-start">
             {/* Categories with Stars */}
-            <div className="space-y-4 mb-8">
+            <div className="flex-1 space-y-3">
               {categories.map((category) => (
                 <div
                   key={category.id}
@@ -136,20 +136,20 @@ export default function DefiningObjectivesPage() {
                       type="text"
                       value={category.label}
                       onChange={(e) => handleLabelEdit(category.id, e.target.value)}
-                      className="flex-1 px-4 py-3 rounded font-semibold text-base focus:outline-none focus:ring-2"
+                      className="w-96 px-3 py-2 rounded text-sm focus:outline-none focus:ring-2"
                       style={{
-                        backgroundColor: '#163E64',
+                        backgroundColor: '#4B5563',
                         color: '#ffffff',
-                        borderColor: '#163E64',
-                        borderWidth: '2px',
+                        borderColor: '#4B5563',
+                        borderWidth: '1px',
                       }}
                       placeholder="Enter custom goal..."
                     />
                   ) : (
                     <div
-                      className="flex-1 px-4 py-3 rounded font-semibold text-base"
+                      className="w-96 px-3 py-2 rounded text-sm"
                       style={{
-                        backgroundColor: '#163E64',
+                        backgroundColor: '#4B5563',
                         color: '#ffffff',
                       }}
                     >
@@ -180,7 +180,7 @@ export default function DefiningObjectivesPage() {
 
             {/* Available Stars Pool */}
             <div
-              className="absolute top-0 right-0 flex flex-col gap-2"
+              className="flex flex-col gap-2 flex-shrink-0"
               onDragOver={handleDragOver}
               onDrop={handleDropToAvailable}
             >
