@@ -43,6 +43,9 @@ export default function DefiningObjectivesPage() {
   const [isCompleted, setIsCompleted] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
+  const [particles, setParticles] = useState<Array<{id: number, angle: number}>>([])
+  const [confetti, setConfetti] = useState<Array<{id: number, color: string, delay: number, angle: number}>>([])
+  const [confettiOrigin, setConfettiOrigin] = useState<{x: number, y: number} | null>(null)
 
   const ACTIVITY_ID = "transition-strategy-defining-objectives"
 
@@ -172,11 +175,23 @@ export default function DefiningObjectivesPage() {
       const draggedStar = stars.find(s => s.id === draggedStarId)
       const previousCategoryId = draggedStar?.categoryId
 
-      // Play pop sound
+      // Play pop sound and create particle effect
       if (popAudio) {
         popAudio.currentTime = 0
         popAudio.play().catch(err => console.log('Audio play failed:', err))
       }
+      
+      // Create orange particle burst effect
+      const newParticles = Array.from({ length: 8 }, (_, i) => ({
+        id: Date.now() + i,
+        angle: (Math.PI * 2 * i) / 8
+      }))
+      setParticles(newParticles)
+      
+      // Remove particles after animation
+      setTimeout(() => {
+        setParticles([])
+      }, 500)
 
       setStars(prev => prev.map(star => 
         star.id === draggedStarId 
@@ -228,14 +243,38 @@ export default function DefiningObjectivesPage() {
     ))
   }
 
-  const handleMarkComplete = async () => {
+  const handleMarkComplete = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const newCompletedState = !isCompleted
     setIsCompleted(newCompletedState)
     
-    // Play completion sound when marking as complete
+    // Play completion sound and create confetti when marking as complete
     if (newCompletedState && completionAudio) {
       completionAudio.currentTime = 0
       completionAudio.play().catch(err => console.log('Completion audio play failed:', err))
+      
+      // Get button position for confetti origin
+      const button = e.currentTarget
+      const rect = button.getBoundingClientRect()
+      setConfettiOrigin({
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2
+      })
+      
+      // Create confetti burst
+      const colors = ['#FF5B35', '#0B1F32', '#9CA3AF']
+      const newConfetti = Array.from({ length: 50 }, (_, i) => ({
+        id: Date.now() + i,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        delay: Math.random() * 0.1,
+        angle: (Math.random() * Math.PI * 2)
+      }))
+      setConfetti(newConfetti)
+      
+      // Remove confetti after animation
+      setTimeout(() => {
+        setConfetti([])
+        setConfettiOrigin(null)
+      }, 3000)
     }
     
     await saveData(newCompletedState)
@@ -260,7 +299,91 @@ export default function DefiningObjectivesPage() {
     <div className="flex min-h-[calc(100vh-92px)]">
       <Sidebar />
       
-      <div className="flex-1 bg-white">
+      <div className="flex-1 bg-white relative">
+        <style jsx>{`
+          @keyframes particleBurst {
+            0% {
+              opacity: 1;
+              transform: translate(0, 0) scale(1);
+            }
+            100% {
+              opacity: 0;
+              transform: translate(var(--tx), var(--ty)) scale(0.3);
+            }
+          }
+          
+          @keyframes confettiFall {
+            0% {
+              opacity: 1;
+              transform: translate(0, 0) rotateZ(0deg) rotateY(0deg);
+            }
+            100% {
+              opacity: 0;
+              transform: translate(var(--tx), 400px) rotateZ(720deg) rotateY(1080deg);
+            }
+          }
+          
+          .particle {
+            animation: particleBurst 0.5s ease-out forwards;
+          }
+          
+          .confetti-piece {
+            animation: confettiFall 3s ease-in forwards;
+          }
+        `}</style>
+
+        {/* Orange Particle Effects */}
+        {particles.map((particle) => {
+          const distance = 40
+          const tx = Math.cos(particle.angle) * distance
+          const ty = Math.sin(particle.angle) * distance
+          
+          return (
+            <div
+              key={particle.id}
+              className="particle"
+              style={{
+                position: 'fixed',
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: '#FF5B35',
+                left: '50%',
+                top: '50%',
+                pointerEvents: 'none',
+                zIndex: 9999,
+                '--tx': `${tx}px`,
+                '--ty': `${ty}px`,
+              } as React.CSSProperties}
+            />
+          )
+        })}
+
+        {/* Confetti Effect */}
+        {confetti.length > 0 && confettiOrigin && confetti.map((piece) => {
+          const distance = 150 + Math.random() * 100
+          const tx = Math.cos(piece.angle) * distance * (Math.random() * 0.5 + 0.5)
+          
+          return (
+            <div
+              key={piece.id}
+              className="confetti-piece"
+              style={{
+                position: 'fixed',
+                width: '10px',
+                height: '10px',
+                backgroundColor: piece.color,
+                left: `${confettiOrigin.x}px`,
+                top: `${confettiOrigin.y}px`,
+                pointerEvents: 'none',
+                zIndex: 9999,
+                animationDelay: `${piece.delay}s`,
+                '--tx': `${tx}px`,
+              } as React.CSSProperties}
+            />
+          )
+        })}
+
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           {/* Title */}
           <h1 className="text-2xl font-bold mb-1 text-center" style={{ color: '#0B1F32' }}>
@@ -279,7 +402,7 @@ export default function DefiningObjectivesPage() {
               {categories.map((category) => (
                 <div
                   key={category.id}
-                  className="flex items-center gap-2 p-1.5 rounded border"
+                  className="flex items-center gap-2 p-1.5 rounded border relative"
                   style={{
                     backgroundColor: '#f5f5f5',
                     borderColor: '#0B1F32',
@@ -335,7 +458,7 @@ export default function DefiningObjectivesPage() {
                           key={star.id}
                           draggable
                           onDragStart={(e) => handleDragStart(e, star.id)}
-                          className="w-7 h-7 rounded-full flex items-center justify-center cursor-move"
+                          className="w-7 h-7 rounded-full flex items-center justify-center cursor-move relative"
                           style={{
                             backgroundColor: '#ffffff',
                             border: '2px solid #ffffff',
@@ -386,7 +509,7 @@ export default function DefiningObjectivesPage() {
               {/* Mark as Complete Button - Narrower and centered */}
               <button
                 onClick={handleMarkComplete}
-                className="px-6 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
+                className="px-6 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90 relative"
                 style={{
                   backgroundColor: '#0B1F32',
                   color: '#ffffff',
