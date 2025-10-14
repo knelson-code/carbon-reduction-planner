@@ -109,6 +109,7 @@ export default function DefiningObjectivesPage() {
     const pointsSound = new Audio('/points-sound.mp3')
     pointsSound.preload = 'auto'
     pointsSound.volume = 0.6
+    pointsSound.playbackRate = 2.0 // Play at double speed
     pointsSound.loop = true // Loop while counting
     pointsSound.load()
     setPointsAudio(pointsSound)
@@ -341,11 +342,11 @@ export default function DefiningObjectivesPage() {
         setWasJustCompleted(true)
       }
       
-      // Award points after 2 seconds (while confetti still animating)
+      // Award points after 1 second (while confetti still animating)
       if (!wasAlreadyCompleted) {
         setTimeout(() => {
           awardPoints()
-        }, 2000)
+        }, 1000)
       }
       
       // Remove confetti after full 3 second animation
