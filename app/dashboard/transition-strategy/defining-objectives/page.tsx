@@ -106,10 +106,10 @@ export default function DefiningObjectivesPage() {
     completeSound.load()
     setCompletionAudio(completeSound)
 
-    const pointsSound = new Audio('/2game-bonus-02-294436.mp3')
+    const pointsSound = new Audio('/111111.mp3')
     pointsSound.preload = 'auto'
     pointsSound.volume = 0.5 // 50% volume
-    pointsSound.playbackRate = 4.0 // Play at 4x speed (twice as fast as before)
+    pointsSound.playbackRate = 4.0 // Play at 4x speed
     pointsSound.loop = true // Loop while counting
     pointsSound.load()
     console.log('Points sound loaded:', pointsSound.src)
