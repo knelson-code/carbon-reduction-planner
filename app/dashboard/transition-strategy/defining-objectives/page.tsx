@@ -29,7 +29,7 @@ export default function DefiningObjectivesPage() {
     { id: 'justice', label: 'Fight for climate justice', isEditable: false, stars: 0 },
     { id: 'legal', label: 'Legal compliance', isEditable: false, stars: 0 },
     { id: 'money', label: 'Save money / increasing efficiency', isEditable: false, stars: 0 },
-    { id: 'sales', label: 'Improve sales / business value / access to finance', isEditable: false, stars: 0 },
+    { id: 'sales', label: 'Improve sales / business value / access to funding', isEditable: false, stars: 0 },
     { id: 'esg', label: 'Win ESG points: (CDP, Ecovadis, etc.)', isEditable: false, stars: 0 },
     { id: 'reputation', label: 'Maintain our reputation and social license', isEditable: false, stars: 0 },
     { id: 'other1', label: 'Other (Type a new name here)', isEditable: true, stars: 0 },
