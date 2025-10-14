@@ -312,7 +312,31 @@ model Organization {
 
 ## ⚠️ CRITICAL GOTCHAS & RULES
 
-### 1. File-Based Database Won't Work in Production
+### 1. Rolling Back to Previous Working Versions
+- **Problem:** Experimental changes break production (e.g., audio playback rate issues)
+- **Solution:** Use git to revert to last known working commit
+- **How to identify working version:**
+  ```bash
+  git log --oneline -20  # See recent commits with timestamps
+  ```
+- **How to revert a single file:**
+  ```bash
+  git checkout <commit-hash> -- path/to/file.tsx
+  git add path/to/file.tsx
+  git commit -m "Revert to working version from <commit-hash>"
+  git push
+  ```
+- **Example from Oct 14, 2025:**
+  - Commits a4116e5 through e844157 broke the defining-objectives page
+  - Audio playback rate set to 16.8x caused client-side errors
+  - Reverted to commit 47f9986 which had stable 12x playback rate
+  - Lesson: Incremental changes are safer than aggressive optimizations
+- **Warning signs to revert:**
+  - "NotSupportedError" or "playbackRate" errors in browser console
+  - Client-side exceptions during page load
+  - Features that worked 20-30 minutes ago suddenly broken
+
+### 2. File-Based Database Won't Work in Production
 - **Problem:** Vercel has read-only file systems
 - **Solution:** Always use PostgreSQL (Neon), never SQLite in production
 
@@ -362,6 +386,23 @@ cd carbon-reduction-planner; git add app/page.tsx; git commit -m "Update homepag
 - **Problem:** Hero sections cut off, too much vertical space
 - **Solution:** Use min-height instead of fixed height, test at different screen sizes
 - **Key files:** app/page.tsx, globals.css
+
+### 7. Audio Playback Limits
+- **Problem:** Aggressive audio settings (high playbackRate, loop) cause browser errors
+- **Solution:** Keep audio simple and test incrementally
+- **Safe settings:**
+  - Volume: 0.2 to 0.6 (20-60%)
+  - PlaybackRate: 1x to 4x (above 8x becomes unreliable)
+  - Avoid: loop=true on complex sounds, extreme playback rates (12x+)
+- **Current working implementation (Oct 14, 2025):**
+  - Pop sound: sharp-pop.mp3, volume 0.56, no playback modification
+  - Completion sound: completion-sound.mp3, volume 0.24
+  - Points sound: 111111.mp3, volume 0.5, playbackRate 12x (this is at the limit)
+- **Testing approach:**
+  - Always test audio in production environment
+  - Check browser console for "NotSupportedError"
+  - If experimenting with faster sounds, increment gradually (4x → 6x → 8x)
+  - Never go above 12x playbackRate - browsers can't handle it
 
 ---
 
