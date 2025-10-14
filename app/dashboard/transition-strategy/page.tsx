@@ -154,20 +154,20 @@ export default function TransitionStrategyPage() {
                     <div
                       className="w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-200"
                       style={{
-                        backgroundColor: item.completed ? '#163E64' : 'white',
-                        borderColor: '#163E64',
+                        backgroundColor: item.completed ? '#0B1F32' : 'white',
+                        borderColor: '#0B1F32',
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.backgroundColor = '#FF5B35'
                         e.currentTarget.style.borderColor = '#FF5B35'
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = item.completed ? '#163E64' : 'white'
-                        e.currentTarget.style.borderColor = '#163E64'
+                        e.currentTarget.style.backgroundColor = item.completed ? '#0B1F32' : 'white'
+                        e.currentTarget.style.borderColor = '#0B1F32'
                       }}
                     >
                       {item.completed && (
-                        <div className="w-4 h-4 rounded-full" style={{ backgroundColor: 'white' }} />
+                        <div className="w-6 h-6 rounded-full" style={{ backgroundColor: 'white' }} />
                       )}
                     </div>
                     {/* Label */}

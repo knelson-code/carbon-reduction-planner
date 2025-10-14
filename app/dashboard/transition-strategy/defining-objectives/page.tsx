@@ -378,7 +378,7 @@ export default function DefiningObjectivesPage() {
                   color: '#ffffff',
                 }}
               >
-                {isSaving ? 'Saving...' : isCompleted ? '✓ Activity Completed' : 'Mark this activity as complete'}
+                {isCompleted ? '✓ Activity Completed' : 'Mark this activity as complete'}
               </button>
             </div>
           </div>
