@@ -289,16 +289,18 @@ export default function DefiningObjectivesPage() {
       completionAudio.currentTime = 0
       completionAudio.play().catch(err => console.log('Completion audio play failed:', err))
       
-      // Start points sound immediately after completion sound
-      if (pointsAudio) {
-        console.log('Attempting to play points sound...')
-        pointsAudio.currentTime = 0
-        pointsAudio.play()
-          .then(() => console.log('Points sound playing successfully!'))
-          .catch(err => console.error('Points audio play FAILED:', err))
-      } else {
-        console.error('Points audio is NULL!')
-      }
+      // Start points sound after 2 second delay
+      setTimeout(() => {
+        if (pointsAudio) {
+          console.log('Attempting to play points sound (after 2s delay)...')
+          pointsAudio.currentTime = 0
+          pointsAudio.play()
+            .then(() => console.log('Points sound playing successfully!'))
+            .catch(err => console.error('Points audio play FAILED:', err))
+        } else {
+          console.error('Points audio is NULL!')
+        }
+      }, 2000)
       
       // Get button position for confetti origin
       const button = e.currentTarget
@@ -353,13 +355,13 @@ export default function DefiningObjectivesPage() {
         setConfettiOrigin(null)
       }, 3000)
       
-      // Stop points sound after counter finishes (~4.85 seconds total)
+      // Stop points sound after counter finishes (~6.85 seconds total: 2s delay + 4.85s playing)
       setTimeout(() => {
         if (pointsAudio) {
           pointsAudio.pause()
           pointsAudio.currentTime = 0
         }
-      }, 4850)
+      }, 6850)
     }
     
     await saveData(newCompletedState)
