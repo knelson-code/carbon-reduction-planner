@@ -29,7 +29,7 @@ export default function DefiningObjectivesPage() {
     { id: 'justice', label: 'Fight for climate justice', isEditable: false, stars: 0 },
     { id: 'legal', label: 'Legal compliance', isEditable: false, stars: 0 },
     { id: 'money', label: 'Save money / increasing efficiency', isEditable: false, stars: 0 },
-    { id: 'sales', label: 'Improve sales / Increase business value', isEditable: false, stars: 0 },
+    { id: 'sales', label: 'Improve sales / business value / access to finance', isEditable: false, stars: 0 },
     { id: 'esg', label: 'Win ESG points: (CDP, Ecovadis, etc.)', isEditable: false, stars: 0 },
     { id: 'reputation', label: 'Maintain our reputation and social license', isEditable: false, stars: 0 },
     { id: 'other1', label: 'Other (Type a new name here)', isEditable: true, stars: 0 },
@@ -166,12 +166,12 @@ export default function DefiningObjectivesPage() {
       <div className="flex-1 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           {/* Title */}
-          <h1 className="text-2xl font-bold mb-1 text-center" style={{ color: '#163E64' }}>
+          <h1 className="text-2xl font-bold mb-1 text-center" style={{ color: '#0B1F32' }}>
             Think about your objectives
           </h1>
           
           {/* Subtitle */}
-          <h2 className="text-base mb-2 text-center font-semibold" style={{ color: '#163E64' }}>
+          <h2 className="text-base mb-2 text-center" style={{ color: '#0B1F32' }}>
             What are you trying to achieve with your work on climate change?
           </h2>
 
@@ -184,8 +184,8 @@ export default function DefiningObjectivesPage() {
                   key={category.id}
                   className="flex items-center gap-2 p-1.5 rounded border"
                   style={{
-                    backgroundColor: '#ffffff',
-                    borderColor: '#163E64',
+                    backgroundColor: '#f5f5f5',
+                    borderColor: '#0B1F32',
                   }}
                   onDragOver={handleDragOver}
                   onDrop={(e) => handleDrop(e, category.id)}
@@ -199,15 +199,15 @@ export default function DefiningObjectivesPage() {
                         onChange={(e) => handleLabelEdit(category.id, e.target.value)}
                         className="w-full px-2 py-0.5 text-sm focus:outline-none focus:ring-2 rounded"
                         style={{
-                          color: '#163E64',
-                          borderColor: '#163E64',
+                          color: '#0B1F32',
+                          borderColor: '#0B1F32',
                         }}
                       />
                     ) : (
                       <div
                         className="px-2 py-0.5 text-sm"
                         style={{
-                          color: '#163E64',
+                          color: '#0B1F32',
                         }}
                       >
                         {category.label}
@@ -255,14 +255,14 @@ export default function DefiningObjectivesPage() {
             {/* Star Pool Box with Completion Button */}
             <div className="flex flex-col gap-3 items-center">
               <div
-                className="w-80 h-96 border-2 rounded-lg relative bg-white"
-                style={{ borderColor: '#163E64' }}
+                className="w-80 h-96 border-2 rounded-lg relative bg-gray-50"
+                style={{ borderColor: '#0B1F32' }}
                 onDragOver={handleDragOver}
                 onDrop={(e) => handleDrop(e)}
               >
                 {/* Instructions at top of star box */}
-                <div className="absolute top-0 left-0 right-0 p-3 text-center rounded-t-lg" style={{ pointerEvents: 'none', borderBottom: '1px solid #163E64' }}>
-                  <p className="text-xs leading-tight" style={{ color: '#163E64' }}>
+                <div className="absolute top-0 left-0 right-0 p-3 text-center rounded-t-lg" style={{ pointerEvents: 'none', borderBottom: '1px solid #0B1F32' }}>
+                  <p className="text-xs leading-tight" style={{ color: '#0B1F32' }}>
                     <strong>Instructions:</strong> Drag stars from the box on the right to prioritize your objectives. 
                     The more stars you assign to an objective, the higher priority it is for your organization.
                   </p>
@@ -291,7 +291,7 @@ export default function DefiningObjectivesPage() {
                 onClick={() => setIsCompleted(!isCompleted)}
                 className="px-6 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
                 style={{
-                  backgroundColor: '#163E64',
+                  backgroundColor: '#0B1F32',
                   color: '#ffffff',
                 }}
               >
