@@ -50,7 +50,7 @@ export default function DefiningObjectivesPage() {
   const [confetti, setConfetti] = useState<Array<{id: number, color: string, delay: number, xOffset: number, angle: number, peakHeight: number, peakTime: number, finalRotateZ: number, finalRotateY: number}>>([])
   const [confettiOrigin, setConfettiOrigin] = useState<{x: number, y: number} | null>(null)
 
-  const ACTIVITY_ID = "transition-strategy-defining-objectives"
+  const ACTIVITY_ID = "transition-strategy-defining-objectives" // Activity identifier
 
   useEffect(() => {
     if (status === "unauthenticated") {
