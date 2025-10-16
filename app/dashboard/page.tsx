@@ -81,7 +81,7 @@ export default function DashboardPage() {
       <div className="flex-1 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Explanatory Text */}
-          <div className="max-w-4xl mx-auto mb-6">
+          <div className="mb-6">
             <p className="text-sm leading-relaxed" style={{ color: '#0B1F32' }}>
               This software will help you to build a robust climate action plan. If you already know exactly what you need to build, you can simply navigate to the corresponding activity in the following four sections. However, in our experience, simply trying to complete the tasks by jumping directly to the final steps leads to paper-thin materials that have little or no systemic relevance. Therefore you may consider using the additional information shown below these boxes in order to start exploring the full range of tools in game-play mode, which encourages you to go on a journey of more robust reflection and development.
             </p>
