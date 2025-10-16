@@ -22,9 +22,17 @@ const menuItems: MenuItem[] = [
     href: "/dashboard/climate-risk",
     icon: "Risk",
     subItems: [
-      { name: "Identify and understand risks", href: "/dashboard/climate-risk/identify" },
-      { name: "Improve decision-making under uncertainty", href: "/dashboard/climate-risk/decisions" },
-      { name: "Incorporate insights into processes", href: "/dashboard/climate-risk/integrate" },
+      { name: "The nature of the problem", href: "/dashboard/climate-risk/nature" },
+      { name: "Scientific background", href: "/dashboard/climate-risk/scientific" },
+      { name: "History of the fight against climate change", href: "/dashboard/climate-risk/history" },
+      { name: "Social, cultural, political and economic roots of the problem", href: "/dashboard/climate-risk/roots" },
+      { name: "Psychology of climate change, and willful blindness", href: "/dashboard/climate-risk/psychology" },
+      { name: "Physical risk", href: "/dashboard/climate-risk/physical" },
+      { name: "Transition Risk", href: "/dashboard/climate-risk/transition" },
+      { name: "Legal and reputational risk", href: "/dashboard/climate-risk/legal" },
+      { name: "Systemic risk", href: "/dashboard/climate-risk/systemic" },
+      { name: "Analyzing and assigning value to risks", href: "/dashboard/climate-risk/analyzing" },
+      { name: "Prioritizing risks", href: "/dashboard/climate-risk/prioritizing" },
     ],
   },
   {
@@ -32,9 +40,14 @@ const menuItems: MenuItem[] = [
     href: "/dashboard/transition-strategy",
     icon: "Transition",
     subItems: [
-      { name: "Understand your role", href: "/dashboard/transition-strategy/role" },
-      { name: "Speed up the energy transition", href: "/dashboard/transition-strategy/speed" },
-      { name: "Decide what you're willing to do", href: "/dashboard/transition-strategy/decide" },
+      { name: "Think about what you're trying to accomplish", href: "/dashboard/transition-strategy/defining-objectives" },
+      { name: "Transition Point 2", href: "/dashboard/transition-strategy/point-2" },
+      { name: "Transition Point 3", href: "/dashboard/transition-strategy/point-3" },
+      { name: "Transition Point 4", href: "/dashboard/transition-strategy/point-4" },
+      { name: "Transition Point 5", href: "/dashboard/transition-strategy/point-5" },
+      { name: "Transition Point 6", href: "/dashboard/transition-strategy/point-6" },
+      { name: "Transition Point 7", href: "/dashboard/transition-strategy/point-7" },
+      { name: "Transition Point 8", href: "/dashboard/transition-strategy/point-8" },
     ],
   },
   {
@@ -42,9 +55,14 @@ const menuItems: MenuItem[] = [
     href: "/dashboard/impact-strategy",
     icon: "Systems",
     subItems: [
-      { name: "Build a clear vision", href: "/dashboard/impact-strategy/vision" },
-      { name: "Identify intervention points", href: "/dashboard/impact-strategy/intervention" },
-      { name: "Define impactful actions", href: "/dashboard/impact-strategy/actions" },
+      { name: "Systems Point 1", href: "/dashboard/impact-strategy/point-1" },
+      { name: "Systems Point 2", href: "/dashboard/impact-strategy/point-2" },
+      { name: "Systems Point 3", href: "/dashboard/impact-strategy/point-3" },
+      { name: "Systems Point 4", href: "/dashboard/impact-strategy/point-4" },
+      { name: "Systems Point 5", href: "/dashboard/impact-strategy/point-5" },
+      { name: "Systems Point 6", href: "/dashboard/impact-strategy/point-6" },
+      { name: "Systems Point 7", href: "/dashboard/impact-strategy/point-7" },
+      { name: "Systems Point 8", href: "/dashboard/impact-strategy/point-8" },
     ],
   },
   {
@@ -52,9 +70,14 @@ const menuItems: MenuItem[] = [
     href: "/dashboard/co2-management",
     icon: "CO₂",
     subItems: [
-      { name: "Measure emissions", href: "/dashboard/co2-management/measure" },
-      { name: "Set reduction Targets", href: "/dashboard/co2-management/targets" },
-      { name: "Create detailed reduction plan", href: "/dashboard/co2-management/plan" },
+      { name: "CO₂ Point 1", href: "/dashboard/co2-management/point-1" },
+      { name: "CO₂ Point 2", href: "/dashboard/co2-management/point-2" },
+      { name: "CO₂ Point 3", href: "/dashboard/co2-management/point-3" },
+      { name: "CO₂ Point 4", href: "/dashboard/co2-management/point-4" },
+      { name: "CO₂ Point 5", href: "/dashboard/co2-management/point-5" },
+      { name: "CO₂ Point 6", href: "/dashboard/co2-management/point-6" },
+      { name: "CO₂ Point 7", href: "/dashboard/co2-management/point-7" },
+      { name: "CO₂ Point 8", href: "/dashboard/co2-management/point-8" },
     ],
   },
 ]
@@ -67,8 +90,8 @@ export default function Sidebar() {
   const toggleItem = (itemName: string) => {
     setExpandedItems(prev =>
       prev.includes(itemName)
-        ? prev.filter(name => name !== itemName)
-        : [...prev, itemName]
+        ? [] // Close the current item
+        : [itemName] // Open only this item (closes any others)
     )
   }
 
