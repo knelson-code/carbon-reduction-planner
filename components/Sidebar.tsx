@@ -98,7 +98,7 @@ export default function Sidebar() {
             <div key={item.name}>
               {/* Main Menu Item */}
               <div
-                className={`flex items-center cursor-pointer transition-colors ${
+                className={`flex items-center transition-colors ${
                   isActive(item.href)
                     ? "bg-blue-50 border-l-4"
                     : "hover:bg-gray-50"
@@ -110,20 +110,10 @@ export default function Sidebar() {
                   paddingTop: "12px",
                   paddingBottom: "12px",
                 }}
-                onClick={() => {
-                  if (item.subItems && isExpanded) {
-                    toggleItem(item.name)
-                  }
-                }}
               >
                 <Link
                   href={item.href}
-                  className="flex items-center w-full"
-                  onClick={(e) => {
-                    if (item.subItems && isExpanded) {
-                      e.preventDefault()
-                    }
-                  }}
+                  className="flex items-center flex-1 cursor-pointer"
                 >
                   {!isExpanded && (
                     <div className="flex items-center justify-center w-full">
@@ -143,21 +133,25 @@ export default function Sidebar() {
                     </div>
                   )}
                   {isExpanded && (
-                    <>
-                      <span
-                        className="font-semibold text-sm whitespace-nowrap"
-                        style={{ color: isActive(item.href) ? "#163E64" : "#6C757D" }}
-                      >
-                        {item.name}
-                      </span>
-                      {item.subItems && (
-                        <span className="ml-auto text-gray-400">
-                          {expandedItems.includes(item.name) ? "▼" : "▶"}
-                        </span>
-                      )}
-                    </>
+                    <span
+                      className="font-semibold text-sm whitespace-nowrap"
+                      style={{ color: isActive(item.href) ? "#163E64" : "#6C757D" }}
+                    >
+                      {item.name}
+                    </span>
                   )}
                 </Link>
+                {isExpanded && item.subItems && (
+                  <button
+                    className="ml-auto px-2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      toggleItem(item.name)
+                    }}
+                  >
+                    {expandedItems.includes(item.name) ? "▼" : "▶"}
+                  </button>
+                )}
               </div>
 
               {/* Sub Items */}
