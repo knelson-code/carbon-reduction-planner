@@ -41,7 +41,6 @@ export default function DefiningObjectivesPage() {
   const [draggedStarId, setDraggedStarId] = useState<number | null>(null)
   const [popAudio, setPopAudio] = useState<HTMLAudioElement | null>(null)
   const [completionAudio, setCompletionAudio] = useState<HTMLAudioElement | null>(null)
-  const [pointsAudio, setPointsAudio] = useState<HTMLAudioElement | null>(null)
   const [isCompleted, setIsCompleted] = useState(false)
   const [wasJustCompleted, setWasJustCompleted] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -92,7 +91,7 @@ export default function DefiningObjectivesPage() {
     loadData()
   }, [status])
 
-  // Preload pop sound, completion sound, and points sound
+  // Preload pop sound and completion sound
   useEffect(() => {
     const popSound = new Audio('/sharp-pop.mp3')
     popSound.preload = 'auto'
@@ -100,20 +99,11 @@ export default function DefiningObjectivesPage() {
     popSound.load()
     setPopAudio(popSound)
 
-    const completeSound = new Audio('/completion-sound.mp3')
+    const completeSound = new Audio('/nicey.mp3')
     completeSound.preload = 'auto'
-    completeSound.volume = 0.24
+    completeSound.volume = 1.0 // Full volume for instant playback
     completeSound.load()
     setCompletionAudio(completeSound)
-
-    const pointsSound = new Audio('/111111.mp3')
-    pointsSound.preload = 'auto'
-    pointsSound.volume = 0.5 // 50% volume
-    pointsSound.playbackRate = 12.0 // Play at 12x speed (much faster tempo)
-    pointsSound.loop = true // Loop while counting
-    pointsSound.load()
-    console.log('Points sound loaded:', pointsSound.src)
-    setPointsAudio(pointsSound)
   }, [])
 
   // Initialize 20 stars with random positions in the star box (only if no saved data)
@@ -289,19 +279,6 @@ export default function DefiningObjectivesPage() {
       completionAudio.currentTime = 0
       completionAudio.play().catch(err => console.log('Completion audio play failed:', err))
       
-      // Start points sound after 1 second delay (matches when counter starts)
-      setTimeout(() => {
-        if (pointsAudio) {
-          console.log('Attempting to play points sound (after 1s delay)...')
-          pointsAudio.currentTime = 0
-          pointsAudio.play()
-            .then(() => console.log('Points sound playing successfully!'))
-            .catch(err => console.error('Points audio play FAILED:', err))
-        } else {
-          console.error('Points audio is NULL!')
-        }
-      }, 1000)
-      
       // Get button position for confetti origin
       const button = e.currentTarget
       const rect = button.getBoundingClientRect()
@@ -354,14 +331,6 @@ export default function DefiningObjectivesPage() {
         setConfetti([])
         setConfettiOrigin(null)
       }, 3000)
-      
-      // Stop points sound after counter finishes (5.5 seconds total: 1s delay + 4.5s playing)
-      setTimeout(() => {
-        if (pointsAudio) {
-          pointsAudio.pause()
-          pointsAudio.currentTime = 0
-        }
-      }, 5500)
     }
     
     await saveData(newCompletedState)
