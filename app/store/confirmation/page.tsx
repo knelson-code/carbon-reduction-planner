@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import Link from "next/link"
 
 interface Purchase {
@@ -15,7 +15,7 @@ interface Purchase {
   createdAt: string
 }
 
-export default function ConfirmationPage() {
+function ConfirmationPageContent() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -157,5 +157,17 @@ export default function ConfirmationPage() {
         </Link>
       </div>
     </div>
+  )
+}
+
+export default function ConfirmationPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-[calc(100vh-92px)] flex items-center justify-center">
+        <div className="text-lg text-gray-600">Loading...</div>
+      </div>
+    }>
+      <ConfirmationPageContent />
+    </Suspense>
   )
 }
