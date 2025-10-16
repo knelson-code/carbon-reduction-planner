@@ -220,7 +220,7 @@ Instead use authentic framing:
 ## 🎨 DESIGN SYSTEM
 
 ### Colors (from STYLE_GUIDELINES.md)
-- **Primary Navy:** #163E64 (main text, headings, buttons)
+- **Primary Navy:** #0B1F32 (main text, headings, buttons)
 - **Accent Orange:** #FF6B35 (CTAs, highlights)
 - **Light Gray:** #F8F9FA (backgrounds)
 - **Medium Gray:** #6C757D (secondary text)
@@ -820,6 +820,694 @@ const [isCompleted, setIsCompleted] = useState(false)
 - **Data persistence:** Save star assignments to database
 - **Progress indicators:** Show completion across all sub-activities
 - **Timeline integration:** Mark circle on transition strategy page when complete
+
+---
+
+## 🏪 POINTS STORE SYSTEM (October 2025)
+
+### Overview & Purpose
+
+**What it is:** A complete e-commerce system for redeeming earned points for consulting services and access to premium content.
+
+**Why it exists:**
+- Users earn points by completing activities (50 points per activity completion)
+- Points create engagement and provide value beyond free tools
+- Offers a path to deeper consulting relationships
+- Demonstrates full-stack e-commerce capabilities
+- Privacy-first: No payment processing, just point redemption
+
+**Key Philosophy:** Users "spend" points they've earned, not real money. This maintains the free-to-use nature while creating a reward system.
+
+---
+
+### Technical Architecture
+
+**Database Schema (Prisma):**
+```prisma
+model User {
+  id           String         @id @default(cuid())
+  username     String         @unique
+  password     String
+  score        Int            @default(0)  // Points balance
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  purchases    Purchase[]     // Relation to purchases
+}
+
+model Purchase {
+  id           String    @id @default(cuid())
+  userId       String
+  user         User      @relation(fields: [userId], references: [id])
+  itemType     String    // e.g., "review-session", "climate-web-access"
+  itemName     String    // Display name
+  pointsCost   Int       // Cost in points
+  purchaseCode String    @unique  // 8-character unique code
+  isUtilized   Boolean   @default(false)  // Has user redeemed it?
+  utilizedAt   DateTime? // When was it redeemed
+  createdAt    DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([purchaseCode])
+}
+```
+
+**API Endpoints:**
+- `GET /api/purchases` - Fetch user's purchase history
+- `POST /api/purchases` - Create new purchase (deducts points, generates code)
+- `PATCH /api/purchases` - Mark purchase as utilized
+
+**Authentication Integration:**
+- Uses NextAuth session with `session.user.id`
+- Type definitions in `types/next-auth.d.ts` extend default NextAuth types
+- Session callbacks in `lib/auth.ts` add user ID to session
+
+---
+
+### File Structure
+
+```
+app/
+├── store/
+│   ├── page.tsx                 # Main store (browse & purchase)
+│   ├── confirmation/
+│   │   └── page.tsx            # Post-purchase confirmation
+│   └── redeem/
+│       └── page.tsx            # Redemption page
+├── api/
+│   └── purchases/
+│       └── route.ts            # Purchase API (GET/POST/PATCH)
+components/
+└── Header.tsx                   # Shows "Use Points" link, points balance
+types/
+└── next-auth.d.ts              # NextAuth type extensions
+```
+
+---
+
+### User Flow & Pages
+
+#### 1. Header Integration
+**Location:** `components/Header.tsx`
+
+**Changes:**
+- "Score" renamed to "Points" 
+- Shows current points balance (e.g., "Your Points: 500")
+- "Organizations" replaced with "Use Points" navigation link
+- Links to `/store`
+
+#### 2. Store Main Page (`/store`)
+**Location:** `app/store/page.tsx`
+
+**Features:**
+- **Points Balance Display:** Shows user's current points at top
+- **Available Items Section:** Two purchasable items:
+  1. **Review Session (500 points)**
+     - "One hour video call where you show us what you've done and we give feedback and guidance"
+  2. **Access to the Climate Web (500 points)**
+     - "The world's most complete climate knowledge base"
+
+**Item Selection:**
+- Click item card to select (orange border highlights)
+- Click again to deselect
+- Only one item can be selected at a time
+- If user doesn't have enough points, item appears greyed out (not clickable)
+
+**Purchase Process:**
+1. User selects item
+2. "Purchase [Item Name]" button appears
+3. Click to purchase → Instant deduction of points
+4. Generates unique 8-character purchase code
+5. Redirects to confirmation page with purchase ID
+
+**Your Purchases Section:**
+- Lists all user's purchases (newest first)
+- Each purchase shows:
+  - Item name
+  - Purchase date
+  - Unique purchase code
+  - Status: "Redeem" button OR "Already Utilized" badge
+- Click "Redeem" → Goes to redemption page
+- "Already Utilized" appears greyed out (no action)
+
+**Design:**
+- Cards match dashboard module style: grey background, dark blue border
+- Orange accents for selected state and prices
+- Responsive layout (items stack on mobile)
+
+#### 3. Confirmation Page (`/store/confirmation`)
+**Location:** `app/store/confirmation/page.tsx`
+
+**Purpose:** Shows purchase confirmation immediately after buying
+
+**Features:**
+- 🎉 Congratulations message with confetti emoji
+- Displays purchased item name in large orange text
+- **Purchase Code Display:**
+  - Large 5xl font-mono display
+  - Orange border box
+  - Code example: `ZNCDQ63R`
+  - Instruction: "Save this code - you'll need it to redeem your purchase"
+
+**Utilize Now Button:**
+- Opens email client pre-filled with:
+  - To: Keith.nelson@newdayinternationalconsulting.com
+  - Subject: "Redeeming: [Item Name]"
+  - Body: Item name, purchase code, purchase date
+- **Marks purchase as utilized in database**
+- **Automatically redirects to store** after 1 second
+- Button shows "Processing..." during action
+- Prevents double-utilization
+
+**Instructions Section:**
+- Explains redemption process
+- 24-hour response time promise
+- Note about redeeming later from store
+
+**Back to Store Button:**
+- Manual navigation option
+- Dark navy background
+
+**Technical Notes:**
+- Uses `useSearchParams()` wrapped in Suspense boundary (Next.js 15 requirement)
+- Fetches purchase details by ID from query param
+- Validates purchase belongs to logged-in user
+
+#### 4. Redeem Page (`/store/redeem`)
+**Location:** `app/store/redeem/page.tsx`
+
+**Purpose:** Dedicated page for redeeming purchases from "Your Purchases" list
+
+**Features:**
+- Title: "Redeem Your Purchase"
+- Shows item name being redeemed
+- Displays purchase code prominently
+- Shows purchase date
+
+**Utilize Now Button:**
+- Same email functionality as confirmation page
+- Marks as utilized in database
+- Auto-redirects to store after 1 second
+- Shows "Processing..." state
+
+**Protection:**
+- If purchase already utilized → Redirects to store
+- Validates purchase belongs to user
+- Prevents re-redemption
+
+**What Happens Next Section:**
+- Email client opens automatically
+- Purchase marked utilized
+- 24-hour response promise
+- User returns to store
+
+---
+
+### Purchase Code System
+
+#### Code Generation
+**Location:** `app/api/purchases/route.ts`
+
+**Algorithm:**
+```typescript
+function generatePurchaseCode(): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  let code = ''
+  for (let i = 0; i < 8; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+  return code
+}
+```
+
+**Characteristics:**
+- **8 characters long**
+- **Alphanumeric:** A-Z and 0-9 only (36 possible characters per position)
+- **Total possible combinations:** 36^8 = 2,821,109,907,456 (2.8 trillion)
+- **Collision-free:** Checks database before using
+- **Unique constraint:** Database enforces uniqueness
+
+**Example Codes:**
+- `ZNCDQ63R`
+- `A7B3X9K2`
+- `M4T8P2N5`
+- `7KLP4XWQ`
+
+#### Uniqueness Guarantee
+
+**Generation Process:**
+```typescript
+// Generate code
+let purchaseCode = generatePurchaseCode()
+
+// Check if exists in database
+let codeExists = await prisma.purchase.findUnique({ 
+  where: { purchaseCode } 
+})
+
+// Keep generating until unique
+while (codeExists) {
+  purchaseCode = generatePurchaseCode()
+  codeExists = await prisma.purchase.findUnique({ 
+    where: { purchaseCode } 
+  })
+}
+```
+
+**Database Constraint:**
+```prisma
+model Purchase {
+  purchaseCode String @unique  // Enforced at DB level
+  // ...
+}
+```
+
+#### Code Validation (for Administrator)
+
+**How to validate a code someone sends:**
+1. Access Neon database dashboard
+2. Run query:
+   ```sql
+   SELECT * FROM "Purchase" WHERE "purchaseCode" = 'ZNCDQ63R';
+   ```
+3. Results show:
+   - ✅ User who purchased it
+   - ✅ Item they purchased
+   - ✅ Purchase date
+   - ✅ Whether already utilized
+   - ✅ Utilization timestamp
+
+**Validation in Application:**
+- No user-facing validation tool (intentionally)
+- Codes stored permanently in database
+- Email redemptions include code
+- You can always look up code in database
+- Invalid codes won't exist in system
+
+**Why validation isn't needed:**
+- System generates all codes
+- Users can't create fake codes
+- Email provides paper trail
+- Database is source of truth
+
+---
+
+### API Implementation
+
+#### GET /api/purchases
+**Purpose:** Fetch user's purchase history
+
+**Request:**
+- Method: `GET`
+- Auth: Requires valid session
+- Params: None
+
+**Response:**
+```typescript
+{
+  purchases: [
+    {
+      id: "cm2...",
+      itemType: "review-session",
+      itemName: "Review Session",
+      pointsCost: 500,
+      purchaseCode: "ZNCDQ63R",
+      isUtilized: false,
+      createdAt: "2025-10-16T10:00:00.000Z",
+      utilizedAt: null
+    }
+  ]
+}
+```
+
+**Implementation:**
+```typescript
+const user = await prisma.user.findUnique({
+  where: { id: session.user.id },
+  include: {
+    purchases: {
+      orderBy: { createdAt: 'desc' }
+    }
+  }
+})
+```
+
+#### POST /api/purchases
+**Purpose:** Create new purchase
+
+**Request:**
+```typescript
+{
+  itemType: "review-session",
+  itemName: "Review Session",
+  pointsCost: 500
+}
+```
+
+**Process:**
+1. Validate user has sufficient points
+2. Generate unique purchase code
+3. Create purchase and deduct points in **single transaction**
+4. Return purchase details
+
+**Transaction Safety:**
+```typescript
+const purchase = await prisma.$transaction(async (tx) => {
+  // Deduct points
+  await tx.user.update({
+    where: { id: user.id },
+    data: { score: user.score - pointsCost }
+  })
+
+  // Create purchase
+  return await tx.purchase.create({
+    data: {
+      userId: user.id,
+      itemType,
+      itemName,
+      pointsCost,
+      purchaseCode
+    }
+  })
+})
+```
+
+**Why Transaction Matters:**
+- Ensures atomicity: Either both succeed or both fail
+- Prevents losing points without getting purchase
+- Prevents getting purchase without losing points
+- Database rollback if any step fails
+
+**Response:**
+```typescript
+{
+  purchase: {
+    id: "cm2...",
+    purchaseCode: "ZNCDQ63R",
+    // ... other fields
+  }
+}
+```
+
+#### PATCH /api/purchases
+**Purpose:** Mark purchase as utilized
+
+**Request:**
+```typescript
+{
+  purchaseId: "cm2..."
+}
+```
+
+**Validation:**
+1. Verify purchase exists
+2. Verify purchase belongs to requesting user
+3. Update utilization status
+
+**Process:**
+```typescript
+const updatedPurchase = await prisma.purchase.update({
+  where: { id: purchaseId },
+  data: {
+    isUtilized: true,
+    utilizedAt: new Date()
+  }
+})
+```
+
+**Response:**
+```typescript
+{
+  purchase: {
+    id: "cm2...",
+    isUtilized: true,
+    utilizedAt: "2025-10-16T11:00:00.000Z",
+    // ... other fields
+  }
+}
+```
+
+---
+
+### Points System Integration
+
+#### Earning Points
+**Location:** Activity completion (e.g., defining objectives page)
+
+**Process:**
+```typescript
+const awardPoints = async () => {
+  // Award 50 points
+  await fetch('/api/score', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ points: 50 }),
+  })
+
+  // Trigger header to refresh display
+  window.dispatchEvent(new Event('scoreUpdated'))
+}
+```
+
+**When Points Are Awarded:**
+- Completing "Defining Objectives" activity: 50 points
+- Other activities: 50 points each (as implemented)
+- Points add to user's balance immediately
+- Header counter animates up to show new total
+
+#### Spending Points
+**Location:** Store purchase flow
+
+**Process:**
+1. User selects item (500 points)
+2. Clicks "Purchase" button
+3. API deducts 500 from user's score
+4. Purchase created with unique code
+5. Header automatically updates (via scoreUpdated event)
+6. User sees reduced balance
+
+**Balance Display:**
+- Header shows: "Your Points: [number]"
+- Store page shows current balance
+- Updates in real-time after purchase
+- Cannot purchase if insufficient points
+
+---
+
+### Email Integration
+
+#### Auto-Fill Email System
+**Purpose:** Make redemption frictionless
+
+**Implementation:**
+```typescript
+const handleUtilize = async () => {
+  // Construct email
+  const subject = encodeURIComponent(`Redeeming: ${itemName}`)
+  const body = encodeURIComponent(
+    `Hello,\n\nI would like to redeem my purchase:\n\n` +
+    `Item: ${itemName}\n` +
+    `Purchase Code: ${purchaseCode}\n` +
+    `Purchase Date: ${purchaseDate}\n\n` +
+    `Thank you!`
+  )
+  
+  // Open email client
+  window.location.href = 
+    `mailto:Keith.nelson@newdayinternationalconsulting.com?subject=${subject}&body=${body}`
+}
+```
+
+**What Happens:**
+1. User's default email client opens
+2. To field pre-filled: Keith.nelson@newdayinternationalconsulting.com
+3. Subject line: "Redeeming: Review Session" (or other item)
+4. Body includes:
+   - Item name
+   - Purchase code
+   - Purchase date
+   - Professional greeting/closing
+
+**Cross-Platform:**
+- Works on Windows, Mac, Linux
+- Opens default email client (Outlook, Mail, Gmail, etc.)
+- Mobile-friendly (opens mobile email apps)
+- Falls back gracefully if no email client configured
+
+**User Experience:**
+- Instant - no page load
+- No typing required
+- Professional formatting
+- All details included
+- Ready to send immediately
+
+---
+
+### Design System Integration
+
+#### Color Scheme
+- **Item cards:** Grey background (#f5f5f5), dark blue border (#0B1F32)
+- **Selected state:** Orange border (#FF5B35)
+- **Prices:** Orange text (#FF5B35)
+- **Buttons:** Orange (purchase), Dark navy (secondary)
+- **Utilized badges:** Grey, low opacity
+
+#### Layout Patterns
+- **Responsive grid:** 2 columns on desktop, 1 on mobile
+- **Card consistency:** Matches dashboard module cards
+- **Hover effects:** opacity-90, 150ms transition
+- **Spacing:** Follows 4px grid system
+
+#### Typography
+- **Headings:** Bold, #0B1F32 (navy)
+- **Purchase codes:** 5xl font-mono, bold
+- **Body text:** Regular, #6C757D (grey)
+- **Prices:** Bold, #FF5B35 (orange)
+
+#### Visual Hierarchy
+1. Points balance (top, prominent)
+2. Available items (large cards)
+3. Purchase button (orange, centered)
+4. Your purchases (lower, compact list)
+
+---
+
+### Key Implementation Details
+
+#### Suspense Boundaries (Next.js 15)
+**Problem:** `useSearchParams()` requires Suspense in Next.js 15
+
+**Solution:**
+```typescript
+function PageContent() {
+  const searchParams = useSearchParams()
+  // ... component logic
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<LoadingState />}>
+      <PageContent />
+    </Suspense>
+  )
+}
+```
+
+**Applied to:**
+- `app/store/confirmation/page.tsx`
+- `app/store/redeem/page.tsx`
+
+#### Auto-Redirect Pattern
+**Implementation:**
+```typescript
+// After marking as utilized
+setTimeout(() => {
+  router.push('/store')
+}, 1000)
+```
+
+**Why 1 second:**
+- Gives email client time to open
+- User sees "Processing..." state
+- Smooth transition
+- Not too fast, not too slow
+
+#### State Management
+**Confirmation/Redeem Pages:**
+```typescript
+const [purchase, setPurchase] = useState<Purchase | null>(null)
+const [isLoading, setIsLoading] = useState(true)
+const [isRedeeming, setIsRedeeming] = useState(false)
+```
+
+**Store Page:**
+```typescript
+const [selectedItem, setSelectedItem] = useState<string | null>(null)
+const [purchases, setPurchases] = useState<Purchase[]>([])
+const [isPurchasing, setIsPurchasing] = useState(false)
+```
+
+**Loading States:**
+- Initial load: Skeleton/spinner
+- Processing: "Processing..." button text
+- Success: Redirect with data
+- Error: Alert dialog
+
+---
+
+### Security & Privacy
+
+#### Authentication
+- All API routes verify `session.user.id`
+- Purchase ownership validated before redemption
+- No public access to purchase data
+- Session required for all store pages
+
+#### Data Privacy
+- Purchase codes NOT tied to real identities
+- Only username associated (anonymous)
+- No email required for purchases
+- No payment processing (points only)
+- User controls when to share code (via email)
+
+#### Transaction Safety
+- Points deduction atomic with purchase creation
+- Database constraints prevent duplicates
+- No partial transactions possible
+- Rollback on any error
+
+---
+
+### Testing Checklist
+
+**Purchase Flow:**
+- [ ] User can see points balance
+- [ ] User can select/deselect items
+- [ ] Purchase button appears on selection
+- [ ] Can't select item without enough points
+- [ ] Points deducted on purchase
+- [ ] Unique code generated
+- [ ] Redirects to confirmation
+
+**Confirmation Flow:**
+- [ ] Purchase code displays correctly
+- [ ] Utilize Now opens email
+- [ ] Purchase marked as utilized
+- [ ] Auto-redirects to store
+- [ ] Can't double-redeem
+
+**Redemption Flow:**
+- [ ] Purchases list shows all purchases
+- [ ] Utilized purchases show badge
+- [ ] Non-utilized show Redeem button
+- [ ] Redeem opens email
+- [ ] Marks as utilized
+- [ ] Auto-redirects
+
+**Edge Cases:**
+- [ ] Insufficient points (can't purchase)
+- [ ] Already utilized (can't redeem)
+- [ ] Invalid purchase ID (404 redirect)
+- [ ] Not owner of purchase (unauthorized)
+- [ ] Session expired (login redirect)
+
+---
+
+### Future Enhancements (Potential)
+
+**Planned:**
+- More purchasable items (different point values)
+- Gift purchases (transfer to another user)
+- Purchase history export (PDF/CSV)
+- Points expiration system
+- Seasonal special offers
+- Bundle discounts
+
+**Under Consideration:**
+- Refund system (points back if unused)
+- Purchase notes/customization
+- Email confirmation receipts
+- Purchase analytics for admin
+- Leaderboard (most points earned)
 
 ---
 
