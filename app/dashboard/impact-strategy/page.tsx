@@ -99,7 +99,7 @@ export default function ImpactStrategyPage() {
               {/* Timeline items */}
               <div className="flex justify-between w-full relative z-10 gap-4">
                 {[
-                  { label: 'Systems Point 1', completed: false, href: '/dashboard/impact-strategy/point-1' },
+                  { label: 'Theory of Change', completed: false, href: '/dashboard/impact-strategy/point-1/theory-of-change' },
                   { label: 'Systems Point 2', completed: false, href: '/dashboard/impact-strategy/point-2' },
                   { label: 'Systems Point 3', completed: false, href: '/dashboard/impact-strategy/point-3' },
                   { label: 'Systems Point 4', completed: false, href: '/dashboard/impact-strategy/point-4' },

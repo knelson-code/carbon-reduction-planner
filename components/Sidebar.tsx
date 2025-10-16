@@ -55,7 +55,7 @@ const menuItems: MenuItem[] = [
     href: "/dashboard/impact-strategy",
     icon: "Systems",
     subItems: [
-      { name: "Systems Point 1", href: "/dashboard/impact-strategy/point-1" },
+      { name: "Theory of Change", href: "/dashboard/impact-strategy/point-1/theory-of-change" },
       { name: "Systems Point 2", href: "/dashboard/impact-strategy/point-2" },
       { name: "Systems Point 3", href: "/dashboard/impact-strategy/point-3" },
       { name: "Systems Point 4", href: "/dashboard/impact-strategy/point-4" },

@@ -172,7 +172,7 @@ export default function DashboardPage() {
                   <li>
                     <span style={{ color: '#163E64' }}>• </span>
                     <Link 
-                      href="/dashboard/impact-strategy/theory-of-change"
+                      href="/dashboard/impact-strategy/point-1/theory-of-change"
                       className="text-sm underline hover:opacity-70 transition-opacity"
                       style={{ color: '#163E64' }}
                     >
