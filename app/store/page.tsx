@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import Sidebar from "@/components/Sidebar"
 
 interface Purchase {
   id: string
@@ -145,10 +146,13 @@ export default function StorePage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-92px)] bg-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8">
+    <div className="flex min-h-[calc(100vh-92px)]">
+      <Sidebar />
+      
+      <div className="flex-1 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Header */}
+          <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2" style={{ color: '#0B1F32' }}>
             Use Your Points
           </h1>
@@ -283,6 +287,7 @@ export default function StorePage() {
               ))}
             </div>
           )}
+        </div>
         </div>
       </div>
     </div>
