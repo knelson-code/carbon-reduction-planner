@@ -38,6 +38,20 @@ const STORE_ITEMS: StoreItem[] = [
     subtitle: 'The world\'s most complete climate knowledge base',
     points: 500,
     type: 'climate_web_access'
+  },
+  {
+    id: 'climate_risk_class',
+    name: 'Climate Risk Class Access',
+    subtitle: 'Get access to our comprehensive Climate Risk training course',
+    points: 500,
+    type: 'climate_risk_class'
+  },
+  {
+    id: 'guidance_map',
+    name: 'Map for Understanding and Guiding How All These Components Fit Together',
+    subtitle: 'A comprehensive guide to help you navigate and understand the relationships between all climate action components',
+    points: 500,
+    type: 'guidance_map'
   }
 ]
 
