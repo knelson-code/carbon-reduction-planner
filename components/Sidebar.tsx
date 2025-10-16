@@ -110,6 +110,11 @@ export default function Sidebar() {
                   paddingTop: "12px",
                   paddingBottom: "12px",
                 }}
+                onMouseEnter={() => {
+                  if (item.subItems && isExpanded && !expandedItems.includes(item.name)) {
+                    toggleItem(item.name)
+                  }
+                }}
               >
                 <Link
                   href={item.href}
