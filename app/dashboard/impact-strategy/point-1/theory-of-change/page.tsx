@@ -455,7 +455,7 @@ export default function TheoryOfChangePage() {
               className="text-sm font-light hover:opacity-80 transition-opacity"
               style={{ color: '#FF5B35' }}
             >
-              ← Back to Systemic Focus Overview
+              ← Back to Systems Thinking Overview
             </Link>
             <h1 className="text-2xl font-bold flex-1 text-center" style={{ color: '#0B1F32' }}>
               Theory of Change
@@ -471,7 +471,7 @@ export default function TheoryOfChangePage() {
           
           {/* Subtitle */}
           <h2 className="text-base mb-2 text-center" style={{ color: '#0B1F32' }}>
-            What are you trying to achieve with your work on climate change?
+            Is it logical to think that the actions you're planning are going to produce the results you hope to achieve?
           </h2>
 
           {/* Activity Area */}
