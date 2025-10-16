@@ -448,19 +448,25 @@ export default function DefiningObjectivesPage() {
         })}
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
-          {/* Title with Back link */}
+          {/* Title with Back and Next links */}
           <div className="flex items-center justify-between mb-1">
             <Link 
               href="/dashboard/transition-strategy"
               className="text-sm font-light hover:opacity-80 transition-opacity"
               style={{ color: '#FF5B35' }}
             >
-              ← Back to Transition Strategy
+              ← Back to Transition Strategy Overview
             </Link>
             <h1 className="text-2xl font-bold flex-1 text-center" style={{ color: '#0B1F32' }}>
               Think about your objectives
             </h1>
-            <div style={{ width: '180px' }}></div> {/* Spacer for centering */}
+            <Link 
+              href="/dashboard/transition-strategy"
+              className="text-sm font-light hover:opacity-80 transition-opacity"
+              style={{ color: '#FF5B35' }}
+            >
+              Continue to next activity in this section →
+            </Link>
           </div>
           
           {/* Subtitle */}
