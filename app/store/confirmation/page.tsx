@@ -23,6 +23,7 @@ function ConfirmationPageContent() {
   
   const [purchase, setPurchase] = useState<Purchase | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isRedeeming, setIsRedeeming] = useState(false)
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -60,15 +61,41 @@ function ConfirmationPageContent() {
     }
   }, [session, purchaseId, router])
 
-  const handleUtilizeNow = () => {
-    if (!purchase) return
+  const handleUtilizeNow = async () => {
+    if (!purchase || isRedeeming) return
 
-    const subject = encodeURIComponent(`Redeeming: ${purchase.itemName}`)
-    const body = encodeURIComponent(
-      `Hello,\n\nI would like to redeem my purchase:\n\nItem: ${purchase.itemName}\nPurchase Code: ${purchase.purchaseCode}\nPurchase Date: ${new Date(purchase.createdAt).toLocaleDateString()}\n\nThank you!`
-    )
+    setIsRedeeming(true)
     
-    window.location.href = `mailto:Keith.nelson@newdayinternationalconsulting.com?subject=${subject}&body=${body}`
+    try {
+      // Mark as utilized
+      const response = await fetch('/api/purchases', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ purchaseId: purchase.id })
+      })
+
+      if (response.ok) {
+        // Open email client
+        const subject = encodeURIComponent(`Redeeming: ${purchase.itemName}`)
+        const body = encodeURIComponent(
+          `Hello,\n\nI would like to redeem my purchase:\n\nItem: ${purchase.itemName}\nPurchase Code: ${purchase.purchaseCode}\nPurchase Date: ${new Date(purchase.createdAt).toLocaleDateString()}\n\nThank you!`
+        )
+        
+        window.location.href = `mailto:Keith.nelson@newdayinternationalconsulting.com?subject=${subject}&body=${body}`
+        
+        // Redirect to store after a moment
+        setTimeout(() => {
+          router.push('/store')
+        }, 1000)
+      } else {
+        alert('Failed to mark purchase as utilized')
+        setIsRedeeming(false)
+      }
+    } catch (error) {
+      console.error('Error utilizing purchase:', error)
+      alert('Failed to utilize purchase')
+      setIsRedeeming(false)
+    }
   }
 
   if (status === "loading" || isLoading) {
@@ -120,10 +147,15 @@ function ConfirmationPageContent() {
         <div className="space-y-4 mb-8">
           <button
             onClick={handleUtilizeNow}
+            disabled={isRedeeming}
             className="w-full px-8 py-4 rounded-lg text-xl font-bold transition-opacity hover:opacity-90"
-            style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
+            style={{ 
+              backgroundColor: '#FF5B35', 
+              color: '#ffffff',
+              opacity: isRedeeming ? 0.6 : 1
+            }}
           >
-            Utilize Now (Send Email)
+            {isRedeeming ? 'Processing...' : 'Utilize Now (Send Email)'}
           </button>
           
           <p className="text-sm" style={{ color: '#6C757D' }}>
