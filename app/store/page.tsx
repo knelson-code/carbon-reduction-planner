@@ -55,6 +55,20 @@ const STORE_ITEMS: StoreItem[] = [
     points: 500,
     type: 'guidance_map',
     oneTimePurchase: true
+  },
+  {
+    id: 'dictation_ability',
+    name: 'Dictation Ability',
+    subtitle: 'AI-powered voice dictation feature to help you capture ideas and complete activities hands-free',
+    points: 500,
+    type: 'dictation_ability'
+  },
+  {
+    id: 'insight_potion',
+    name: 'Insight Potion',
+    subtitle: 'Unlock advanced AI analysis and personalized strategic insights for your climate work',
+    points: 500,
+    type: 'insight_potion'
   }
 ]
 
