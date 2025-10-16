@@ -22,6 +22,7 @@ interface StoreItem {
   subtitle: string
   points: number
   type: string
+  oneTimePurchase?: boolean
 }
 
 const STORE_ITEMS: StoreItem[] = [
@@ -51,7 +52,8 @@ const STORE_ITEMS: StoreItem[] = [
     name: 'Map for Understanding and Guiding How All These Components Fit Together',
     subtitle: 'A comprehensive guide to help you navigate and understand the relationships between all climate action components',
     points: 500,
-    type: 'guidance_map'
+    type: 'guidance_map',
+    oneTimePurchase: true
   }
 ]
 
@@ -164,19 +166,21 @@ export default function StorePage() {
             {STORE_ITEMS.map((item) => {
               const canAfford = userPoints >= item.points
               const isSelected = selectedItem?.id === item.id
+              const alreadyPurchased = item.oneTimePurchase && purchases.some(p => p.itemType === item.type)
+              const isClickable = canAfford && !alreadyPurchased
               
               return (
                 <div
                   key={item.id}
-                  className={`border-2 rounded-lg p-6 transition-all cursor-pointer ${
-                    isSelected ? 'ring-4 ring-orange-500' : ''
-                  }`}
+                  className={`border-2 rounded-lg p-6 transition-all ${
+                    isClickable ? 'cursor-pointer' : 'cursor-not-allowed'
+                  } ${isSelected ? 'ring-4 ring-orange-500' : ''}`}
                   style={{
                     borderColor: isSelected ? '#FF5B35' : '#0B1F32',
                     backgroundColor: isSelected ? '#FFF5F3' : '#ffffff',
-                    opacity: canAfford ? 1 : 0.6
+                    opacity: alreadyPurchased ? 0.5 : (canAfford ? 1 : 0.6)
                   }}
-                  onClick={() => canAfford && setSelectedItem(isSelected ? null : item)}
+                  onClick={() => isClickable && setSelectedItem(isSelected ? null : item)}
                 >
                   <h3 className="text-xl font-bold mb-2" style={{ color: '#0B1F32' }}>
                     {item.name}
@@ -188,12 +192,17 @@ export default function StorePage() {
                     <span className="text-lg font-bold" style={{ color: '#FF5B35' }}>
                       {item.points} Points
                     </span>
-                    {!canAfford && (
+                    {alreadyPurchased && (
+                      <span className="text-sm font-semibold" style={{ color: '#6C757D' }}>
+                        Already Purchased
+                      </span>
+                    )}
+                    {!alreadyPurchased && !canAfford && (
                       <span className="text-sm" style={{ color: '#dc3545' }}>
                         Insufficient Points
                       </span>
                     )}
-                    {isSelected && (
+                    {!alreadyPurchased && isSelected && (
                       <span className="text-sm font-semibold" style={{ color: '#FF5B35' }}>
                         Selected ✓
                       </span>
