@@ -1,0 +1,161 @@
+"use client"
+
+import { useSession } from "next-auth/react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
+import Link from "next/link"
+
+interface Purchase {
+  id: string
+  itemType: string
+  itemName: string
+  pointsCost: number
+  purchaseCode: string
+  isUtilized: boolean
+  createdAt: string
+}
+
+export default function ConfirmationPage() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const purchaseId = searchParams?.get('purchaseId')
+  
+  const [purchase, setPurchase] = useState<Purchase | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login")
+    }
+  }, [status, router])
+
+  useEffect(() => {
+    const fetchPurchase = async () => {
+      if (!purchaseId) {
+        router.push('/store')
+        return
+      }
+
+      try {
+        const response = await fetch('/api/purchases')
+        if (response.ok) {
+          const data = await response.json()
+          const foundPurchase = data.purchases.find((p: Purchase) => p.id === purchaseId)
+          if (foundPurchase) {
+            setPurchase(foundPurchase)
+          } else {
+            router.push('/store')
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching purchase:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    if (session && purchaseId) {
+      fetchPurchase()
+    }
+  }, [session, purchaseId, router])
+
+  const handleUtilizeNow = () => {
+    if (!purchase) return
+
+    const subject = encodeURIComponent(`Redeeming: ${purchase.itemName}`)
+    const body = encodeURIComponent(
+      `Hello,\n\nI would like to redeem my purchase:\n\nItem: ${purchase.itemName}\nPurchase Code: ${purchase.purchaseCode}\nPurchase Date: ${new Date(purchase.createdAt).toLocaleDateString()}\n\nThank you!`
+    )
+    
+    window.location.href = `mailto:Keith.nelson@newdayinternationalconsulting.com?subject=${subject}&body=${body}`
+  }
+
+  if (status === "loading" || isLoading) {
+    return (
+      <div className="min-h-[calc(100vh-92px)] flex items-center justify-center">
+        <div className="text-lg text-gray-600">Loading...</div>
+      </div>
+    )
+  }
+
+  if (!session || !purchase) {
+    return null
+  }
+
+  return (
+    <div className="min-h-[calc(100vh-92px)] bg-white flex items-center justify-center">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+        {/* Success Message */}
+        <div className="mb-8">
+          <div className="text-6xl mb-4">🎉</div>
+          <h1 className="text-4xl font-bold mb-4" style={{ color: '#0B1F32' }}>
+            Congratulations!
+          </h1>
+          <p className="text-xl mb-2" style={{ color: '#6C757D' }}>
+            You've successfully purchased:
+          </p>
+          <h2 className="text-2xl font-bold mb-6" style={{ color: '#FF5B35' }}>
+            {purchase.itemName}
+          </h2>
+        </div>
+
+        {/* Purchase Code Display */}
+        <div 
+          className="border-4 rounded-lg p-8 mb-8"
+          style={{ borderColor: '#FF5B35', backgroundColor: '#FFF5F3' }}
+        >
+          <p className="text-sm mb-2" style={{ color: '#6C757D' }}>
+            Your Purchase Code
+          </p>
+          <div className="text-5xl font-bold font-mono mb-4" style={{ color: '#0B1F32' }}>
+            {purchase.purchaseCode}
+          </div>
+          <p className="text-sm" style={{ color: '#6C757D' }}>
+            Save this code - you'll need it to redeem your purchase
+          </p>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="space-y-4 mb-8">
+          <button
+            onClick={handleUtilizeNow}
+            className="w-full px-8 py-4 rounded-lg text-xl font-bold transition-opacity hover:opacity-90"
+            style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
+          >
+            Utilize Now (Send Email)
+          </button>
+          
+          <p className="text-sm" style={{ color: '#6C757D' }}>
+            Click above to send an email to redeem your purchase immediately
+          </p>
+        </div>
+
+        {/* Instructions */}
+        <div 
+          className="border rounded-lg p-6 text-left mb-8"
+          style={{ borderColor: '#0B1F32', backgroundColor: '#f8f9fa' }}
+        >
+          <h3 className="text-lg font-bold mb-3" style={{ color: '#0B1F32' }}>
+            How to Redeem:
+          </h3>
+          <ul className="space-y-2 text-sm" style={{ color: '#6C757D' }}>
+            <li>• Click "Utilize Now" to send an email with your purchase code</li>
+            <li>• We'll respond within 24 hours to schedule your session or provide access</li>
+            <li>• You can also redeem later from the "Your Purchases" section in the store</li>
+            <li>• Keep your purchase code safe - you'll need it!</li>
+          </ul>
+        </div>
+
+        {/* Back to Store Button */}
+        <Link
+          href="/store"
+          className="inline-block px-6 py-3 rounded-lg font-semibold transition-opacity hover:opacity-90"
+          style={{ backgroundColor: '#0B1F32', color: '#ffffff' }}
+        >
+          Back to Store
+        </Link>
+      </div>
+    </div>
+  )
+}

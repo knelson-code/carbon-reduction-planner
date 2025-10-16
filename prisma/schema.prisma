@@ -20,6 +20,7 @@ model User {
   
   organizations       Organization[]
   activityCompletions ActivityCompletion[]
+  purchases           Purchase[]
 }
 
 model Organization {
@@ -96,4 +97,21 @@ model ActivityCompletion {
   updatedAt   DateTime @updatedAt
   
   @@unique([userId, activityId])
+}
+
+model Purchase {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  itemType        String    // "review_session" or "climate_web_access"
+  itemName        String    // Display name of the item
+  pointsCost      Int       // Points spent on this purchase
+  purchaseCode    String    @unique // Unique code for this purchase (8 characters)
+  
+  isUtilized      Boolean   @default(false)
+  utilizedAt      DateTime?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 }

@@ -134,13 +134,13 @@ export default function Header() {
                     Dashboard
                   </Link>
                   <Link 
-                    href="/organizations" 
+                    href="/store" 
                     className="text-lg font-semibold transition-colors"
                     style={{ color: '#ffffff' }}
                     onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                     onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
                   >
-                    Organizations
+                    Use Points
                   </Link>
                   <div className="text-lg font-semibold" style={{ color: '#ffffff', minWidth: '150px' }}>
                     Your Points: {Math.round(displayScore)}
@@ -231,12 +231,12 @@ export default function Header() {
                   Dashboard
                 </Link>
                 <Link 
-                  href="/organizations"
+                  href="/store"
                   className="text-3xl font-bold transition-colors"
                   style={{ color: '#ffffff' }}
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Organizations
+                  Use Points
                 </Link>
                 <div className="text-xl font-medium" style={{ color: '#ffffff' }}>
                   {session.user?.email}
