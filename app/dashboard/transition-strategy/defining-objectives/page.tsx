@@ -33,8 +33,8 @@ export default function DefiningObjectivesPage() {
     { id: 'sales', label: 'Improve sales / business value / access to funding', isEditable: false, stars: 0 },
     { id: 'esg', label: 'Win ESG points: (CDP, Ecovadis, etc.)', isEditable: false, stars: 0 },
     { id: 'reputation', label: 'Maintain our reputation and social license', isEditable: false, stars: 0 },
-    { id: 'other1', label: 'Other (Type a new name here)', isEditable: true, stars: 0 },
-    { id: 'other2', label: 'Other (Type a new name here)', isEditable: true, stars: 0 },
+    { id: 'other1', label: 'Other (Type a new objective here)', isEditable: true, stars: 0 },
+    { id: 'other2', label: 'Other (Type a new objective here)', isEditable: true, stars: 0 },
   ])
   
   const [stars, setStars] = useState<Star[]>([])
@@ -448,19 +448,25 @@ export default function DefiningObjectivesPage() {
         })}
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
-          {/* Title with Back link */}
+          {/* Title with Back links */}
           <div className="flex items-center justify-between mb-1">
+            <Link 
+              href="/dashboard"
+              className="text-sm font-light hover:opacity-80 transition-opacity"
+              style={{ color: '#FF5B35' }}
+            >
+              ← Back to Dashboard
+            </Link>
+            <h1 className="text-2xl font-bold flex-1 text-center" style={{ color: '#0B1F32' }}>
+              Think about your objectives
+            </h1>
             <Link 
               href="/dashboard/transition-strategy"
               className="text-sm font-light hover:opacity-80 transition-opacity"
               style={{ color: '#FF5B35' }}
             >
-              ← Back to Transition Strategy
+              Back to Transition Strategy →
             </Link>
-            <h1 className="text-2xl font-bold flex-1 text-center" style={{ color: '#0B1F32' }}>
-              Think about your objectives
-            </h1>
-            <div style={{ width: '180px' }}></div> {/* Spacer for centering */}
           </div>
           
           {/* Subtitle */}

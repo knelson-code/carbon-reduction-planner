@@ -143,7 +143,7 @@ export default function Header() {
                     Organizations
                   </Link>
                   <div className="text-lg font-semibold" style={{ color: '#ffffff', minWidth: '150px' }}>
-                    Your Score: {Math.round(displayScore)}
+                    Your Points: {Math.round(displayScore)}
                   </div>
                   <div className="flex items-center space-x-4">
                     <span className="text-base font-medium" style={{ color: '#ffffff' }}>
