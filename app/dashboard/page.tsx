@@ -112,13 +112,16 @@ export default function DashboardPage() {
 
   // Self-destruct sequence handler
   const handleSelfDestruct = async () => {
-    // Play nicey sound
+    // Play nicey sound instantly
     const audio = new Audio('/nicey.mp3')
     audio.preload = 'auto'
     audio.play().catch(err => console.log('Audio play failed:', err))
 
-    // Show self-destruct warning
+    // Show completion message instantly
     setShowSelfDestruct(true)
+
+    // Start fade out immediately
+    setIsFadingOut(true)
 
     // Award 500 points after 1 second
     setTimeout(async () => {
@@ -134,19 +137,14 @@ export default function DashboardPage() {
       }
     }, 1000)
 
-    // Start fade out after 3 seconds
-    setTimeout(() => {
-      setIsFadingOut(true)
-    }, 3000)
-
-    // Close after 5 seconds total (3s wait + 2s fade)
+    // Close after 2 seconds total (2s fade)
     setTimeout(() => {
       setShowSpyPopup(false)
       setTypedText("")
       setShowButton(false)
       setShowSelfDestruct(false)
       setIsFadingOut(false)
-    }, 5000)
+    }, 2000)
   }
 
   if (status === "loading") {
