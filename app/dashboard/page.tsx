@@ -50,11 +50,23 @@ const modules: ModuleCard[] = [
   },
 ]
 
-const SPY_MESSAGE = `MISSION BRIEFING
+const SPY_MESSAGE = `You are Secret Agent X17.
 
-You will be successful when the materials you produce amount to a climate action plan that is clear, realistic and valuable.
+I am an insignificant administrator working in Mission Control Headquarters.
 
-We've arranged for an initial transfer of funds. Find the store and use these funds to purchase a map.`
+I am contacting you secretly to ask for help with an unofficial and unapproved mission related to fighting climate change and building social resilience.
+
+As you know, many of our top agents have recently been assigned to build "Climate Action Plans", and "CO₂ Reduction Plans". All previous agents have failed on this mission, despite following the instructions from Headquarters perfectly. Furthermore many agents appear to have been psychologically injured by this assignment and some have disappeared.
+
+I have come to suspect that the instructions from Headquarters are incomplete and incorrect. This could only mean that Headquarters has been infiltrated by corrupt agents.
+
+Your mission is two-fold. In the first place, I ask that you attempt to complete a simple, clear, realistic climate action plan using the best practices provided by Headquarters. I need to know if it is possible.
+
+At the same time you will need to think broadly and critically about the assignment. Something is wrong. Something is missing. I don't have the knowledge or skills to identify the problem on my own, and that's why I am counting on you. We are all counting on you.
+
+I don't have any more information. But I've arranged a small transfer from my personal expense account. Rumor has it that the missing notes of the previous corruption investigators can be purchased. This should be enough to buy them, if you can figure out how.
+
+Thank you Agent. Good luck.`
 
 export default function DashboardPage() {
   const { data: session, status } = useSession()
@@ -105,7 +117,7 @@ export default function DashboardPage() {
     if (showSpyPopup && typedText.length < SPY_MESSAGE.length) {
       const timeout = setTimeout(() => {
         setTypedText(SPY_MESSAGE.slice(0, typedText.length + 1))
-      }, 10) // 10ms per character for very fast typing
+      }, 2.5) // 2.5ms per character (4x faster than before)
       return () => clearTimeout(timeout)
     } else if (showSpyPopup && typedText.length === SPY_MESSAGE.length && !showButton) {
       setShowButton(true)
