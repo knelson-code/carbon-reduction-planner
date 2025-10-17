@@ -1,4 +1,4 @@
-"use client"
+ e "use client"
 
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
@@ -52,7 +52,7 @@ const STORE_ITEMS: StoreItem[] = [
     id: 'guidance_map',
     name: 'Map for Understanding and Guiding How All These Components Fit Together',
     subtitle: 'A comprehensive guide to help you navigate and understand the relationships between all climate action components',
-    points: 500,
+    points: 5,
     type: 'guidance_map',
     oneTimePurchase: true
   },
