@@ -338,9 +338,9 @@ export default function DashboardPage() {
             {showSelfDestruct && (
               <p 
                 className="mt-6 text-lg font-bold"
-                style={{ color: '#FF5B35' }}
+                style={{ color: '#0B1F32' }}
               >
-                THIS MESSAGE WILL SELF DESTRUCT IN 5 SECONDS
+                TRANSMISSION OF MISSION BRIEFING COMPLETE
               </p>
             )}
           </div>
