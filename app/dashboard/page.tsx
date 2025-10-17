@@ -186,25 +186,8 @@ export default function DashboardPage() {
             ))}
           </div>
 
-          {/* Top Secret Icon - Now scrolls with page */}
-          <div className="relative mb-8 flex flex-col items-center">
-            <p className="text-xs mb-1" style={{ color: '#0B1F32' }}>Secret Briefing</p>
-            <button
-              onClick={() => setShowSpyPopup(true)}
-              className="cursor-pointer hover:opacity-80 transition-opacity"
-            >
-              <img 
-                src="/folder-icon.svg" 
-                alt="Top Secret Folder" 
-                width="48" 
-                height="48"
-              />
-            </button>
-            <p className="text-xs mt-1" style={{ color: '#0B1F32' }}>Game Play Briefing</p>
-          </div>
-
           {/* Getting Started Accordion Section */}
-          <div className="mb-8 mt-14 mx-auto max-w-4xl px-8">
+          <div className="mb-8 mx-auto max-w-4xl px-8">
             {/* Accordion Header */}
             <button
               onClick={() => setIsAccordionOpen(!isAccordionOpen)}
@@ -241,6 +224,24 @@ export default function DashboardPage() {
             {/* Accordion Content */}
             {isAccordionOpen && (
               <div className="mt-4 space-y-3" style={{ color: '#163E64' }}>
+                {/* Top Secret Folder Icon */}
+                <div className="flex justify-center mb-6">
+                  <div className="flex flex-col items-center">
+                    <p className="text-xs mb-1" style={{ color: '#0B1F32' }}>Top Secret</p>
+                    <button
+                      onClick={() => setShowSpyPopup(true)}
+                      className="cursor-pointer hover:opacity-80 transition-opacity"
+                    >
+                      <img 
+                        src="/folder-icon.svg" 
+                        alt="Top Secret Folder" 
+                        width="48" 
+                        height="48"
+                      />
+                    </button>
+                  </div>
+                </div>
+
                 <p className="text-sm leading-relaxed">
                   If you complete all of these activities, you'll have a robust transition strategy. That means understanding your role in a world affected by climate change, and having a clear plan for what you intend to do about it.
                 </p>
