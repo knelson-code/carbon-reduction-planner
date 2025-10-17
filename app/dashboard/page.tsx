@@ -50,17 +50,82 @@ const modules: ModuleCard[] = [
   },
 ]
 
+const SPY_MESSAGE = `Your mission is to create a transition plan that is high quality, not greenwashing or greenwishing and likely to produce the change you say you want to see.
+
+You will be successful when the materials you produce amount to a climate action plan that is clear, realistic and valuable.
+
+30 years into the fight against climate change, all organizations want to appear to be responsible and some are willing to invest.
+
+Your mission in this game to create a high quality climate action plan that maximizes your organization's impact in the fight to slow climate change and build social resilience. At any time you can decide that your materials are complete and submit them for quality review, thereby, potentially winning the game. But be warned, completing the task successfully requires reflection, effort, and willingness to look honestly at the roots of the problem. We ourselves have not yet completed the game successfully, and we do not have all the answers. Even if you cannot succeed immediately, by completing all of these tasks and trying to succeed, you can build a robust climate action plan.`
+
 export default function DashboardPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const [hoveredCard, setHoveredCard] = useState<string | null>(null)
   const [isAccordionOpen, setIsAccordionOpen] = useState(false)
+  const [showSpyPopup, setShowSpyPopup] = useState(false)
+  const [typedText, setTypedText] = useState("")
+  const [showButton, setShowButton] = useState(false)
+  const [showSelfDestruct, setShowSelfDestruct] = useState(false)
+  const [isFading, setIsFading] = useState(false)
+  const [particles, setParticles] = useState<Array<{id: number, x: number, y: number, vx: number, vy: number}>>([])
 
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login")
     }
   }, [status, router])
+
+  // Typing animation effect
+  useEffect(() => {
+    if (showSpyPopup && typedText.length < SPY_MESSAGE.length) {
+      const timeout = setTimeout(() => {
+        setTypedText(SPY_MESSAGE.slice(0, typedText.length + 1))
+      }, 20) // 20ms per character for fast typing
+      return () => clearTimeout(timeout)
+    } else if (showSpyPopup && typedText.length === SPY_MESSAGE.length && !showButton) {
+      setShowButton(true)
+    }
+  }, [showSpyPopup, typedText, showButton])
+
+  // Self-destruct sequence handler
+  const handleSelfDestruct = async () => {
+    // Play nicey sound
+    const audio = new Audio('/nicey.mp3')
+    audio.preload = 'auto'
+    audio.play().catch(err => console.log('Audio play failed:', err))
+
+    // Show self-destruct warning
+    setShowSelfDestruct(true)
+
+    // Award 500 points after 1 second
+    setTimeout(async () => {
+      try {
+        await fetch('/api/score', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ points: 500 }),
+        })
+        window.dispatchEvent(new Event('scoreUpdated'))
+      } catch (error) {
+        console.error('Failed to award points:', error)
+      }
+    }, 1000)
+
+    // Start fade to dark blue after 3 seconds
+    setTimeout(() => {
+      setIsFading(true)
+    }, 3000)
+
+    // Explode and close after 5 seconds total
+    setTimeout(() => {
+      setShowSpyPopup(false)
+      setTypedText("")
+      setShowButton(false)
+      setShowSelfDestruct(false)
+      setIsFading(false)
+    }, 5000)
+  }
 
   if (status === "loading") {
     return (
@@ -125,7 +190,7 @@ export default function DashboardPage() {
           <div className="relative mb-8 flex flex-col items-center">
             <p className="text-xs mb-1" style={{ color: '#0B1F32' }}>Secret Briefing</p>
             <button
-              onClick={() => {}}
+              onClick={() => setShowSpyPopup(true)}
               className="cursor-pointer hover:opacity-80 transition-opacity"
             >
               <img 
@@ -219,6 +284,51 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* Spy Mission Popup */}
+      {showSpyPopup && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ backgroundColor: 'rgba(0,0,0,0.75)' }}
+        >
+          <div 
+            className="relative max-w-2xl w-full p-8 rounded-lg"
+            style={{
+              backgroundColor: isFading ? '#0B1F32' : 'white',
+              transition: 'background-color 2s ease-in-out',
+              fontFamily: "'Courier New', Courier, monospace"
+            }}
+          >
+            <p 
+              className="text-sm leading-relaxed whitespace-pre-wrap"
+              style={{ color: '#0B1F32' }}
+            >
+              {typedText}
+            </p>
+            
+            {showButton && !showSelfDestruct && (
+              <button
+                onClick={handleSelfDestruct}
+                className="mt-6 px-6 py-2 rounded transition-opacity"
+                style={{ backgroundColor: '#0B1F32', color: 'white' }}
+                onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+              >
+                Click here when you've finished reading
+              </button>
+            )}
+
+            {showSelfDestruct && (
+              <p 
+                className="mt-6 text-lg font-bold"
+                style={{ color: '#FF5B35' }}
+              >
+                THIS MESSAGE WILL SELF DESTRUCT IN 5 SECONDS
+              </p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
