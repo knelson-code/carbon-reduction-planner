@@ -77,7 +77,7 @@ export default function DashboardPage() {
     if (showSpyPopup && typedText.length < SPY_MESSAGE.length) {
       const timeout = setTimeout(() => {
         setTypedText(SPY_MESSAGE.slice(0, typedText.length + 1))
-      }, 20) // 20ms per character for fast typing
+      }, 10) // 10ms per character for very fast typing
       return () => clearTimeout(timeout)
     } else if (showSpyPopup && typedText.length === SPY_MESSAGE.length && !showButton) {
       setShowButton(true)
