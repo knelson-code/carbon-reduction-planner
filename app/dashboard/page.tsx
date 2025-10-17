@@ -259,7 +259,7 @@ export default function DashboardPage() {
                     <Link 
                       href="/dashboard/transition-strategy/defining-objectives"
                       className="text-sm underline hover:opacity-70 transition-opacity"
-                      style={{ color: '#163E64' }}
+                      style={{ color: '#163E64', textDecorationColor: '#FF5B35' }}
                     >
                       Think about what you're trying to accomplish
                     </Link>
@@ -269,7 +269,7 @@ export default function DashboardPage() {
                     <Link 
                       href="/dashboard/impact-strategy/point-1/theory-of-change"
                       className="text-sm underline hover:opacity-70 transition-opacity"
-                      style={{ color: '#163E64' }}
+                      style={{ color: '#163E64', textDecorationColor: '#FF5B35' }}
                     >
                       Think about whether the actions you're planning are logically likely to produce the change you're trying to achieve
                     </Link>
@@ -279,7 +279,7 @@ export default function DashboardPage() {
                     <Link 
                       href="/dashboard/climate-risk"
                       className="text-sm underline hover:opacity-70 transition-opacity"
-                      style={{ color: '#163E64' }}
+                      style={{ color: '#163E64', textDecorationColor: '#FF5B35' }}
                     >
                       Think about the nature of the problem
                     </Link>
