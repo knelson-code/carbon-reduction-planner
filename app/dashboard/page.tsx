@@ -63,8 +63,7 @@ export default function DashboardPage() {
   const [typedText, setTypedText] = useState("")
   const [showButton, setShowButton] = useState(false)
   const [showSelfDestruct, setShowSelfDestruct] = useState(false)
-  const [isFading, setIsFading] = useState(false)
-  const [particles, setParticles] = useState<Array<{id: number, x: number, y: number, vx: number, vy: number}>>([])
+  const [isFadingOut, setIsFadingOut] = useState(false)
   const [morseAudio, setMorseAudio] = useState<HTMLAudioElement | null>(null)
 
   useEffect(() => {
@@ -135,18 +134,18 @@ export default function DashboardPage() {
       }
     }, 1000)
 
-    // Start fade to dark blue after 3 seconds
+    // Start fade out after 3 seconds
     setTimeout(() => {
-      setIsFading(true)
+      setIsFadingOut(true)
     }, 3000)
 
-    // Explode and close after 5 seconds total
+    // Close after 5 seconds total (3s wait + 2s fade)
     setTimeout(() => {
       setShowSpyPopup(false)
       setTypedText("")
       setShowButton(false)
       setShowSelfDestruct(false)
-      setIsFading(false)
+      setIsFadingOut(false)
     }, 5000)
   }
 
@@ -322,9 +321,10 @@ export default function DashboardPage() {
           <div 
             className="relative max-w-2xl w-full p-8 rounded-lg"
             style={{
-              backgroundColor: isFading ? '#0B1F32' : 'white',
-              transition: 'background-color 2s ease-in-out',
-              fontFamily: "'Courier New', Courier, monospace"
+              backgroundColor: 'white',
+              fontFamily: "'Courier New', Courier, monospace",
+              opacity: isFadingOut ? 0 : 1,
+              transition: 'opacity 2s ease-in-out'
             }}
           >
             {/* Close button - top right - smaller, thinner, grey */}
@@ -334,7 +334,7 @@ export default function DashboardPage() {
                 setTypedText("")
                 setShowButton(false)
                 setShowSelfDestruct(false)
-                setIsFading(false)
+                setIsFadingOut(false)
               }}
               className="absolute top-2 right-2 hover:opacity-70 transition-opacity"
               style={{ color: '#6C757D' }}
