@@ -50,13 +50,9 @@ const modules: ModuleCard[] = [
   },
 ]
 
-const SPY_MESSAGE = `Your mission is to create a transition plan that is high quality, not greenwashing or greenwishing and likely to produce the change you say you want to see.
+const SPY_MESSAGE = `MISSION BRIEFING
 
-You will be successful when the materials you produce amount to a climate action plan that is clear, realistic and valuable.
-
-30 years into the fight against climate change, all organizations want to appear to be responsible and some are willing to invest.
-
-Your mission in this game to create a high quality climate action plan that maximizes your organization's impact in the fight to slow climate change and build social resilience. At any time you can decide that your materials are complete and submit them for quality review, thereby, potentially winning the game. But be warned, completing the task successfully requires reflection, effort, and willingness to look honestly at the roots of the problem. We ourselves have not yet completed the game successfully, and we do not have all the answers. Even if you cannot succeed immediately, by completing all of these tasks and trying to succeed, you can build a robust climate action plan.`
+You will be successful when the materials you produce amount to a climate action plan that is clear, realistic and valuable.`
 
 export default function DashboardPage() {
   const { data: session, status } = useSession()
