@@ -310,6 +310,198 @@ model Organization {
 
 ---
 
+## 🖼️ IMAGE & MEDIA FILE HANDLING (CRITICAL BEST PRACTICE)
+
+### The Problem We Discovered
+
+**October 17, 2025** - Learned the hard way that inline SVGs cause severe file corruption issues when editing files with Cline's tools.
+
+### Why Inline SVGs Cause File Corruption
+
+**What happens:**
+- Inline SVGs can be 5000+ characters of path data
+- When using `replace_in_file` tool, SEARCH blocks must match exactly
+- Large SEARCH blocks get truncated mid-operation
+- Files become corrupted with incomplete/broken code
+- Multiple recovery attempts needed
+
+**Example of problematic code:**
+```tsx
+// ❌ BAD: Inline SVG (causes corruption)
+<svg width="48" height="48" viewBox="0 0 60 60">
+  <path d="m15.965 59.47a.5.5 0 0 1 -.263-.926..."/> {/* 5000+ more characters */}
+</svg>
+```
+
+### The Solution: External Files in /public
+
+**Store ALL images as separate files in `/public` folder:**
+
+```tsx
+// ✅ GOOD: External file reference
+<img src="/folder-icon.svg" alt="Icon" width="48" height="48" />
+```
+
+### Why This Works Perfectly
+
+**MP3s, PNGs, SVGs, etc. - All use the same pattern:**
+
+1. **Audio files** (already working this way):
+   ```tsx
+   const audio = new Audio('/nicey.mp3')  // File in /public/nicey.mp3
+   ```
+
+2. **SVG files** (now fixed):
+   ```tsx
+   <img src="/folder-icon.svg" />  // File in /public/folder-icon.svg
+   ```
+
+3. **PNG/JPG files** (use the same pattern):
+   ```tsx
+   <img src="/my-image.png" />  // File in /public/my-image.png
+   ```
+
+**Key insight:** The file SIZE doesn't matter when it's external. A 5MB audio file works fine because we're just referencing the path, not embedding the data.
+
+### How to Add Images to Your Project
+
+**Step 1: Add file to /public folder**
+```bash
+# Copy file to public folder (use Git Bash cp command)
+cp "/path/to/source/image.svg" public/image.svg
+```
+
+**Step 2: Reference in your code**
+```tsx
+<img src="/image.svg" alt="Description" width="48" height="48" />
+```
+
+**Step 3: Commit and deploy**
+```bash
+git add public/image.svg app/your-component.tsx
+git commit -m "Add image as external file"
+git push
+```
+
+### File Types & Best Practices
+
+**SVG Files:**
+- ✅ Perfect for icons, logos, illustrations
+- ✅ Scales to any size without quality loss
+- ✅ Can change colors with CSS (if structured properly)
+- ✅ Smaller file size than raster images
+- **Store in:** `/public/icon-name.svg`
+- **Reference as:** `<img src="/icon-name.svg" />`
+
+**PNG Files:**
+- ✅ Best for photos, complex images with transparency
+- ✅ Lossless compression
+- ✅ Universal browser support
+- **Store in:** `/public/photo-name.png`
+- **Reference as:** `<img src="/photo-name.png" />`
+
+**JPG Files:**
+- ✅ Best for photographs without transparency
+- ✅ Smaller file sizes than PNG
+- ✅ Good for backgrounds, hero images
+- **Store in:** `/public/photo-name.jpg`
+- **Reference as:** `<img src="/photo-name.jpg" />`
+
+**Audio Files (MP3, WAV):**
+- ✅ Already using this pattern correctly
+- ✅ Works perfectly for sound effects
+- **Store in:** `/public/sound-name.mp3`
+- **Reference as:** `new Audio('/sound-name.mp3')`
+
+### Converting Existing Inline SVGs
+
+If you find inline SVG code in components:
+
+**1. Extract the SVG code**
+- Copy entire `<svg>...</svg>` block
+- Save as separate file: `public/icon-name.svg`
+
+**2. Replace in component**
+```tsx
+// Before (inline):
+<svg width="48" height="48" viewBox="0 0 60 60">
+  {/* thousands of characters */}
+</svg>
+
+// After (external):
+<img src="/icon-name.svg" width="48" height="48" alt="Icon" />
+```
+
+**3. Delete inline code**
+- Remove all the path data
+- Much cleaner component file
+- No more corruption risk
+
+### Real-World Example: Folder Icon Fix
+
+**Before (caused corruption):**
+- `app/dashboard/page.tsx` had 5000+ character inline SVG
+- File size: ~100KB
+- Multiple edit attempts caused corruption
+- Required git restore to recover
+
+**After (works perfectly):**
+- Created `public/folder-icon.svg` (separate file)
+- Component now has: `<img src="/folder-icon.svg" />`
+- File size: ~12KB component, ~13KB SVG
+- Clean, maintainable, no corruption risk
+
+### When to Use Each Approach
+
+**External Files (ALWAYS for images/media):**
+- ✅ SVG icons and illustrations
+- ✅ PNG/JPG photos and images
+- ✅ Audio files (MP3, WAV)
+- ✅ Any binary file
+- **Benefit:** Clean code, no corruption, easy updates
+
+**Inline Code (only for small, simple elements):**
+- ✅ Simple geometric shapes (triangles, circles)
+- ✅ Small icons (<50 characters)
+- ✅ CSS-generated graphics
+- **Rule:** If it's more than 3-4 lines, make it external
+
+### Future-Proofing Your Project
+
+**Going forward:**
+1. **NEVER embed** large SVGs in component files
+2. **ALWAYS use** `/public` folder for images/media
+3. **Think like MP3s** - if audio files work this way, images should too
+4. **Keep components clean** - reference files, don't embed them
+
+### Technical Benefits
+
+**Why this architecture is better:**
+
+1. **No file corruption** - Small file edits stay small
+2. **Faster builds** - Next.js optimizes static assets
+3. **Better caching** - Browsers cache images separately
+4. **Easier updates** - Replace file without touching code
+5. **Version control** - Binary files tracked properly
+6. **Team collaboration** - No merge conflicts on images
+7. **Performance** - CDN can optimize delivery
+
+### Common Mistakes to Avoid
+
+**❌ DON'T:**
+- Inline SVGs larger than a few lines
+- Embed base64 images in components (except audio with Web Audio API)
+- Hard-code image data in JavaScript
+- Copy-paste SVG code from design tools directly into components
+
+**✅ DO:**
+- Save images as separate files in `/public`
+- Reference with simple `src` paths
+- Keep component files small and readable
+- Use appropriate file formats (SVG vs PNG vs JPG)
+
+---
+
 ## ⚠️ CRITICAL GOTCHAS & RULES
 
 ### 1. Rolling Back to Previous Working Versions
