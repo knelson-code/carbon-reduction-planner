@@ -299,6 +299,22 @@ export default function DashboardPage() {
               fontFamily: "'Courier New', Courier, monospace"
             }}
           >
+            {/* Close button - top right */}
+            <button
+              onClick={() => {
+                setShowSpyPopup(false)
+                setTypedText("")
+                setShowButton(false)
+                setShowSelfDestruct(false)
+                setIsFading(false)
+              }}
+              className="absolute top-2 right-2 hover:opacity-70 transition-opacity"
+              style={{ color: '#0B1F32' }}
+            >
+              <span className="text-2xl font-bold">✕</span>
+              <span className="block text-xs">Close</span>
+            </button>
+
             <p 
               className="text-sm leading-relaxed whitespace-pre-wrap"
               style={{ color: '#0B1F32' }}
