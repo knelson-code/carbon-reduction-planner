@@ -218,7 +218,10 @@ export default function DashboardPage() {
                   <div className="flex flex-col items-center">
                     <p className="text-xs mb-1" style={{ color: '#0B1F32' }}>Top Secret</p>
                     <button
-                      onClick={() => setShowSpyPopup(true)}
+                      onClick={() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' })
+                        setShowSpyPopup(true)
+                      }}
                       className="cursor-pointer hover:opacity-80 transition-opacity"
                     >
                       <img 
