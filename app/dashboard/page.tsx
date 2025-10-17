@@ -176,10 +176,18 @@ export default function DashboardPage() {
           </div>
 
           {/* Getting Started Accordion Section */}
-          <div className="mb-8 mx-auto max-w-4xl px-8">
+          <div className="accordion-section mb-8 mx-auto max-w-4xl px-8">
             {/* Accordion Header */}
             <button
-              onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+              onClick={() => {
+                setIsAccordionOpen(!isAccordionOpen)
+                if (!isAccordionOpen) {
+                  // Scroll accordion to top of viewport when opening
+                  setTimeout(() => {
+                    document.querySelector('.accordion-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  }, 100)
+                }
+              }}
               className="w-full flex items-center gap-3 pb-2"
               style={{
                 borderBottom: '1px solid #163E64',
@@ -213,27 +221,6 @@ export default function DashboardPage() {
             {/* Accordion Content */}
             {isAccordionOpen && (
               <div className="mt-4 space-y-3" style={{ color: '#163E64' }}>
-                {/* Top Secret Folder Icon */}
-                <div className="flex justify-center mb-6">
-                  <div className="flex flex-col items-center">
-                    <p className="text-xs mb-1" style={{ color: '#0B1F32' }}>Top Secret</p>
-                    <button
-                      onClick={() => {
-                        window.scrollTo({ top: 0, behavior: 'smooth' })
-                        setShowSpyPopup(true)
-                      }}
-                      className="cursor-pointer hover:opacity-80 transition-opacity"
-                    >
-                      <img 
-                        src="/folder-icon.svg" 
-                        alt="Top Secret Folder" 
-                        width="48" 
-                        height="48"
-                      />
-                    </button>
-                  </div>
-                </div>
-
                 <p className="text-sm leading-relaxed">
                   If you complete all of these activities, you'll have a robust transition strategy. That means understanding your role in a world affected by climate change, and having a clear plan for what you intend to do about it.
                 </p>
@@ -272,6 +259,27 @@ export default function DashboardPage() {
                     </Link>
                   </li>
                 </ul>
+
+                {/* Top Secret Folder Icon - moved to bottom */}
+                <div className="flex justify-center mt-6">
+                  <div className="flex flex-col items-center">
+                    <p className="text-xs mb-1" style={{ color: '#0B1F32' }}>Top Secret</p>
+                    <button
+                      onClick={() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' })
+                        setShowSpyPopup(true)
+                      }}
+                      className="cursor-pointer hover:opacity-80 transition-opacity"
+                    >
+                      <img 
+                        src="/folder-icon.svg" 
+                        alt="Top Secret Folder" 
+                        width="48" 
+                        height="48"
+                      />
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -292,7 +300,7 @@ export default function DashboardPage() {
               fontFamily: "'Courier New', Courier, monospace"
             }}
           >
-            {/* Close button - top right */}
+            {/* Close button - top right - smaller, thinner, grey */}
             <button
               onClick={() => {
                 setShowSpyPopup(false)
@@ -302,9 +310,9 @@ export default function DashboardPage() {
                 setIsFading(false)
               }}
               className="absolute top-2 right-2 hover:opacity-70 transition-opacity"
-              style={{ color: '#0B1F32' }}
+              style={{ color: '#6C757D' }}
             >
-              <span className="text-2xl font-bold">✕</span>
+              <span className="text-lg font-light">✕</span>
               <span className="block text-xs">Close</span>
             </button>
 
