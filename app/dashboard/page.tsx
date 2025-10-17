@@ -52,7 +52,9 @@ const modules: ModuleCard[] = [
 
 const SPY_MESSAGE = `MISSION BRIEFING
 
-You will be successful when the materials you produce amount to a climate action plan that is clear, realistic and valuable.`
+You will be successful when the materials you produce amount to a climate action plan that is clear, realistic and valuable.
+
+We've arranged for an initial transfer of funds. Find the store and use these funds to purchase a map.`
 
 export default function DashboardPage() {
   const { data: session, status } = useSession()
@@ -123,13 +125,13 @@ export default function DashboardPage() {
     // Start fade out immediately
     setIsFadingOut(true)
 
-    // Award 500 points after 1 second
+    // Award 5 points after 1 second
     setTimeout(async () => {
       try {
         await fetch('/api/score', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ points: 500 }),
+          body: JSON.stringify({ points: 5 }),
         })
         window.dispatchEvent(new Event('scoreUpdated'))
       } catch (error) {
