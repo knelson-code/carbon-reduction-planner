@@ -262,8 +262,8 @@ export default function DashboardPage() {
                 <p className="text-sm leading-relaxed">
                   If you complete all of these activities, you'll have a robust transition strategy. That means understanding your role in a world affected by climate change, and having a clear plan for what you intend to do about it.
                 </p>
-                <p className="text-sm leading-relaxed font-bold">
-                  However, we recommend that at a minimum, before rushing into the CO₂ management section as most users do, you take a look at these three points:
+                <p className="text-sm leading-relaxed">
+                  This software is completely modular. You can jump in anywhere you like. <span className="font-bold">However, we recommend that at a minimum, before rushing into the CO₂ management section as most users do, you take a look at these three points:</span>
                 </p>
                 <ul className="space-y-2 pl-4">
                   <li>
