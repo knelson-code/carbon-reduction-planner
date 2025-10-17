@@ -65,12 +65,39 @@ export default function DashboardPage() {
   const [showSelfDestruct, setShowSelfDestruct] = useState(false)
   const [isFading, setIsFading] = useState(false)
   const [particles, setParticles] = useState<Array<{id: number, x: number, y: number, vx: number, vy: number}>>([])
+  const [morseAudio, setMorseAudio] = useState<HTMLAudioElement | null>(null)
 
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login")
     }
   }, [status, router])
+
+  // Preload morse code audio on page load
+  useEffect(() => {
+    const audio = new Audio('/morse-code.mp3')
+    audio.preload = 'auto'
+    audio.loop = true // Loop in case message becomes longer
+    audio.load()
+    setMorseAudio(audio)
+  }, [])
+
+  // Start/stop morse code audio based on typing state
+  useEffect(() => {
+    if (showSpyPopup && morseAudio) {
+      if (typedText.length < SPY_MESSAGE.length) {
+        // Still typing - play audio if not already playing
+        if (morseAudio.paused) {
+          morseAudio.currentTime = 0
+          morseAudio.play().catch(err => console.log('Morse audio play failed:', err))
+        }
+      } else if (typedText.length === SPY_MESSAGE.length) {
+        // Typing complete - stop audio
+        morseAudio.pause()
+        morseAudio.currentTime = 0
+      }
+    }
+  }, [showSpyPopup, typedText, morseAudio])
 
   // Typing animation effect
   useEffect(() => {
