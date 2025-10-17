@@ -58,7 +58,7 @@ I am contacting you secretly to ask for help with an unofficial and unapproved m
 
 As you know, many of our top agents have recently been assigned to build "Climate Action Plans", and "CO₂ Reduction Plans". All previous agents have failed on this mission, despite following the instructions from Headquarters perfectly. Furthermore many agents appear to have been psychologically injured by this assignment and some have disappeared.
 
-I have come to suspect that the instructions from Headquarters are incomplete and incorrect. This could only mean that Headquarters has been infiltrated by corrupt agents.
+<u>I have come to suspect that the instructions from Headquarters are incomplete and incorrect. This could only mean that Headquarters has been infiltrated by corrupt agents.</u>
 
 Your mission is two-fold. In the first place, I ask that you attempt to complete a simple, clear, realistic climate action plan using the best practices provided by Headquarters. I need to know if it is possible.
 
@@ -331,7 +331,7 @@ export default function DashboardPage() {
           style={{ backgroundColor: 'rgba(0,0,0,0.75)' }}
         >
           <div 
-            className="relative max-w-2xl w-full p-8 rounded-lg"
+            className="relative max-w-4xl w-full p-8 rounded-lg"
             style={{
               backgroundColor: 'white',
               fontFamily: "'Courier New', Courier, monospace",
@@ -355,12 +355,11 @@ export default function DashboardPage() {
               <span className="block text-xs">Close</span>
             </button>
 
-            <p 
-              className="text-sm leading-relaxed whitespace-pre-wrap"
+            <div 
+              className="text-xs leading-relaxed whitespace-pre-wrap"
               style={{ color: '#0B1F32' }}
-            >
-              {typedText}
-            </p>
+              dangerouslySetInnerHTML={{ __html: typedText }}
+            />
             
             {showButton && !showSelfDestruct && (
               <button
