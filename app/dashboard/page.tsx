@@ -72,9 +72,9 @@ export default function DashboardPage() {
     }
   }, [status, router])
 
-  // Preload morse code audio on page load
+  // Preload typewriter audio on page load
   useEffect(() => {
-    const audio = new Audio('/morse-code.mp3')
+    const audio = new Audio('/typewriter.mp3')
     audio.preload = 'auto'
     audio.loop = true // Loop in case message becomes longer
     audio.load()
@@ -88,7 +88,7 @@ export default function DashboardPage() {
         // Still typing - play audio if not already playing
         if (morseAudio.paused) {
           morseAudio.currentTime = 0
-          morseAudio.play().catch(err => console.log('Morse audio play failed:', err))
+          morseAudio.play().catch(err => console.log('Typewriter audio play failed:', err))
         }
       } else if (typedText.length === SPY_MESSAGE.length) {
         // Typing complete - stop audio
