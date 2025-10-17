@@ -50,9 +50,9 @@ const STORE_ITEMS: StoreItem[] = [
   },
   {
     id: 'guidance_map',
-    name: 'Map for Understanding and Guiding How All These Components Fit Together',
-    subtitle: 'A comprehensive guide to help you navigate and understand the relationships between all climate action components',
-    points: 5,
+    name: 'Notes from the Previous Corruption Investigator',
+    subtitle: 'Critical documents from previous agents who investigated the corruption at Headquarters',
+    points: 10,
     type: 'guidance_map',
     oneTimePurchase: true
   },

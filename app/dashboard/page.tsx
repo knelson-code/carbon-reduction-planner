@@ -50,7 +50,7 @@ const modules: ModuleCard[] = [
   },
 ]
 
-const SPY_MESSAGE = `You are Secret Agent X17.
+const SPY_MESSAGE = `<b>You are Secret Agent X17.</b>
 
 I am an insignificant administrator working in Mission Control Headquarters.
 
@@ -62,7 +62,7 @@ As you know, many of our top agents have recently been assigned to build "Climat
 
 Your mission is two-fold. In the first place, I ask that you attempt to complete a simple, clear, realistic climate action plan using the best practices provided by Headquarters. I need to know if it is possible.
 
-At the same time you will need to think broadly and critically about the assignment. Something is wrong. Something is missing. I don't have the knowledge or skills to identify the problem on my own, and that's why I am counting on you. We are all counting on you.
+At the same time you will need to think broadly and critically about the assignment. <u>Something is wrong. Something is missing. I don't have the knowledge or skills to identify the problem on my own, and that's why I am counting on you. We are all counting on you.</u>
 
 I don't have any more information. But I've arranged a small transfer from my personal expense account. Rumor has it that the missing notes of the previous corruption investigators can be purchased. This should be enough to buy them, if you can figure out how.
 
@@ -137,13 +137,13 @@ export default function DashboardPage() {
     // Start fade out immediately
     setIsFadingOut(true)
 
-    // Award 5 points after 1 second
+    // Award 10 points after 1 second
     setTimeout(async () => {
       try {
         await fetch('/api/score', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ points: 5 }),
+          body: JSON.stringify({ points: 10 }),
         })
         window.dispatchEvent(new Event('scoreUpdated'))
       } catch (error) {
@@ -331,7 +331,7 @@ export default function DashboardPage() {
           style={{ backgroundColor: 'rgba(0,0,0,0.75)' }}
         >
           <div 
-            className="relative max-w-4xl w-full p-8 rounded-lg"
+            className="relative max-w-6xl w-full p-8 rounded-lg"
             style={{
               backgroundColor: 'white',
               fontFamily: "'Courier New', Courier, monospace",
