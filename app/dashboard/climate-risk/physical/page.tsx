@@ -232,9 +232,9 @@ export default function PhysicalRiskPage() {
           </div>
 
           {/* Chart Area */}
-          <div className="relative h-96 border-l-2 border-b-2 border-gray-400 mt-8">
+          <div className="relative h-64 border-l-2 border-b-2 border-gray-400 mt-4 ml-8">
             {/* Y-axis labels */}
-            <div className="absolute left-0 top-0 h-full flex flex-col justify-between -ml-12 text-xs text-gray-600">
+            <div className="absolute -left-12 top-0 h-full flex flex-col justify-between text-xs text-gray-600">
               <span>{Math.round(maxPercentage)}%</span>
               <span>{Math.round(maxPercentage * 0.75)}%</span>
               <span>{Math.round(maxPercentage * 0.5)}%</span>
@@ -242,8 +242,8 @@ export default function PhysicalRiskPage() {
               <span>0%</span>
             </div>
 
-            {/* Bars */}
-            <div className="absolute bottom-0 left-0 right-0 h-full flex items-end justify-around px-4">
+            {/* Bars Container */}
+            <div className="h-full flex items-end justify-around gap-2 px-2">
               {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((roll, index) => {
                 const regularPct = regularPercentages[index]
                 const climatePct = climatePercentages[index]
@@ -251,23 +251,28 @@ export default function PhysicalRiskPage() {
                 const climateHeight = maxPercentage > 0 ? (climatePct / maxPercentage) * 100 : 0
 
                 return (
-                  <div key={roll} className="flex flex-col items-center flex-1 max-w-[60px]">
-                    <div className="w-full h-full flex items-end justify-center gap-1 mb-2">
+                  <div key={roll} className="flex-1 h-full flex flex-col items-center max-w-[70px]">
+                    {/* Bars */}
+                    <div className="w-full flex-1 flex items-end justify-center gap-0.5">
                       {/* Regular dice bar */}
-                      <div 
-                        className="bg-[#0B1F32] w-5 transition-all duration-300"
-                        style={{ height: `${regularHeight}%` }}
-                        title={`${regularPct.toFixed(1)}%`}
-                      />
+                      {regularHeight > 0 && (
+                        <div 
+                          className="bg-[#0B1F32] w-4 transition-all duration-300"
+                          style={{ height: `${regularHeight}%` }}
+                          title={`Regular: ${regularPct.toFixed(1)}%`}
+                        />
+                      )}
                       {/* Climate dice bar */}
-                      <div 
-                        className="bg-[#FF5B35] w-5 transition-all duration-300"
-                        style={{ height: `${climateHeight}%` }}
-                        title={`${climatePct.toFixed(1)}%`}
-                      />
+                      {climateHeight > 0 && (
+                        <div 
+                          className="bg-[#FF5B35] w-4 transition-all duration-300"
+                          style={{ height: `${climateHeight}%` }}
+                          title={`Climate: ${climatePct.toFixed(1)}%`}
+                        />
+                      )}
                     </div>
                     {/* X-axis label */}
-                    <div className="text-xs font-semibold text-[#0B1F32] mt-1">{roll}</div>
+                    <div className="text-xs font-semibold text-[#0B1F32] mt-2">{roll}</div>
                   </div>
                 )
               })}
