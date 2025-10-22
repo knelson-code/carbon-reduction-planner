@@ -16,6 +16,7 @@ export default function PhysicalRiskPage() {
   
   const [regularRolls, setRegularRolls] = useState<RollData>({})
   const [loadedRolls, setLoadedRolls] = useState<RollData>({})
+  const [regularRollCount, setRegularRollCount] = useState(0)
   const [isCompleted, setIsCompleted] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
@@ -44,6 +45,7 @@ export default function PhysicalRiskPage() {
             if (savedData) {
               if (savedData.regularRolls) setRegularRolls(savedData.regularRolls)
               if (savedData.loadedRolls) setLoadedRolls(savedData.loadedRolls)
+              if (savedData.regularRollCount) setRegularRollCount(savedData.regularRollCount)
             }
             
             setIsCompleted(savedCompleted)
@@ -89,6 +91,7 @@ export default function PhysicalRiskPage() {
           data: {
             regularRolls,
             loadedRolls,
+            regularRollCount,
           },
         }),
       })
@@ -108,7 +111,7 @@ export default function PhysicalRiskPage() {
 
       return () => clearTimeout(timer)
     }
-  }, [regularRolls, loadedRolls, isLoading, saveData])
+  }, [regularRolls, loadedRolls, regularRollCount, isLoading, saveData])
 
   // Regular dice probability (standard two 6-sided dice)
   const rollRegularDice = () => {
@@ -136,16 +139,19 @@ export default function PhysicalRiskPage() {
       newRolls[result] = (newRolls[result] || 0) + 1
     }
     setRegularRolls(newRolls)
+    setRegularRollCount(regularRollCount + times)
   }
 
-  const handleRollLoaded = (times: number) => {
+  const handleRollClimate = () => {
+    if (regularRollCount === 0) return
+    
     if (rollAudio) {
       rollAudio.currentTime = 0
       rollAudio.play().catch(err => console.log('Roll audio failed:', err))
     }
 
     const newRolls = { ...loadedRolls }
-    for (let i = 0; i < times; i++) {
+    for (let i = 0; i < regularRollCount; i++) {
       const result = rollLoadedDice()
       newRolls[result] = (newRolls[result] || 0) + 1
     }
@@ -155,6 +161,7 @@ export default function PhysicalRiskPage() {
   const handleReset = () => {
     setRegularRolls({})
     setLoadedRolls({})
+    setRegularRollCount(0)
   }
 
   const awardPoints = async () => {
@@ -326,95 +333,72 @@ export default function PhysicalRiskPage() {
           </h2>
 
           {/* Instructions */}
-          <div className="mb-6 p-4 rounded-lg border" style={{ backgroundColor: '#f5f5f5', borderColor: '#0B1F32' }}>
-            <h3 className="font-semibold mb-2" style={{ color: '#0B1F32' }}>How This Works:</h3>
-            <p className="text-sm mb-2" style={{ color: '#0B1F32' }}>
-              Just like rolling dice creates a probability distribution, climate and weather follow statistical patterns. 
-              The <strong>regular dice</strong> represent our current climate. The <strong>loaded dice</strong> represent 
-              a warmer future climate where extreme events become more common.
-            </p>
+          <div className="mb-3 p-3 rounded-lg border" style={{ backgroundColor: '#f5f5f5', borderColor: '#0B1F32' }}>
             <p className="text-sm" style={{ color: '#0B1F32' }}>
-              Notice how the "1/100 year flood" threshold - an extreme event that rarely happens with regular dice - 
-              becomes much more common when the dice are loaded (climate changes).
+              <strong>How it works:</strong> Roll the regular dice (current climate), then click to roll the climate dice the same number of times. 
+              Notice how extreme events (11-12) become much more common with climate change.
             </p>
           </div>
 
-          {/* Control Panels */}
-          <div className="grid md:grid-cols-2 gap-6 mb-6">
-            {/* Regular Dice */}
-            <div className="p-4 rounded-lg border" style={{ backgroundColor: '#f5f5f5', borderColor: '#0B1F32' }}>
-              <h3 className="font-semibold mb-3 text-center" style={{ color: '#0B1F32' }}>
-                Regular Dice (Current Climate)
-              </h3>
-              <div className="flex gap-2 justify-center mb-2">
-                <button
-                  onClick={() => handleRollRegular(1)}
-                  className="px-4 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: '#0B1F32', color: '#ffffff' }}
-                >
-                  Roll 1 Time
-                </button>
-                <button
-                  onClick={() => handleRollRegular(100)}
-                  className="px-4 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: '#0B1F32', color: '#ffffff' }}
-                >
-                  Roll 100 Times
-                </button>
-                <button
-                  onClick={() => handleRollRegular(500)}
-                  className="px-4 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: '#0B1F32', color: '#ffffff' }}
-                >
-                  Roll 500 Times
-                </button>
-              </div>
-              <p className="text-xs text-center" style={{ color: '#6C757D' }}>
-                Total rolls: {regularTotal}
-              </p>
+          {/* Control Panel */}
+          <div className="mb-3 p-3 rounded-lg border" style={{ backgroundColor: '#f5f5f5', borderColor: '#0B1F32' }}>
+            <div className="flex gap-3 justify-center items-center flex-wrap">
+              <button
+                onClick={() => handleRollRegular(1)}
+                className="px-4 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
+                style={{ backgroundColor: '#0B1F32', color: '#ffffff' }}
+              >
+                Roll 1×
+              </button>
+              <button
+                onClick={() => handleRollRegular(100)}
+                className="px-4 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
+                style={{ backgroundColor: '#0B1F32', color: '#ffffff' }}
+              >
+                Roll 100×
+              </button>
+              <button
+                onClick={() => handleRollRegular(500)}
+                className="px-4 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
+                style={{ backgroundColor: '#0B1F32', color: '#ffffff' }}
+              >
+                Roll 500×
+              </button>
+              
+              <div className="w-px h-8 bg-gray-300"></div>
+              
+              <button
+                onClick={handleRollClimate}
+                disabled={regularRollCount === 0}
+                className="px-6 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90 disabled:opacity-40"
+                style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
+              >
+                Roll Climate Dice ({regularRollCount}×)
+              </button>
+              
+              <div className="w-px h-8 bg-gray-300"></div>
+              
+              <button
+                onClick={handleReset}
+                className="px-4 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
+                style={{ backgroundColor: '#6C757D', color: '#ffffff' }}
+              >
+                Reset
+              </button>
             </div>
-
-            {/* Loaded Dice */}
-            <div className="p-4 rounded-lg border" style={{ backgroundColor: '#f5f5f5', borderColor: '#0B1F32' }}>
-              <h3 className="font-semibold mb-3 text-center" style={{ color: '#FF5B35' }}>
-                Loaded Dice (Future Climate)
-              </h3>
-              <div className="flex gap-2 justify-center mb-2">
-                <button
-                  onClick={() => handleRollLoaded(1)}
-                  className="px-4 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
-                >
-                  Roll 1 Time
-                </button>
-                <button
-                  onClick={() => handleRollLoaded(100)}
-                  className="px-4 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
-                >
-                  Roll 100 Times
-                </button>
-                <button
-                  onClick={() => handleRollLoaded(500)}
-                  className="px-4 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
-                >
-                  Roll 500 Times
-                </button>
-              </div>
-              <p className="text-xs text-center" style={{ color: '#6C757D' }}>
-                Total rolls: {loadedTotal}
-              </p>
+            <div className="flex gap-8 justify-center mt-2 text-xs" style={{ color: '#6C757D' }}>
+              <span>Regular: {regularTotal} rolls</span>
+              <span>Climate: {loadedTotal} rolls</span>
             </div>
           </div>
 
-          {/* Distribution Visualization - Overlaid */}
-          <div className="mb-6">
-            <div className="p-6 rounded-lg border" style={{ backgroundColor: '#ffffff', borderColor: '#0B1F32' }}>
-              <h4 className="font-semibold mb-4 text-center" style={{ color: '#0B1F32' }}>
+          {/* Distribution Visualization */}
+          <div className="mb-3">
+            <div className="p-4 rounded-lg border" style={{ backgroundColor: '#ffffff', borderColor: '#0B1F32' }}>
+              <h4 className="font-semibold mb-2 text-center text-sm" style={{ color: '#0B1F32' }}>
                 Probability Distribution Comparison
               </h4>
-              <div className="flex gap-4 justify-center mb-4 text-xs">
+              <div className="flex gap-4 justify-center mb-2 text-xs">
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded" style={{ backgroundColor: '#0B1F32' }}></div>
                   <span style={{ color: '#0B1F32' }}>Current Climate ({regularTotal} rolls)</span>
@@ -424,54 +408,48 @@ export default function PhysicalRiskPage() {
                   <span style={{ color: '#FF5B35' }}>Future Climate ({loadedTotal} rolls)</span>
                 </div>
               </div>
-              <div className="relative h-80 flex items-end justify-around gap-1 px-4">
+              <div className="relative h-64 flex items-end justify-around gap-1 px-4">
                 {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((value) => {
                   const regularCount = regularRolls[value] || 0
                   const loadedCount = loadedRolls[value] || 0
                   const isExtreme = value >= extremeThreshold
                   
                   // Calculate bar heights (as pixels for better control)
-                  const maxHeight = 280 // pixels (h-80 = 320px, leave room for labels)
+                  const maxHeight = 220 // pixels (h-64 = 256px, leave room for labels)
                   const regularHeight = globalMax > 0 ? (regularCount / globalMax) * maxHeight : 0
                   const loadedHeight = globalMax > 0 ? (loadedCount / globalMax) * maxHeight : 0
                   
                   return (
                     <div key={value} className="flex-1 flex flex-col items-center justify-end" style={{ minWidth: '30px' }}>
-                      {/* Side-by-side bars */}
-                      <div className="w-full flex gap-0.5 items-end justify-center" style={{ height: '280px' }}>
+                      {/* Transparent bars with top border line */}
+                      <div className="w-full flex gap-0.5 items-end justify-center" style={{ height: '220px' }}>
                         {/* Regular dice bar (left, blue) */}
                         <div 
-                          className="transition-all duration-300 flex-1"
+                          className="transition-all duration-300 flex-1 relative"
                           style={{ 
                             height: `${regularHeight}px`,
-                            minHeight: regularCount > 0 ? '15px' : '0px',
-                            backgroundColor: isExtreme ? 'rgba(11, 31, 50, 0.4)' : '#0B1F32',
-                            border: isExtreme ? '2px dashed rgba(255, 91, 53, 0.6)' : 'none',
+                            minHeight: regularCount > 0 ? '3px' : '0px',
+                            backgroundColor: isExtreme ? 'rgba(11, 31, 50, 0.08)' : 'rgba(11, 31, 50, 0.15)',
                             borderRadius: '2px 2px 0 0',
                           }}
                         >
                           {regularCount > 0 && (
-                            <div className="text-[8px] font-bold text-center pt-0.5" style={{ color: '#ffffff' }}>
-                              {regularCount}
-                            </div>
+                            <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: '#0B1F32' }}></div>
                           )}
                         </div>
                         
                         {/* Loaded dice bar (right, orange) */}
                         <div 
-                          className="transition-all duration-300 flex-1"
+                          className="transition-all duration-300 flex-1 relative"
                           style={{ 
                             height: `${loadedHeight}px`,
-                            minHeight: loadedCount > 0 ? '15px' : '0px',
-                            backgroundColor: isExtreme ? 'rgba(255, 0, 0, 0.7)' : '#FF5B35',
-                            border: isExtreme ? '2px dashed rgba(139, 0, 0, 0.9)' : 'none',
+                            minHeight: loadedCount > 0 ? '3px' : '0px',
+                            backgroundColor: isExtreme ? 'rgba(255, 91, 53, 0.08)' : 'rgba(255, 91, 53, 0.15)',
                             borderRadius: '2px 2px 0 0',
                           }}
                         >
                           {loadedCount > 0 && (
-                            <div className="text-[8px] font-bold text-center pt-0.5" style={{ color: '#ffffff' }}>
-                              {loadedCount}
-                            </div>
+                            <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: '#FF5B35' }}></div>
                           )}
                         </div>
                       </div>
@@ -484,35 +462,16 @@ export default function PhysicalRiskPage() {
                   )
                 })}
               </div>
-              <div className="mt-8 pt-4 border-t" style={{ borderColor: '#f5f5f5' }}>
-                <div className="text-xs text-center p-2 rounded mb-2" style={{ backgroundColor: 'rgba(255, 91, 53, 0.1)', color: '#0B1F32' }}>
-                  <strong style={{ color: '#FF5B35' }}>1/100 Year Flood Zone (values 11-12):</strong> Notice how this rare event zone becomes much more common with climate change
+              <div className="mt-4 pt-2 border-t" style={{ borderColor: '#f5f5f5' }}>
+                <div className="text-xs text-center p-1.5 rounded" style={{ backgroundColor: 'rgba(255, 91, 53, 0.1)', color: '#0B1F32' }}>
+                  <strong style={{ color: '#FF5B35' }}>1/100 Year Flood Zone (11-12):</strong> Notice this rare event becomes much more common
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Key Insights */}
-          <div className="mb-6 p-4 rounded-lg border" style={{ backgroundColor: '#f5f5f5', borderColor: '#0B1F32' }}>
-            <h3 className="font-semibold mb-2" style={{ color: '#0B1F32' }}>Key Insights:</h3>
-            <ul className="space-y-2 text-sm" style={{ color: '#0B1F32' }}>
-              <li>• The distribution <strong>shifts to the right</strong> with loaded dice (future climate)</li>
-              <li>• Events that were rare (11-12) become <strong>much more common</strong></li>
-              <li>• The "1/100 year flood" isn't a 1/100 year event anymore - <strong>it happens more frequently</strong></li>
-              <li>• This is exactly what's happening with climate change: <strong>extreme heat, floods, and storms are becoming more common</strong></li>
-            </ul>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex gap-4 justify-center items-center">
-            <button
-              onClick={handleReset}
-              className="px-6 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
-              style={{ backgroundColor: '#6C757D', color: '#ffffff' }}
-            >
-              Reset All Rolls
-            </button>
-            
+          {/* Action Button */}
+          <div className="flex justify-center">
             <button
               onClick={handleMarkComplete}
               className="px-6 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
