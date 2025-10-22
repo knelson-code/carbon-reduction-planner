@@ -418,73 +418,73 @@ export default function CategorizationPage() {
             <div className="w-64" />
           </div>
           
-          <h2 className="text-base mb-4 text-center" style={{ color: '#0B1F32' }}>
+          <h2 className="text-sm mb-2 text-center" style={{ color: '#0B1F32' }}>
             Drag examples and responses to their correct risk categories
           </h2>
 
-          <div className="mb-4 text-center">
-            <span className="text-sm" style={{ color: '#6C757D' }}>
+          <div className="mb-2 text-center">
+            <span className="text-xs" style={{ color: '#6C757D' }}>
               Progress: {placedCount} / 12 items placed
             </span>
           </div>
 
           {/* Main Game Area */}
-          <div className="flex gap-4 mb-6">
+          <div className="flex gap-3 mb-3">
             {/* Categories Panel */}
-            <div className="flex-1 grid grid-cols-4 gap-3">
+            <div className="flex-1 grid grid-cols-4 gap-2">
               {[
                 { key: 'transition', label: 'Transition Risk', color: categoryColors.transition },
                 { key: 'legal', label: 'Legal & Reputational Risk', color: categoryColors.legal },
                 { key: 'physical', label: 'Physical Risk', color: categoryColors.physical },
                 { key: 'systemic', label: 'Systemic Risk', color: categoryColors.systemic }
               ].map(({ key, label, color }) => (
-                <div key={key} className="rounded-lg p-3" style={{ backgroundColor: '#f5f5f5', border: `2px solid ${color}` }}>
-                  <h3 className="text-center font-semibold mb-3 text-sm" style={{ color }}>
+                <div key={key} className="rounded-lg p-2" style={{ backgroundColor: '#f5f5f5', border: `2px solid ${color}` }}>
+                  <h3 className="text-center font-semibold mb-2 text-xs" style={{ color }}>
                     {label}
                   </h3>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     <div>
-                      <div className="text-xs font-semibold mb-1" style={{ color }}>Examples:</div>
+                      <div className="text-[10px] font-semibold mb-0.5" style={{ color }}>Examples:</div>
                       {[1, 2].map(num => {
                         const slotId = `${key}-ex-${num}`
                         const item = getItemInSlot(slotId)
                         return (
                           <div
                             key={slotId}
-                            className="h-16 rounded border-2 border-dashed p-2 flex items-center justify-center text-xs transition-all mb-2"
+                            className="h-10 rounded border-2 border-dashed p-1 flex items-center justify-center text-xs transition-all mb-1"
                             style={{ borderColor: color }}
                             onDragOver={handleDragOver}
                             onDrop={(e) => handleDrop(e, slotId, key, 'example')}
                           >
                             {item ? (
-                              <div className="text-center text-white px-2 py-1 rounded" style={{ backgroundColor: color, fontSize: '10px' }}>
+                              <div className="text-center text-white px-1.5 py-0.5 rounded leading-tight" style={{ backgroundColor: color, fontSize: '9px' }}>
                                 {item.text}
                               </div>
                             ) : (
-                              <span style={{ color: '#9CA3AF' }}>Drop here</span>
+                              <span className="text-[10px]" style={{ color: '#9CA3AF' }}>Drop here</span>
                             )}
                           </div>
                         )
                       })}
                     </div>
                     <div>
-                      <div className="text-xs font-semibold mb-1" style={{ color }}>Response:</div>
+                      <div className="text-[10px] font-semibold mb-0.5" style={{ color }}>Response:</div>
                       {(() => {
                         const slotId = `${key}-res`
                         const item = getItemInSlot(slotId)
                         return (
                           <div
-                            className="h-16 rounded border-2 border-dashed p-2 flex items-center justify-center text-xs transition-all"
+                            className="h-10 rounded border-2 border-dashed p-1 flex items-center justify-center text-xs transition-all"
                             style={{ borderColor: color }}
                             onDragOver={handleDragOver}
                             onDrop={(e) => handleDrop(e, slotId, key, 'response')}
                           >
                             {item ? (
-                              <div className="text-center text-white px-2 py-1 rounded" style={{ backgroundColor: color, fontSize: '10px' }}>
+                              <div className="text-center text-white px-1.5 py-0.5 rounded leading-tight" style={{ backgroundColor: color, fontSize: '9px' }}>
                                 {item.text}
                               </div>
                             ) : (
-                              <span style={{ color: '#9CA3AF' }}>Drop here</span>
+                              <span className="text-[10px]" style={{ color: '#9CA3AF' }}>Drop here</span>
                             )}
                           </div>
                         )
@@ -496,17 +496,17 @@ export default function CategorizationPage() {
             </div>
 
             {/* Draggable Items Panel - Scrollable */}
-            <div className="w-64 rounded-lg p-4" style={{ backgroundColor: '#f5f5f5', maxHeight: '600px', overflowY: 'auto' }}>
-              <div className="space-y-4">
+            <div className="w-56 rounded-lg p-3" style={{ backgroundColor: '#f5f5f5', maxHeight: '420px', overflowY: 'auto' }}>
+              <div className="space-y-3">
                 <div>
-                  <h4 className="text-xs font-semibold mb-2" style={{ color: '#6C757D' }}>Risk Examples</h4>
-                  <div className="space-y-2">
+                  <h4 className="text-[10px] font-semibold mb-1.5" style={{ color: '#6C757D' }}>Risk Examples</h4>
+                  <div className="space-y-1.5">
                     {riskItems.filter(item => !isItemPlaced(item.id)).map(item => (
                       <div
                         key={item.id}
-                        draggable
+                        draggable={true}
                         onDragStart={(e) => handleDragStart(e, item.id)}
-                        className="bg-white border-2 rounded p-2 cursor-move text-xs hover:shadow-md transition-all"
+                        className="bg-white border-2 rounded p-1.5 cursor-move text-[10px] hover:shadow-md transition-all select-none"
                         style={{ borderColor: '#0B1F32', color: '#0B1F32' }}
                       >
                         {item.text}
@@ -516,14 +516,14 @@ export default function CategorizationPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-xs font-semibold mb-2" style={{ color: '#6C757D' }}>Response Approaches</h4>
-                  <div className="space-y-2">
+                  <h4 className="text-[10px] font-semibold mb-1.5" style={{ color: '#6C757D' }}>Response Approaches</h4>
+                  <div className="space-y-1.5">
                     {responseItems.filter(item => !isItemPlaced(item.id)).map(item => (
                       <div
                         key={item.id}
-                        draggable
+                        draggable={true}
                         onDragStart={(e) => handleDragStart(e, item.id)}
-                        className="bg-white border-2 rounded p-2 cursor-move text-xs hover:shadow-md transition-all"
+                        className="bg-white border-2 rounded p-1.5 cursor-move text-[10px] hover:shadow-md transition-all select-none"
                         style={{ borderColor: '#0B1F32', color: '#0B1F32' }}
                       >
                         {item.text}
@@ -537,15 +537,15 @@ export default function CategorizationPage() {
 
           {/* Completion Badge */}
           {isCompleted && (
-            <div className="text-center mb-4">
-              <div className="inline-block px-6 py-3 rounded-full text-white font-semibold" style={{ backgroundColor: '#0B1F32' }}>
+            <div className="text-center mb-2">
+              <div className="inline-block px-4 py-2 rounded-full text-white text-sm font-semibold" style={{ backgroundColor: '#0B1F32' }}>
                 ✅ Congratulations! All risks correctly categorized!
               </div>
             </div>
           )}
 
           {/* Action Buttons */}
-          <div className="flex gap-4 justify-center">
+          <div className="flex gap-3 justify-center">
             <button
               onClick={handleReset}
               className="px-6 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
