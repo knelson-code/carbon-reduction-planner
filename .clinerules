@@ -1015,6 +1015,49 @@ const [isCompleted, setIsCompleted] = useState(false)
 
 ---
 
+### Climate Risk Module - Physical Risk Page
+**Location:** `app/dashboard/climate-risk/physical/page.tsx`
+
+**Purpose:** Placeholder page for future climate probability content using the same clean template as defining-objectives.
+
+#### Current Implementation
+
+**Page Structure:**
+- Uses same layout as defining-objectives page (Sidebar + main content)
+- Title: "Understanding Climate and Probabilities"
+- Subtitle: "Learn about how climate change shifts probability distributions"
+- Back/Next navigation links
+- Simple "Content coming soon..." placeholder
+- Working completion button (50 points + sound effect)
+
+**Design Elements:**
+- Header: #0B1F32 (navy)
+- Links: #FF5B35 (orange) with hover effects
+- Completion button: Dark navy background, white text
+- Centered layout with proper spacing
+
+**Technical Details:**
+- Activity ID: "climate-risk-physical"
+- Completion tracking with database persistence
+- Session-based authentication
+- Loading state handling
+- Sound effect on completion (completion-sound.mp3, volume 0.24)
+
+**Key Features:**
+- Clean, minimal placeholder ready for content
+- Consistent with platform design system
+- Proper completion tracking (saves to database)
+- Points award system (50 points on completion)
+- Sidebar navigation integration
+
+**Future Content (Planned):**
+- Interactive climate probability visualization
+- Educational content about distribution shifts
+- Comparison tools for current vs. future climate
+- Risk assessment exercises
+
+---
+
 ## 🏪 POINTS STORE SYSTEM (October 2025)
 
 ### Overview & Purpose
