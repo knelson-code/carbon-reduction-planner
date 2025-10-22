@@ -34,10 +34,13 @@ export default function CategorizationPage() {
   const [confettiOrigin, setConfettiOrigin] = useState<{x: number, y: number} | null>(null)
   const [showTryAgain, setShowTryAgain] = useState(false)
   const [buttonShake, setButtonShake] = useState(false)
+  const [shuffledRiskItems, setShuffledRiskItems] = useState<DraggableItem[]>([])
+  const [shuffledResponseItems, setShuffledResponseItems] = useState<DraggableItem[]>([])
 
   const ACTIVITY_ID = "climate-risk-categorization"
 
-  const riskItems: DraggableItem[] = [
+  // Base items (will be shuffled)
+  const baseRiskItems: DraggableItem[] = [
     { id: 'r1', text: 'Carbon pricing', category: 'transition', type: 'example' },
     { id: 'r2', text: 'Slow adoption of green technology', category: 'transition', type: 'example' },
     { id: 'r3', text: 'New reporting mandates', category: 'legal', type: 'example' },
@@ -48,14 +51,30 @@ export default function CategorizationPage() {
     { id: 'r8', text: 'Public sector customers become insolvent', category: 'systemic', type: 'example' }
   ]
 
-  const responseItems: DraggableItem[] = [
+  const baseResponseItems: DraggableItem[] = [
     { id: 'res1', text: 'Create detailed transition strategy', category: 'transition', type: 'response' },
     { id: 'res2', text: 'Prepare proactively for compliance', category: 'legal', type: 'response' },
     { id: 'res3', text: 'Develop mitigation plan', category: 'physical', type: 'response' },
     { id: 'res4', text: 'Learn to manage uncertainty', category: 'systemic', type: 'response' }
   ]
 
-  const allItems = [...riskItems, ...responseItems]
+  const allItems = [...baseRiskItems, ...baseResponseItems]
+
+  // Shuffle function
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    const shuffled = [...array]
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    }
+    return shuffled
+  }
+
+  // Initialize shuffled items on mount
+  useEffect(() => {
+    setShuffledRiskItems(shuffleArray(baseRiskItems))
+    setShuffledResponseItems(shuffleArray(baseResponseItems))
+  }, [])
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -299,6 +318,8 @@ export default function CategorizationPage() {
   const handleReset = () => {
     setSlotAssignments({})
     setIsCompleted(false)
+    setShuffledRiskItems(shuffleArray(baseRiskItems))
+    setShuffledResponseItems(shuffleArray(baseResponseItems))
     saveData(false)
   }
 
@@ -525,7 +546,7 @@ export default function CategorizationPage() {
                 <div>
                   <h4 className="text-[10px] font-semibold mb-1.5" style={{ color: '#6C757D' }}>Risk Examples</h4>
                   <div className="space-y-1.5">
-                    {riskItems.filter(item => !isItemPlaced(item.id)).map(item => (
+                    {shuffledRiskItems.filter(item => !isItemPlaced(item.id)).map(item => (
                       <div
                         key={item.id}
                         draggable={true}
@@ -542,7 +563,7 @@ export default function CategorizationPage() {
                 <div>
                   <h4 className="text-[10px] font-semibold mb-1.5" style={{ color: '#6C757D' }}>Response Approaches</h4>
                   <div className="space-y-1.5">
-                    {responseItems.filter(item => !isItemPlaced(item.id)).map(item => (
+                    {shuffledResponseItems.filter(item => !isItemPlaced(item.id)).map(item => (
                       <div
                         key={item.id}
                         draggable={true}
