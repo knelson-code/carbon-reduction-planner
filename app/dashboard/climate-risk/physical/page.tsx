@@ -317,7 +317,7 @@ export default function PhysicalRiskPage() {
               ← Back to Climate and Risk Overview
             </Link>
             <h1 className="text-2xl font-bold flex-1 text-center" style={{ color: '#0B1F32' }}>
-              Understanding Physical Risk Through Probability
+              Understanding Climate and Probabilities
             </h1>
             <div className="w-64" /> {/* Spacer for centering */}
           </div>
@@ -410,89 +410,91 @@ export default function PhysicalRiskPage() {
             </div>
           </div>
 
-          {/* Distribution Visualizations */}
-          <div className="grid md:grid-cols-2 gap-6 mb-6">
-            {/* Regular Dice Distribution */}
-            <div className="p-4 rounded-lg border" style={{ backgroundColor: '#ffffff', borderColor: '#0B1F32' }}>
-              <h4 className="font-semibold mb-3 text-center text-sm" style={{ color: '#0B1F32' }}>
-                Current Climate Distribution
+          {/* Distribution Visualization - Overlaid */}
+          <div className="mb-6">
+            <div className="p-6 rounded-lg border" style={{ backgroundColor: '#ffffff', borderColor: '#0B1F32' }}>
+              <h4 className="font-semibold mb-4 text-center" style={{ color: '#0B1F32' }}>
+                Probability Distribution Comparison
               </h4>
-              <div className="h-64 flex items-end justify-around gap-1 px-2">
+              <div className="flex gap-4 justify-center mb-4 text-xs">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded" style={{ backgroundColor: '#0B1F32' }}></div>
+                  <span style={{ color: '#0B1F32' }}>Current Climate ({regularTotal} rolls)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded" style={{ backgroundColor: '#FF5B35' }}></div>
+                  <span style={{ color: '#FF5B35' }}>Future Climate ({loadedTotal} rolls)</span>
+                </div>
+              </div>
+              <div className="relative h-80 flex items-end justify-around gap-2 px-4">
                 {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((value) => {
-                  const count = regularRolls[value] || 0
-                  const percentage = regularTotal > 0 ? ((count / regularTotal) * 100).toFixed(1) : '0.0'
-                  const heightPercent = (count / globalMax) * 100
+                  const regularCount = regularRolls[value] || 0
+                  const loadedCount = loadedRolls[value] || 0
+                  const regularPercent = regularTotal > 0 ? ((regularCount / regularTotal) * 100).toFixed(1) : '0.0'
+                  const loadedPercent = loadedTotal > 0 ? ((loadedCount / loadedTotal) * 100).toFixed(1) : '0.0'
                   const isExtreme = value >= extremeThreshold
                   
+                  // Calculate bar heights (as pixels for better control)
+                  const maxHeight = 280 // pixels (h-80 = 320px, leave room for labels)
+                  const regularHeight = globalMax > 0 ? (regularCount / globalMax) * maxHeight : 0
+                  const loadedHeight = globalMax > 0 ? (loadedCount / globalMax) * maxHeight : 0
+                  
                   return (
-                    <div key={value} className="flex-1 flex flex-col items-center justify-end">
-                      <div className="text-xs mb-1" style={{ color: '#0B1F32', minHeight: '16px' }}>
-                        {count > 0 ? `${percentage}%` : ''}
-                      </div>
-                      <div 
-                        className="w-full flex flex-col justify-end items-center transition-all duration-300"
-                        style={{ 
-                          height: `${heightPercent}%`,
-                          minHeight: count > 0 ? '20px' : '0px',
-                          backgroundColor: isExtreme ? 'rgba(255, 91, 53, 0.3)' : '#0B1F32',
-                          border: isExtreme ? '2px dashed #FF5B35' : 'none',
-                        }}
-                      >
-                        <div className="text-xs font-bold" style={{ color: '#ffffff' }}>
-                          {count > 0 ? count : ''}
+                    <div key={value} className="flex-1 flex flex-col items-center justify-end relative" style={{ minWidth: '40px' }}>
+                      {/* Regular dice bar (behind) */}
+                      <div className="absolute bottom-0 left-0 w-full flex justify-center">
+                        <div 
+                          className="transition-all duration-300"
+                          style={{ 
+                            width: '70%',
+                            height: `${regularHeight}px`,
+                            minHeight: regularCount > 0 ? '15px' : '0px',
+                            backgroundColor: isExtreme ? 'rgba(11, 31, 50, 0.4)' : 'rgba(11, 31, 50, 0.7)',
+                            border: isExtreme ? '2px dashed rgba(255, 91, 53, 0.5)' : 'none',
+                            borderRadius: '4px 4px 0 0',
+                          }}
+                        >
+                          {regularCount > 0 && (
+                            <div className="text-[9px] font-bold text-center pt-1" style={{ color: '#ffffff' }}>
+                              {regularCount}
+                            </div>
+                          )}
                         </div>
                       </div>
-                      <div className="text-xs mt-1 font-semibold" style={{ color: '#0B1F32' }}>
+                      
+                      {/* Loaded dice bar (in front, slightly offset) */}
+                      <div className="absolute bottom-0 right-0 w-full flex justify-center">
+                        <div 
+                          className="transition-all duration-300"
+                          style={{ 
+                            width: '70%',
+                            height: `${loadedHeight}px`,
+                            minHeight: loadedCount > 0 ? '15px' : '0px',
+                            backgroundColor: isExtreme ? 'rgba(255, 91, 53, 0.9)' : 'rgba(255, 91, 53, 0.8)',
+                            border: isExtreme ? '2px dashed rgba(139, 0, 0, 0.8)' : 'none',
+                            borderRadius: '4px 4px 0 0',
+                          }}
+                        >
+                          {loadedCount > 0 && (
+                            <div className="text-[9px] font-bold text-center pt-1" style={{ color: '#ffffff' }}>
+                              {loadedCount}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {/* X-axis label */}
+                      <div className="absolute -bottom-6 text-xs font-semibold" style={{ color: '#0B1F32' }}>
                         {value}
                       </div>
                     </div>
                   )
                 })}
               </div>
-              <div className="mt-3 text-xs text-center p-2 rounded" style={{ backgroundColor: 'rgba(255, 91, 53, 0.1)', color: '#0B1F32' }}>
-                <strong style={{ color: '#FF5B35' }}>1/100 Year Flood Zone:</strong> Values 11-12 are rare extreme events (red shaded area)
-              </div>
-            </div>
-
-            {/* Loaded Dice Distribution */}
-            <div className="p-4 rounded-lg border" style={{ backgroundColor: '#ffffff', borderColor: '#FF5B35' }}>
-              <h4 className="font-semibold mb-3 text-center text-sm" style={{ color: '#FF5B35' }}>
-                Future Climate Distribution
-              </h4>
-              <div className="h-64 flex items-end justify-around gap-1 px-2">
-                {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((value) => {
-                  const count = loadedRolls[value] || 0
-                  const percentage = loadedTotal > 0 ? ((count / loadedTotal) * 100).toFixed(1) : '0.0'
-                  const heightPercent = (count / globalMax) * 100
-                  const isExtreme = value >= extremeThreshold
-                  
-                  return (
-                    <div key={value} className="flex-1 flex flex-col items-center justify-end">
-                      <div className="text-xs mb-1" style={{ color: '#FF5B35', minHeight: '16px' }}>
-                        {count > 0 ? `${percentage}%` : ''}
-                      </div>
-                      <div 
-                        className="w-full flex flex-col justify-end items-center transition-all duration-300"
-                        style={{ 
-                          height: `${heightPercent}%`,
-                          minHeight: count > 0 ? '20px' : '0px',
-                          backgroundColor: isExtreme ? 'rgba(255, 0, 0, 0.5)' : '#FF5B35',
-                          border: isExtreme ? '2px dashed #8B0000' : 'none',
-                        }}
-                      >
-                        <div className="text-xs font-bold" style={{ color: '#ffffff' }}>
-                          {count > 0 ? count : ''}
-                        </div>
-                      </div>
-                      <div className="text-xs mt-1 font-semibold" style={{ color: '#FF5B35' }}>
-                        {value}
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-              <div className="mt-3 text-xs text-center p-2 rounded" style={{ backgroundColor: 'rgba(255, 0, 0, 0.1)', color: '#0B1F32' }}>
-                <strong style={{ color: '#8B0000' }}>Same 1/100 Year Flood Zone:</strong> Now much more common! (dark red shaded area)
+              <div className="mt-8 pt-4 border-t" style={{ borderColor: '#f5f5f5' }}>
+                <div className="text-xs text-center p-2 rounded mb-2" style={{ backgroundColor: 'rgba(255, 91, 53, 0.1)', color: '#0B1F32' }}>
+                  <strong style={{ color: '#FF5B35' }}>1/100 Year Flood Zone (values 11-12):</strong> Notice how this rare event zone becomes much more common with climate change
+                </div>
               </div>
             </div>
           </div>
