@@ -8,6 +8,7 @@ export default function PhysicalRiskPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const [isCompleted, setIsCompleted] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
   
   // Dice roll data - outcomes 2-12 (two dice)
   const [regularRolls, setRegularRolls] = useState<number[]>(Array(11).fill(0)) // indices 0-10 represent rolls 2-12
@@ -17,12 +18,13 @@ export default function PhysicalRiskPage() {
   const [climateEnabled, setClimateEnabled] = useState(false)
 
   useEffect(() => {
+    setIsMounted(true)
     if (status === 'unauthenticated') {
       router.push('/login')
     }
   }, [status, router])
 
-  if (status === 'loading' || !session) {
+  if (status === 'loading' || !session || !isMounted) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-lg text-[#0B1F32]">Loading...</div>
@@ -255,21 +257,17 @@ export default function PhysicalRiskPage() {
                     {/* Bars */}
                     <div className="w-full flex-1 flex items-end justify-center gap-0.5">
                       {/* Regular dice bar */}
-                      {regularHeight > 0 && (
-                        <div 
-                          className="bg-[#0B1F32] w-4 transition-all duration-300"
-                          style={{ height: `${regularHeight}%` }}
-                          title={`Regular: ${regularPct.toFixed(1)}%`}
-                        />
-                      )}
+                      <div 
+                        className="bg-[#0B1F32] w-4 transition-all duration-300"
+                        style={{ height: regularHeight > 0 ? `${regularHeight}%` : '0%' }}
+                        title={`Regular: ${regularPct.toFixed(1)}%`}
+                      />
                       {/* Climate dice bar */}
-                      {climateHeight > 0 && (
-                        <div 
-                          className="bg-[#FF5B35] w-4 transition-all duration-300"
-                          style={{ height: `${climateHeight}%` }}
-                          title={`Climate: ${climatePct.toFixed(1)}%`}
-                        />
-                      )}
+                      <div 
+                        className="bg-[#FF5B35] w-4 transition-all duration-300"
+                        style={{ height: climateHeight > 0 ? `${climateHeight}%` : '0%' }}
+                        title={`Climate: ${climatePct.toFixed(1)}%`}
+                      />
                     </div>
                     {/* X-axis label */}
                     <div className="text-xs font-semibold text-[#0B1F32] mt-2">{roll}</div>
