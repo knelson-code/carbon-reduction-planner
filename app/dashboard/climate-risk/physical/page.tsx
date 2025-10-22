@@ -328,38 +328,38 @@ export default function PhysicalRiskPage() {
           </div>
           
           {/* Subtitle */}
-          <h2 className="text-base mb-4 text-center" style={{ color: '#0B1F32' }}>
+          <h2 className="text-sm mb-2 text-center" style={{ color: '#0B1F32' }}>
             Roll the dice to see how climate change shifts risk distributions
           </h2>
 
           {/* Instructions */}
-          <div className="mb-3 p-3 rounded-lg border" style={{ backgroundColor: '#f5f5f5', borderColor: '#0B1F32' }}>
-            <p className="text-sm" style={{ color: '#0B1F32' }}>
+          <div className="mb-2 p-2 rounded-lg border" style={{ backgroundColor: '#f5f5f5', borderColor: '#0B1F32' }}>
+            <p className="text-xs" style={{ color: '#0B1F32' }}>
               <strong>How it works:</strong> Roll the regular dice (current climate), then click to roll the climate dice the same number of times. 
               Notice how extreme events (11-12) become much more common with climate change.
             </p>
           </div>
 
           {/* Control Panel */}
-          <div className="mb-3 p-3 rounded-lg border" style={{ backgroundColor: '#f5f5f5', borderColor: '#0B1F32' }}>
-            <div className="flex gap-3 justify-center items-center flex-wrap">
+          <div className="mb-2 p-2 rounded-lg border" style={{ backgroundColor: '#f5f5f5', borderColor: '#0B1F32' }}>
+            <div className="flex gap-2 justify-center items-center flex-wrap">
               <button
                 onClick={() => handleRollRegular(1)}
-                className="px-4 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
+                className="px-3 py-1.5 rounded text-xs font-semibold transition-opacity hover:opacity-90"
                 style={{ backgroundColor: '#0B1F32', color: '#ffffff' }}
               >
                 Roll 1×
               </button>
               <button
                 onClick={() => handleRollRegular(100)}
-                className="px-4 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
+                className="px-3 py-1.5 rounded text-xs font-semibold transition-opacity hover:opacity-90"
                 style={{ backgroundColor: '#0B1F32', color: '#ffffff' }}
               >
                 Roll 100×
               </button>
               <button
                 onClick={() => handleRollRegular(500)}
-                className="px-4 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
+                className="px-3 py-1.5 rounded text-xs font-semibold transition-opacity hover:opacity-90"
                 style={{ backgroundColor: '#0B1F32', color: '#ffffff' }}
               >
                 Roll 500×
@@ -370,7 +370,7 @@ export default function PhysicalRiskPage() {
               <button
                 onClick={handleRollClimate}
                 disabled={regularRollCount === 0}
-                className="px-6 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90 disabled:opacity-40"
+                className="px-4 py-1.5 rounded text-xs font-semibold transition-opacity hover:opacity-90 disabled:opacity-40"
                 style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
               >
                 Roll Climate Dice ({regularRollCount}×)
@@ -380,25 +380,25 @@ export default function PhysicalRiskPage() {
               
               <button
                 onClick={handleReset}
-                className="px-4 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
+                className="px-3 py-1.5 rounded text-xs font-semibold transition-opacity hover:opacity-90"
                 style={{ backgroundColor: '#6C757D', color: '#ffffff' }}
               >
                 Reset
               </button>
             </div>
-            <div className="flex gap-8 justify-center mt-2 text-xs" style={{ color: '#6C757D' }}>
+            <div className="flex gap-8 justify-center mt-1 text-[10px]" style={{ color: '#6C757D' }}>
               <span>Regular: {regularTotal} rolls</span>
               <span>Climate: {loadedTotal} rolls</span>
             </div>
           </div>
 
           {/* Distribution Visualization */}
-          <div className="mb-3">
-            <div className="p-4 rounded-lg border" style={{ backgroundColor: '#ffffff', borderColor: '#0B1F32' }}>
-              <h4 className="font-semibold mb-2 text-center text-sm" style={{ color: '#0B1F32' }}>
+          <div className="mb-2">
+            <div className="p-3 rounded-lg border" style={{ backgroundColor: '#ffffff', borderColor: '#0B1F32' }}>
+              <h4 className="font-semibold mb-1 text-center text-xs" style={{ color: '#0B1F32' }}>
                 Probability Distribution Comparison
               </h4>
-              <div className="flex gap-4 justify-center mb-2 text-xs">
+              <div className="flex gap-4 justify-center mb-1 text-[10px]">
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded" style={{ backgroundColor: '#0B1F32' }}></div>
                   <span style={{ color: '#0B1F32' }}>Current Climate ({regularTotal} rolls)</span>
@@ -408,21 +408,70 @@ export default function PhysicalRiskPage() {
                   <span style={{ color: '#FF5B35' }}>Future Climate ({loadedTotal} rolls)</span>
                 </div>
               </div>
-              <div className="relative h-64 flex items-end justify-around gap-1 px-4">
+              <div className="relative h-48 flex items-end justify-around gap-1 px-4">
+                {/* SVG overlay for smooth curves */}
+                <svg className="absolute inset-0 pointer-events-none" style={{ width: '100%', height: '100%' }}>
+                  {/* Regular dice curve (blue) */}
+                  {regularTotal > 0 && (() => {
+                    const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+                    const points = values.map((value, index) => {
+                      const count = regularRolls[value] || 0
+                      const height = globalMax > 0 ? (count / globalMax) * 170 : 0
+                      const x = (index / (values.length - 1)) * 100
+                      const y = 100 - (height / 170) * 100
+                      return `${x},${y}`
+                    }).join(' ')
+                    
+                    return (
+                      <polyline
+                        points={points}
+                        fill="none"
+                        stroke="#0B1F32"
+                        strokeWidth="2"
+                        vectorEffect="non-scaling-stroke"
+                        style={{ transform: 'scale(1, 0.85)', transformOrigin: 'center bottom' }}
+                      />
+                    )
+                  })()}
+                  
+                  {/* Loaded dice curve (orange) */}
+                  {loadedTotal > 0 && (() => {
+                    const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+                    const points = values.map((value, index) => {
+                      const count = loadedRolls[value] || 0
+                      const height = globalMax > 0 ? (count / globalMax) * 170 : 0
+                      const x = (index / (values.length - 1)) * 100
+                      const y = 100 - (height / 170) * 100
+                      return `${x},${y}`
+                    }).join(' ')
+                    
+                    return (
+                      <polyline
+                        points={points}
+                        fill="none"
+                        stroke="#FF5B35"
+                        strokeWidth="2"
+                        vectorEffect="non-scaling-stroke"
+                        style={{ transform: 'scale(1, 0.85)', transformOrigin: 'center bottom' }}
+                      />
+                    )
+                  })()}
+                </svg>
+                
                 {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((value) => {
                   const regularCount = regularRolls[value] || 0
                   const loadedCount = loadedRolls[value] || 0
                   const isExtreme = value >= extremeThreshold
                   
                   // Calculate bar heights (as pixels for better control)
-                  const maxHeight = 220 // pixels (h-64 = 256px, leave room for labels)
+                  const maxHeight = 170 // pixels (h-48 = 192px, leave room for labels)
                   const regularHeight = globalMax > 0 ? (regularCount / globalMax) * maxHeight : 0
                   const loadedHeight = globalMax > 0 ? (loadedCount / globalMax) * maxHeight : 0
                   
                   return (
                     <div key={value} className="flex-1 flex flex-col items-center justify-end" style={{ minWidth: '30px' }}>
                       {/* Transparent bars with top border line */}
-                      <div className="w-full flex gap-0.5 items-end justify-center" style={{ height: '220px' }}>
+                      <div className="w-full flex gap-0.5 items-end justify-center" style={{ height: '170px' }}>
                         {/* Regular dice bar (left, blue) */}
                         <div 
                           className="transition-all duration-300 flex-1 relative"
@@ -462,8 +511,8 @@ export default function PhysicalRiskPage() {
                   )
                 })}
               </div>
-              <div className="mt-4 pt-2 border-t" style={{ borderColor: '#f5f5f5' }}>
-                <div className="text-xs text-center p-1.5 rounded" style={{ backgroundColor: 'rgba(255, 91, 53, 0.1)', color: '#0B1F32' }}>
+              <div className="mt-2 pt-1 border-t" style={{ borderColor: '#f5f5f5' }}>
+                <div className="text-[10px] text-center p-1 rounded" style={{ backgroundColor: 'rgba(255, 91, 53, 0.1)', color: '#0B1F32' }}>
                   <strong style={{ color: '#FF5B35' }}>1/100 Year Flood Zone (11-12):</strong> Notice this rare event becomes much more common
                 </div>
               </div>
@@ -471,10 +520,10 @@ export default function PhysicalRiskPage() {
           </div>
 
           {/* Action Button */}
-          <div className="flex justify-center">
+          <div className="flex justify-center mt-2">
             <button
               onClick={handleMarkComplete}
-              className="px-6 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
+              className="px-4 py-1.5 rounded text-xs font-semibold transition-opacity hover:opacity-90"
               style={{ backgroundColor: '#0B1F32', color: '#ffffff' }}
             >
               {isCompleted ? '✓ Activity Completed' : 'Mark this activity as complete'}
