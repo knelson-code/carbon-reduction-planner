@@ -410,21 +410,24 @@ export default function PhysicalRiskPage() {
                 </div>
               </div>
               <div className="relative h-48 flex items-end justify-around gap-1 px-4">
-                {/* SVG overlay for smooth curves - perfectly aligned with bars */}
-                <svg className="absolute inset-0 pointer-events-none" style={{ width: '100%', height: '100%', paddingBottom: '20px' }}>
+                {/* SVG overlay for smooth curves */}
+                <svg className="absolute inset-0 pointer-events-none" style={{ width: '100%', height: '100%' }}>
                   {/* Regular dice curve (blue) */}
                   {regularTotal > 0 && (() => {
                     const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+                    const numValues = values.length
                     const chartHeight = 170
-                    const svgHeight = 192 // h-48
-                    const padding = 20 // space for labels
+                    const padding = 20
+                    const leftPadding = 4 // px-4 on container
+                    const rightPadding = 4
                     
                     const points = values.map((value, index) => {
                       const count = regularRolls[value] || 0
                       const height = globalMax > 0 ? (count / globalMax) * chartHeight : 0
-                      const x = ((index + 0.25) / values.length) * 100 // Center of left bar
-                      const y = ((svgHeight - padding - height) / svgHeight) * 100
-                      return `${x},${y}`
+                      // Calculate x position: left padding + (index / numValues) * content width + offset for left bar center
+                      const xPercent = (leftPadding/100 + (index / numValues) * (1 - (leftPadding + rightPadding)/100) + (0.25/numValues) * (1 - (leftPadding + rightPadding)/100)) * 100
+                      const yPercent = ((192 - padding - height) / 192) * 100
+                      return `${xPercent},${yPercent}`
                     }).join(' ')
                     
                     return (
@@ -441,16 +444,19 @@ export default function PhysicalRiskPage() {
                   {/* Loaded dice curve (orange) */}
                   {loadedTotal > 0 && (() => {
                     const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+                    const numValues = values.length
                     const chartHeight = 170
-                    const svgHeight = 192 // h-48
-                    const padding = 20 // space for labels
+                    const padding = 20
+                    const leftPadding = 4
+                    const rightPadding = 4
                     
                     const points = values.map((value, index) => {
                       const count = loadedRolls[value] || 0
                       const height = globalMax > 0 ? (count / globalMax) * chartHeight : 0
-                      const x = ((index + 0.75) / values.length) * 100 // Center of right bar
-                      const y = ((svgHeight - padding - height) / svgHeight) * 100
-                      return `${x},${y}`
+                      // Calculate x position: left padding + (index / numValues) * content width + offset for right bar center
+                      const xPercent = (leftPadding/100 + (index / numValues) * (1 - (leftPadding + rightPadding)/100) + (0.75/numValues) * (1 - (leftPadding + rightPadding)/100)) * 100
+                      const yPercent = ((192 - padding - height) / 192) * 100
+                      return `${xPercent},${yPercent}`
                     }).join(' ')
                     
                     return (
@@ -493,7 +499,7 @@ export default function PhysicalRiskPage() {
                             <>
                               <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: '#0B1F32' }}></div>
                               {regularTotal > 0 && regularHeight > 15 && (
-                                <div className="absolute top-1 left-0 right-0 text-center text-[8px] font-bold" style={{ color: '#0B1F32' }}>
+                                <div className="absolute bottom-1 left-0 right-0 text-center text-[8px] font-bold" style={{ color: '#0B1F32' }}>
                                   {Math.round((regularCount / regularTotal) * 100)}%
                                 </div>
                               )}
@@ -515,7 +521,7 @@ export default function PhysicalRiskPage() {
                             <>
                               <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: '#FF5B35' }}></div>
                               {loadedTotal > 0 && loadedHeight > 15 && (
-                                <div className="absolute top-1 left-0 right-0 text-center text-[8px] font-bold" style={{ color: '#FF5B35' }}>
+                                <div className="absolute bottom-1 left-0 right-0 text-center text-[8px] font-bold" style={{ color: '#FF5B35' }}>
                                   {Math.round((loadedCount / loadedTotal) * 100)}%
                                 </div>
                               )}
