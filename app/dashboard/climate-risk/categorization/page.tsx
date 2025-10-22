@@ -28,9 +28,12 @@ export default function CategorizationPage() {
   const [isSaving, setIsSaving] = useState(false)
   const [completionAudio, setCompletionAudio] = useState<HTMLAudioElement | null>(null)
   const [popAudio, setPopAudio] = useState<HTMLAudioElement | null>(null)
+  const [errorAudio, setErrorAudio] = useState<HTMLAudioElement | null>(null)
   const [particles, setParticles] = useState<Array<{id: number, angle: number, distance: number, x: number, y: number}>>([])
   const [confetti, setConfetti] = useState<Array<{id: number, color: string, xOffset: number, angle: number, peakHeight: number, peakTime: number, finalRotateZ: number, finalRotateY: number}>>([])
   const [confettiOrigin, setConfettiOrigin] = useState<{x: number, y: number} | null>(null)
+  const [showTryAgain, setShowTryAgain] = useState(false)
+  const [buttonShake, setButtonShake] = useState(false)
 
   const ACTIVITY_ID = "climate-risk-categorization"
 
@@ -94,6 +97,12 @@ export default function CategorizationPage() {
     pop.volume = 0.56
     pop.load()
     setPopAudio(pop)
+
+    const error = new Audio('/error-sound.mp3')
+    error.preload = 'auto'
+    error.volume = 0.6
+    error.load()
+    setErrorAudio(error)
   }, [])
 
   const saveData = useCallback(async (completed: boolean = isCompleted) => {
@@ -163,57 +172,35 @@ export default function CategorizationPage() {
       setTimeout(() => setParticles([]), 600)
 
       setSlotAssignments(prev => ({ ...prev, [slotId]: draggedItemId }))
-      checkCompletion({...slotAssignments, [slotId]: draggedItemId})
     }
     setDraggedItemId(null)
   }
 
-  const checkCompletion = (assignments: SlotAssignment) => {
+  const checkIfAllCorrect = () => {
+    // Check if all 12 slots are filled correctly
     const totalSlots = 12
-    const filledSlots = Object.values(assignments).filter(v => v !== null).length
-    if (filledSlots === totalSlots && !isCompleted) {
-      setTimeout(() => showCompletionCelebration(), 300)
-    }
-  }
-
-  const showCompletionCelebration = () => {
-    setIsCompleted(true)
-    if (completionAudio) {
-      completionAudio.currentTime = 0
-      completionAudio.play().catch(err => console.log('Completion audio failed:', err))
-    }
-
-    const centerX = window.innerWidth / 2
-    const centerY = window.innerHeight / 2
-    setConfettiOrigin({ x: centerX, y: centerY })
+    const filledSlots = Object.values(slotAssignments).filter(v => v !== null).length
     
-    const colors = ['#FF5B35', '#0B1F32', '#9CA3AF']
-    const newConfetti = Array.from({ length: 80 }, (_, i) => {
-      const peakHeight = -(60 + Math.random() * 100)
-      const peakTime = 0.4 + (Math.abs(peakHeight) / 160) * 0.6
-      const baseAngle = -Math.PI / 2
-      const angleVariation = (Math.random() - 0.5) * Math.PI * 2
-      const angle = baseAngle + angleVariation
+    if (filledSlots !== totalSlots) return false
+    
+    // Verify each placement is correct
+    for (const [slotId, itemId] of Object.entries(slotAssignments)) {
+      if (!itemId) return false
       
-      return {
-        id: Date.now() + i,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        xOffset: (Math.random() - 0.5) * 400,
-        angle,
-        peakHeight,
-        peakTime,
-        finalRotateZ: 360 + Math.random() * 1080,
-        finalRotateY: 360 + Math.random() * 1440,
+      const item = allItems.find(i => i.id === itemId)
+      if (!item) return false
+      
+      // Extract category and type from slot ID
+      const [category, type] = slotId.split('-').slice(0, 2)
+      const slotType = type === 'ex' ? 'example' : 'response'
+      
+      // Check if item matches slot
+      if (item.category !== category || item.type !== slotType) {
+        return false
       }
-    })
-    setConfetti(newConfetti)
-
-    awardPoints()
-    setTimeout(() => {
-      setConfetti([])
-      setConfettiOrigin(null)
-    }, 3500)
-    saveData(true)
+    }
+    
+    return true
   }
 
   const awardPoints = async () => {
@@ -230,12 +217,24 @@ export default function CategorizationPage() {
   }
 
   const handleMarkComplete = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const newCompletedState = !isCompleted
-    setIsCompleted(newCompletedState)
+    // If already completed, allow uncompleting
+    if (isCompleted) {
+      setIsCompleted(false)
+      await saveData(false)
+      return
+    }
     
-    if (newCompletedState && completionAudio) {
-      completionAudio.currentTime = 0
-      completionAudio.play().catch(err => console.log('Completion audio failed:', err))
+    // Check if all answers are correct
+    const allCorrect = checkIfAllCorrect()
+    
+    if (allCorrect) {
+      // Correct! Celebrate
+      setIsCompleted(true)
+      
+      if (completionAudio) {
+        completionAudio.currentTime = 0
+        completionAudio.play().catch(err => console.log('Completion audio failed:', err))
+      }
       
       const button = e.currentTarget
       const rect = button.getBoundingClientRect()
@@ -260,17 +259,32 @@ export default function CategorizationPage() {
       })
       setConfetti(newConfetti)
       
-      if (!isCompleted) {
-        setTimeout(() => awardPoints(), 1000)
-      }
+      setTimeout(() => awardPoints(), 1000)
       
       setTimeout(() => {
         setConfetti([])
         setConfettiOrigin(null)
       }, 3000)
+      
+      await saveData(true)
+    } else {
+      // Incorrect - play error sound and shake button
+      if (errorAudio) {
+        errorAudio.currentTime = 0
+        errorAudio.play().catch(err => console.log('Error audio failed:', err))
+      }
+      
+      setButtonShake(true)
+      setShowTryAgain(true)
+      
+      setTimeout(() => {
+        setButtonShake(false)
+      }, 500)
+      
+      setTimeout(() => {
+        setShowTryAgain(false)
+      }, 2000)
     }
-    
-    await saveData(newCompletedState)
   }
 
   const isItemPlaced = (itemId: string) => {
@@ -344,6 +358,16 @@ export default function CategorizationPage() {
           
           .confetti-piece {
             animation: confettiBurst 3.5s ease-in forwards;
+          }
+          
+          @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+          }
+          
+          .shake {
+            animation: shake 0.5s ease-in-out;
           }
         `}</style>
 
@@ -535,15 +559,6 @@ export default function CategorizationPage() {
             </div>
           </div>
 
-          {/* Completion Badge */}
-          {isCompleted && (
-            <div className="text-center mb-2">
-              <div className="inline-block px-4 py-2 rounded-full text-white text-sm font-semibold" style={{ backgroundColor: '#0B1F32' }}>
-                ✅ Congratulations! All risks correctly categorized!
-              </div>
-            </div>
-          )}
-
           {/* Action Buttons */}
           <div className="flex gap-3 justify-center">
             <button
@@ -556,10 +571,10 @@ export default function CategorizationPage() {
             
             <button
               onClick={handleMarkComplete}
-              className="px-6 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
+              className={`px-6 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90 ${buttonShake ? 'shake' : ''}`}
               style={{ backgroundColor: '#0B1F32', color: '#ffffff' }}
             >
-              {isCompleted ? '✓ Activity Completed' : 'Mark this activity as complete'}
+              {isCompleted ? '✓ Activity Completed' : showTryAgain ? 'Try again!' : 'Mark this activity as complete'}
             </button>
           </div>
         </div>
