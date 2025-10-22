@@ -150,7 +150,8 @@ export default function PhysicalRiskPage() {
       rollAudio.play().catch(err => console.log('Roll audio failed:', err))
     }
 
-    const newRolls = { ...loadedRolls }
+    // Roll climate dice to match regular dice count exactly
+    const newRolls: RollData = {}
     for (let i = 0; i < regularRollCount; i++) {
       const result = rollLoadedDice()
       newRolls[result] = (newRolls[result] || 0) + 1
@@ -373,7 +374,7 @@ export default function PhysicalRiskPage() {
                 className="px-4 py-1.5 rounded text-xs font-semibold transition-opacity hover:opacity-90 disabled:opacity-40"
                 style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
               >
-                Roll Climate Dice ({regularRollCount}×)
+                Now roll the climate dice the same number of times
               </button>
               
               <div className="w-px h-8 bg-gray-300"></div>
@@ -409,16 +410,20 @@ export default function PhysicalRiskPage() {
                 </div>
               </div>
               <div className="relative h-48 flex items-end justify-around gap-1 px-4">
-                {/* SVG overlay for smooth curves */}
-                <svg className="absolute inset-0 pointer-events-none" style={{ width: '100%', height: '100%' }}>
+                {/* SVG overlay for smooth curves - perfectly aligned with bars */}
+                <svg className="absolute inset-0 pointer-events-none" style={{ width: '100%', height: '100%', paddingBottom: '20px' }}>
                   {/* Regular dice curve (blue) */}
                   {regularTotal > 0 && (() => {
                     const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+                    const chartHeight = 170
+                    const svgHeight = 192 // h-48
+                    const padding = 20 // space for labels
+                    
                     const points = values.map((value, index) => {
                       const count = regularRolls[value] || 0
-                      const height = globalMax > 0 ? (count / globalMax) * 170 : 0
-                      const x = (index / (values.length - 1)) * 100
-                      const y = 100 - (height / 170) * 100
+                      const height = globalMax > 0 ? (count / globalMax) * chartHeight : 0
+                      const x = ((index + 0.25) / values.length) * 100 // Center of left bar
+                      const y = ((svgHeight - padding - height) / svgHeight) * 100
                       return `${x},${y}`
                     }).join(' ')
                     
@@ -429,7 +434,6 @@ export default function PhysicalRiskPage() {
                         stroke="#0B1F32"
                         strokeWidth="2"
                         vectorEffect="non-scaling-stroke"
-                        style={{ transform: 'scale(1, 0.85)', transformOrigin: 'center bottom' }}
                       />
                     )
                   })()}
@@ -437,11 +441,15 @@ export default function PhysicalRiskPage() {
                   {/* Loaded dice curve (orange) */}
                   {loadedTotal > 0 && (() => {
                     const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+                    const chartHeight = 170
+                    const svgHeight = 192 // h-48
+                    const padding = 20 // space for labels
+                    
                     const points = values.map((value, index) => {
                       const count = loadedRolls[value] || 0
-                      const height = globalMax > 0 ? (count / globalMax) * 170 : 0
-                      const x = (index / (values.length - 1)) * 100
-                      const y = 100 - (height / 170) * 100
+                      const height = globalMax > 0 ? (count / globalMax) * chartHeight : 0
+                      const x = ((index + 0.75) / values.length) * 100 // Center of right bar
+                      const y = ((svgHeight - padding - height) / svgHeight) * 100
                       return `${x},${y}`
                     }).join(' ')
                     
@@ -452,7 +460,6 @@ export default function PhysicalRiskPage() {
                         stroke="#FF5B35"
                         strokeWidth="2"
                         vectorEffect="non-scaling-stroke"
-                        style={{ transform: 'scale(1, 0.85)', transformOrigin: 'center bottom' }}
                       />
                     )
                   })()}
@@ -470,7 +477,7 @@ export default function PhysicalRiskPage() {
                   
                   return (
                     <div key={value} className="flex-1 flex flex-col items-center justify-end" style={{ minWidth: '30px' }}>
-                      {/* Transparent bars with top border line */}
+                      {/* Transparent bars with top border line and percentages */}
                       <div className="w-full flex gap-0.5 items-end justify-center" style={{ height: '170px' }}>
                         {/* Regular dice bar (left, blue) */}
                         <div 
@@ -483,7 +490,14 @@ export default function PhysicalRiskPage() {
                           }}
                         >
                           {regularCount > 0 && (
-                            <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: '#0B1F32' }}></div>
+                            <>
+                              <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: '#0B1F32' }}></div>
+                              {regularTotal > 0 && regularHeight > 15 && (
+                                <div className="absolute top-1 left-0 right-0 text-center text-[8px] font-bold" style={{ color: '#0B1F32' }}>
+                                  {Math.round((regularCount / regularTotal) * 100)}%
+                                </div>
+                              )}
+                            </>
                           )}
                         </div>
                         
@@ -498,7 +512,14 @@ export default function PhysicalRiskPage() {
                           }}
                         >
                           {loadedCount > 0 && (
-                            <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: '#FF5B35' }}></div>
+                            <>
+                              <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: '#FF5B35' }}></div>
+                              {loadedTotal > 0 && loadedHeight > 15 && (
+                                <div className="absolute top-1 left-0 right-0 text-center text-[8px] font-bold" style={{ color: '#FF5B35' }}>
+                                  {Math.round((loadedCount / loadedTotal) * 100)}%
+                                </div>
+                              )}
+                            </>
                           )}
                         </div>
                       </div>
