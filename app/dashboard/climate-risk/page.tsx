@@ -105,6 +105,7 @@ export default function ClimateRiskPage() {
                   { label: 'Social, cultural, political and economic roots of the problem', completed: false, href: '/dashboard/climate-risk/roots' },
                   { label: 'Psychology of climate change, and willful blindness', completed: false, href: '/dashboard/climate-risk/psychology' },
                   { label: 'Physical risk', completed: false, href: '/dashboard/climate-risk/physical' },
+                  { label: 'Risk categorization exercise', completed: false, href: '/dashboard/climate-risk/categorization' },
                   { label: 'Transition Risk', completed: false, href: '/dashboard/climate-risk/transition' },
                   { label: 'Legal and reputational risk', completed: false, href: '/dashboard/climate-risk/legal' },
                   { label: 'Systemic risk', completed: false, href: '/dashboard/climate-risk/systemic' },

@@ -14,7 +14,7 @@ interface DraggableItem {
 }
 
 interface SlotAssignment {
-  [slotId: string]: string | null // slot ID -> item ID
+  [slotId: string]: string | null
 }
 
 export default function CategorizationPage() {
@@ -28,12 +28,12 @@ export default function CategorizationPage() {
   const [isSaving, setIsSaving] = useState(false)
   const [completionAudio, setCompletionAudio] = useState<HTMLAudioElement | null>(null)
   const [popAudio, setPopAudio] = useState<HTMLAudioElement | null>(null)
+  const [particles, setParticles] = useState<Array<{id: number, angle: number, distance: number, x: number, y: number}>>([])
   const [confetti, setConfetti] = useState<Array<{id: number, color: string, xOffset: number, angle: number, peakHeight: number, peakTime: number, finalRotateZ: number, finalRotateY: number}>>([])
   const [confettiOrigin, setConfettiOrigin] = useState<{x: number, y: number} | null>(null)
 
   const ACTIVITY_ID = "climate-risk-categorization"
 
-  // Game data
   const riskItems: DraggableItem[] = [
     { id: 'r1', text: 'Carbon pricing', category: 'transition', type: 'example' },
     { id: 'r2', text: 'Slow adoption of green technology', category: 'transition', type: 'example' },
@@ -54,21 +54,12 @@ export default function CategorizationPage() {
 
   const allItems = [...riskItems, ...responseItems]
 
-  // Category colors (matching brand colors)
-  const categoryColors = {
-    transition: '#0B1F32',
-    legal: '#FF5B35',
-    physical: '#6C757D',
-    systemic: '#0B1F32'
-  }
-
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login")
     }
   }, [status, router])
 
-  // Load saved data
   useEffect(() => {
     const loadData = async () => {
       if (status === "authenticated") {
@@ -76,11 +67,9 @@ export default function CategorizationPage() {
           const response = await fetch(`/api/activities?activityId=${ACTIVITY_ID}`)
           if (response.ok) {
             const { isCompleted: savedCompleted, data: savedData } = await response.json()
-            
             if (savedData?.slotAssignments) {
               setSlotAssignments(savedData.slotAssignments)
             }
-            
             setIsCompleted(savedCompleted)
           }
         } catch (error) {
@@ -90,11 +79,9 @@ export default function CategorizationPage() {
         }
       }
     }
-
     loadData()
   }, [status])
 
-  // Preload audio
   useEffect(() => {
     const completeSound = new Audio('/nicey.mp3')
     completeSound.preload = 'auto'
@@ -109,10 +96,8 @@ export default function CategorizationPage() {
     setPopAudio(pop)
   }, [])
 
-  // Auto-save
   const saveData = useCallback(async (completed: boolean = isCompleted) => {
     if (isSaving) return
-    
     setIsSaving(true)
     try {
       await fetch('/api/activities', {
@@ -133,68 +118,73 @@ export default function CategorizationPage() {
 
   useEffect(() => {
     if (!isLoading) {
-      const timer = setTimeout(() => {
-        saveData()
-      }, 1000)
+      const timer = setTimeout(() => saveData(), 1000)
       return () => clearTimeout(timer)
     }
   }, [slotAssignments, isLoading, saveData])
 
-  const handleDragStart = (itemId: string) => {
+  const handleDragStart = (e: React.DragEvent, itemId: string) => {
     setDraggedItemId(itemId)
+    e.dataTransfer.effectAllowed = 'move'
   }
 
-  const handleDrop = (slotId: string, expectedCategory: string, expectedType: string) => {
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+  }
+
+  const handleDrop = (e: React.DragEvent, slotId: string, expectedCategory: string, expectedType: string) => {
+    e.preventDefault()
     if (!draggedItemId) return
 
     const item = allItems.find(i => i.id === draggedItemId)
     if (!item) return
 
-    // Check if correct
     if (item.category === expectedCategory && item.type === expectedType) {
-      // Correct placement
       if (popAudio) {
         popAudio.currentTime = 0
         popAudio.play().catch(err => console.log('Pop audio failed:', err))
       }
 
-      // Update assignments
-      setSlotAssignments(prev => ({
-        ...prev,
-        [slotId]: draggedItemId
+      // Particle burst effect
+      const rect = e.currentTarget.getBoundingClientRect()
+      const centerX = rect.left + rect.width / 2
+      const centerY = rect.top + rect.height / 2
+      
+      const newParticles = Array.from({ length: 20 }, (_, i) => ({
+        id: Date.now() + i,
+        angle: Math.random() * Math.PI * 2,
+        distance: 20 + Math.random() * 30,
+        x: centerX,
+        y: centerY,
       }))
+      setParticles(newParticles)
+      
+      setTimeout(() => setParticles([]), 600)
 
-      // Check if all slots filled correctly
+      setSlotAssignments(prev => ({ ...prev, [slotId]: draggedItemId }))
       checkCompletion({...slotAssignments, [slotId]: draggedItemId})
     }
-
     setDraggedItemId(null)
   }
 
   const checkCompletion = (assignments: SlotAssignment) => {
-    const totalSlots = 12 // 4 categories × 3 slots each
+    const totalSlots = 12
     const filledSlots = Object.values(assignments).filter(v => v !== null).length
-    
     if (filledSlots === totalSlots && !isCompleted) {
-      // All correct!
-      setTimeout(() => {
-        showCompletionCelebration()
-      }, 300)
+      setTimeout(() => showCompletionCelebration(), 300)
     }
   }
 
   const showCompletionCelebration = () => {
     setIsCompleted(true)
-    
     if (completionAudio) {
       completionAudio.currentTime = 0
       completionAudio.play().catch(err => console.log('Completion audio failed:', err))
     }
 
-    // Create confetti from center of screen
     const centerX = window.innerWidth / 2
     const centerY = window.innerHeight / 2
-    
     setConfettiOrigin({ x: centerX, y: centerY })
     
     const colors = ['#FF5B35', '#0B1F32', '#9CA3AF']
@@ -218,14 +208,11 @@ export default function CategorizationPage() {
     })
     setConfetti(newConfetti)
 
-    // Award points
     awardPoints()
-    
     setTimeout(() => {
       setConfetti([])
       setConfettiOrigin(null)
     }, 3500)
-
     saveData(true)
   }
 
@@ -240,6 +227,50 @@ export default function CategorizationPage() {
     } catch (error) {
       console.error('Error awarding points:', error)
     }
+  }
+
+  const handleMarkComplete = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const newCompletedState = !isCompleted
+    setIsCompleted(newCompletedState)
+    
+    if (newCompletedState && completionAudio) {
+      completionAudio.currentTime = 0
+      completionAudio.play().catch(err => console.log('Completion audio failed:', err))
+      
+      const button = e.currentTarget
+      const rect = button.getBoundingClientRect()
+      setConfettiOrigin({ x: rect.left + rect.width / 2, y: rect.top })
+      
+      const colors = ['#FF5B35', '#0B1F32', '#9CA3AF']
+      const newConfetti = Array.from({ length: 50 }, (_, i) => {
+        const peakHeight = -(40 + Math.random() * 80)
+        const peakTime = 0.4 + (Math.abs(peakHeight) / 120) * 0.6
+        const angle = -Math.PI / 2 + (Math.random() - 0.5) * Math.PI * 1.2
+        
+        return {
+          id: Date.now() + i,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          xOffset: (Math.random() - 0.5) * rect.width * 1.5,
+          angle,
+          peakHeight,
+          peakTime,
+          finalRotateZ: 360 + Math.random() * 720,
+          finalRotateY: 360 + Math.random() * 1080,
+        }
+      })
+      setConfetti(newConfetti)
+      
+      if (!isCompleted) {
+        setTimeout(() => awardPoints(), 1000)
+      }
+      
+      setTimeout(() => {
+        setConfetti([])
+        setConfettiOrigin(null)
+      }, 3000)
+    }
+    
+    await saveData(newCompletedState)
   }
 
   const isItemPlaced = (itemId: string) => {
@@ -265,11 +296,16 @@ export default function CategorizationPage() {
     )
   }
 
-  if (!session) {
-    return null
-  }
+  if (!session) return null
 
   const placedCount = Object.values(slotAssignments).filter(v => v !== null).length
+
+  const categoryColors = {
+    transition: '#0B1F32',
+    legal: '#FF5B35',
+    physical: '#6C757D',
+    systemic: '#0B1F32'
+  }
 
   return (
     <div className="flex min-h-[calc(100vh-92px)]">
@@ -277,6 +313,17 @@ export default function CategorizationPage() {
       
       <div className="flex-1 bg-white relative">
         <style jsx>{`
+          @keyframes particleBurst {
+            0% {
+              opacity: 1;
+              transform: translate(0, 0) scale(1);
+            }
+            100% {
+              opacity: 0;
+              transform: translate(var(--tx), var(--ty)) scale(0);
+            }
+          }
+          
           @keyframes confettiBurst {
             0% {
               opacity: 1;
@@ -291,10 +338,39 @@ export default function CategorizationPage() {
             }
           }
           
+          .particle {
+            animation: particleBurst 0.6s ease-out forwards;
+          }
+          
           .confetti-piece {
             animation: confettiBurst 3.5s ease-in forwards;
           }
         `}</style>
+
+        {/* Particles */}
+        {particles.map((particle) => {
+          const tx = Math.cos(particle.angle) * particle.distance
+          const ty = Math.sin(particle.angle) * particle.distance
+          return (
+            <div
+              key={particle.id}
+              className="particle"
+              style={{
+                position: 'fixed',
+                width: '3px',
+                height: '3px',
+                borderRadius: '50%',
+                backgroundColor: '#FF5B35',
+                left: `${particle.x}px`,
+                top: `${particle.y}px`,
+                pointerEvents: 'none',
+                zIndex: 9999,
+                '--tx': `${tx}px`,
+                '--ty': `${ty}px`,
+              } as React.CSSProperties}
+            />
+          )
+        })}
 
         {/* Confetti */}
         {confetti.length > 0 && confettiOrigin && confetti.map((piece) => {
@@ -346,7 +422,6 @@ export default function CategorizationPage() {
             Drag examples and responses to their correct risk categories
           </h2>
 
-          {/* Progress indicator */}
           <div className="mb-4 text-center">
             <span className="text-sm" style={{ color: '#6C757D' }}>
               Progress: {placedCount} / 12 items placed
@@ -356,269 +431,105 @@ export default function CategorizationPage() {
           {/* Main Game Area */}
           <div className="flex gap-4 mb-6">
             {/* Categories Panel */}
-            <div className="flex-1 grid grid-cols-4 gap-4">
-              {/* Transition Risk */}
-              <div className="rounded-lg p-3" style={{ backgroundColor: '#f5f5f5', border: '2px solid #0B1F32' }}>
-                <h3 className="text-center font-semibold mb-3 text-sm" style={{ color: '#0B1F32' }}>
-                  Transition Risk
-                </h3>
-                <div className="space-y-2">
-                  <div>
-                    <div className="text-xs font-semibold mb-1" style={{ color: '#0B1F32' }}>Examples:</div>
-                    <div
-                      className="h-16 rounded border-2 border-dashed p-2 flex items-center justify-center text-xs transition-all"
-                      style={{ borderColor: '#0B1F32' }}
-                      onDragOver={(e) => e.preventDefault()}
-                      onDrop={() => handleDrop('transition-ex-1', 'transition', 'example')}
-                    >
-                      {getItemInSlot('transition-ex-1') ? (
-                        <div className="text-center text-white px-2 py-1 rounded" style={{ backgroundColor: '#0B1F32', fontSize: '10px' }}>
-                          {getItemInSlot('transition-ex-1')!.text}
-                        </div>
-                      ) : (
-                        <span style={{ color: '#9CA3AF' }}>Drop here</span>
-                      )}
+            <div className="flex-1 grid grid-cols-4 gap-3">
+              {[
+                { key: 'transition', label: 'Transition Risk', color: categoryColors.transition },
+                { key: 'legal', label: 'Legal & Reputational Risk', color: categoryColors.legal },
+                { key: 'physical', label: 'Physical Risk', color: categoryColors.physical },
+                { key: 'systemic', label: 'Systemic Risk', color: categoryColors.systemic }
+              ].map(({ key, label, color }) => (
+                <div key={key} className="rounded-lg p-3" style={{ backgroundColor: '#f5f5f5', border: `2px solid ${color}` }}>
+                  <h3 className="text-center font-semibold mb-3 text-sm" style={{ color }}>
+                    {label}
+                  </h3>
+                  <div className="space-y-2">
+                    <div>
+                      <div className="text-xs font-semibold mb-1" style={{ color }}>Examples:</div>
+                      {[1, 2].map(num => {
+                        const slotId = `${key}-ex-${num}`
+                        const item = getItemInSlot(slotId)
+                        return (
+                          <div
+                            key={slotId}
+                            className="h-16 rounded border-2 border-dashed p-2 flex items-center justify-center text-xs transition-all mb-2"
+                            style={{ borderColor: color }}
+                            onDragOver={handleDragOver}
+                            onDrop={(e) => handleDrop(e, slotId, key, 'example')}
+                          >
+                            {item ? (
+                              <div className="text-center text-white px-2 py-1 rounded" style={{ backgroundColor: color, fontSize: '10px' }}>
+                                {item.text}
+                              </div>
+                            ) : (
+                              <span style={{ color: '#9CA3AF' }}>Drop here</span>
+                            )}
+                          </div>
+                        )
+                      })}
                     </div>
-                    <div
-                      className="h-16 rounded border-2 border-dashed p-2 flex items-center justify-center text-xs mt-2 transition-all"
-                      style={{ borderColor: '#0B1F32' }}
-                      onDragOver={(e) => e.preventDefault()}
-                      onDrop={() => handleDrop('transition-ex-2', 'transition', 'example')}
-                    >
-                      {getItemInSlot('transition-ex-2') ? (
-                        <div className="text-center text-white px-2 py-1 rounded" style={{ backgroundColor: '#0B1F32', fontSize: '10px' }}>
-                          {getItemInSlot('transition-ex-2')!.text}
-                        </div>
-                      ) : (
-                        <span style={{ color: '#9CA3AF' }}>Drop here</span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="mt-3">
-                    <div className="text-xs font-semibold mb-1" style={{ color: '#0B1F32' }}>Response:</div>
-                    <div
-                      className="h-16 rounded border-2 border-dashed p-2 flex items-center justify-center text-xs transition-all"
-                      style={{ borderColor: '#0B1F32' }}
-                      onDragOver={(e) => e.preventDefault()}
-                      onDrop={() => handleDrop('transition-res', 'transition', 'response')}
-                    >
-                      {getItemInSlot('transition-res') ? (
-                        <div className="text-center text-white px-2 py-1 rounded" style={{ backgroundColor: '#0B1F32', fontSize: '10px' }}>
-                          {getItemInSlot('transition-res')!.text}
-                        </div>
-                      ) : (
-                        <span style={{ color: '#9CA3AF' }}>Drop here</span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Legal Risk */}
-              <div className="rounded-lg p-3" style={{ backgroundColor: '#f5f5f5', border: '2px solid #FF5B35' }}>
-                <h3 className="text-center font-semibold mb-3 text-sm" style={{ color: '#FF5B35' }}>
-                  Legal & Reputational Risk
-                </h3>
-                <div className="space-y-2">
-                  <div>
-                    <div className="text-xs font-semibold mb-1" style={{ color: '#FF5B35' }}>Examples:</div>
-                    <div
-                      className="h-16 rounded border-2 border-dashed p-2 flex items-center justify-center text-xs transition-all"
-                      style={{ borderColor: '#FF5B35' }}
-                      onDragOver={(e) => e.preventDefault()}
-                      onDrop={() => handleDrop('legal-ex-1', 'legal', 'example')}
-                    >
-                      {getItemInSlot('legal-ex-1') ? (
-                        <div className="text-center text-white px-2 py-1 rounded" style={{ backgroundColor: '#FF5B35', fontSize: '10px' }}>
-                          {getItemInSlot('legal-ex-1')!.text}
-                        </div>
-                      ) : (
-                        <span style={{ color: '#9CA3AF' }}>Drop here</span>
-                      )}
-                    </div>
-                    <div
-                      className="h-16 rounded border-2 border-dashed p-2 flex items-center justify-center text-xs mt-2 transition-all"
-                      style={{ borderColor: '#FF5B35' }}
-                      onDragOver={(e) => e.preventDefault()}
-                      onDrop={() => handleDrop('legal-ex-2', 'legal', 'example')}
-                    >
-                      {getItemInSlot('legal-ex-2') ? (
-                        <div className="text-center text-white px-2 py-1 rounded" style={{ backgroundColor: '#FF5B35', fontSize: '10px' }}>
-                          {getItemInSlot('legal-ex-2')!.text}
-                        </div>
-                      ) : (
-                        <span style={{ color: '#9CA3AF' }}>Drop here</span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="mt-3">
-                    <div className="text-xs font-semibold mb-1" style={{ color: '#FF5B35' }}>Response:</div>
-                    <div
-                      className="h-16 rounded border-2 border-dashed p-2 flex items-center justify-center text-xs transition-all"
-                      style={{ borderColor: '#FF5B35' }}
-                      onDragOver={(e) => e.preventDefault()}
-                      onDrop={() => handleDrop('legal-res', 'legal', 'response')}
-                    >
-                      {getItemInSlot('legal-res') ? (
-                        <div className="text-center text-white px-2 py-1 rounded" style={{ backgroundColor: '#FF5B35', fontSize: '10px' }}>
-                          {getItemInSlot('legal-res')!.text}
-                        </div>
-                      ) : (
-                        <span style={{ color: '#9CA3AF' }}>Drop here</span>
-                      )}
+                    <div>
+                      <div className="text-xs font-semibold mb-1" style={{ color }}>Response:</div>
+                      {(() => {
+                        const slotId = `${key}-res`
+                        const item = getItemInSlot(slotId)
+                        return (
+                          <div
+                            className="h-16 rounded border-2 border-dashed p-2 flex items-center justify-center text-xs transition-all"
+                            style={{ borderColor: color }}
+                            onDragOver={handleDragOver}
+                            onDrop={(e) => handleDrop(e, slotId, key, 'response')}
+                          >
+                            {item ? (
+                              <div className="text-center text-white px-2 py-1 rounded" style={{ backgroundColor: color, fontSize: '10px' }}>
+                                {item.text}
+                              </div>
+                            ) : (
+                              <span style={{ color: '#9CA3AF' }}>Drop here</span>
+                            )}
+                          </div>
+                        )
+                      })()}
                     </div>
                   </div>
                 </div>
-              </div>
-
-              {/* Physical Risk */}
-              <div className="rounded-lg p-3" style={{ backgroundColor: '#f5f5f5', border: '2px solid #6C757D' }}>
-                <h3 className="text-center font-semibold mb-3 text-sm" style={{ color: '#6C757D' }}>
-                  Physical Risk
-                </h3>
-                <div className="space-y-2">
-                  <div>
-                    <div className="text-xs font-semibold mb-1" style={{ color: '#6C757D' }}>Examples:</div>
-                    <div
-                      className="h-16 rounded border-2 border-dashed p-2 flex items-center justify-center text-xs transition-all"
-                      style={{ borderColor: '#6C757D' }}
-                      onDragOver={(e) => e.preventDefault()}
-                      onDrop={() => handleDrop('physical-ex-1', 'physical', 'example')}
-                    >
-                      {getItemInSlot('physical-ex-1') ? (
-                        <div className="text-center text-white px-2 py-1 rounded" style={{ backgroundColor: '#6C757D', fontSize: '10px' }}>
-                          {getItemInSlot('physical-ex-1')!.text}
-                        </div>
-                      ) : (
-                        <span style={{ color: '#9CA3AF' }}>Drop here</span>
-                      )}
-                    </div>
-                    <div
-                      className="h-16 rounded border-2 border-dashed p-2 flex items-center justify-center text-xs mt-2 transition-all"
-                      style={{ borderColor: '#6C757D' }}
-                      onDragOver={(e) => e.preventDefault()}
-                      onDrop={() => handleDrop('physical-ex-2', 'physical', 'example')}
-                    >
-                      {getItemInSlot('physical-ex-2') ? (
-                        <div className="text-center text-white px-2 py-1 rounded" style={{ backgroundColor: '#6C757D', fontSize: '10px' }}>
-                          {getItemInSlot('physical-ex-2')!.text}
-                        </div>
-                      ) : (
-                        <span style={{ color: '#9CA3AF' }}>Drop here</span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="mt-3">
-                    <div className="text-xs font-semibold mb-1" style={{ color: '#6C757D' }}>Response:</div>
-                    <div
-                      className="h-16 rounded border-2 border-dashed p-2 flex items-center justify-center text-xs transition-all"
-                      style={{ borderColor: '#6C757D' }}
-                      onDragOver={(e) => e.preventDefault()}
-                      onDrop={() => handleDrop('physical-res', 'physical', 'response')}
-                    >
-                      {getItemInSlot('physical-res') ? (
-                        <div className="text-center text-white px-2 py-1 rounded" style={{ backgroundColor: '#6C757D', fontSize: '10px' }}>
-                          {getItemInSlot('physical-res')!.text}
-                        </div>
-                      ) : (
-                        <span style={{ color: '#9CA3AF' }}>Drop here</span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Systemic Risk */}
-              <div className="rounded-lg p-3" style={{ backgroundColor: '#f5f5f5', border: '2px solid #0B1F32' }}>
-                <h3 className="text-center font-semibold mb-3 text-sm" style={{ color: '#0B1F32' }}>
-                  Systemic Risk
-                </h3>
-                <div className="space-y-2">
-                  <div>
-                    <div className="text-xs font-semibold mb-1" style={{ color: '#0B1F32' }}>Examples:</div>
-                    <div
-                      className="h-16 rounded border-2 border-dashed p-2 flex items-center justify-center text-xs transition-all"
-                      style={{ borderColor: '#0B1F32' }}
-                      onDragOver={(e) => e.preventDefault()}
-                      onDrop={() => handleDrop('systemic-ex-1', 'systemic', 'example')}
-                    >
-                      {getItemInSlot('systemic-ex-1') ? (
-                        <div className="text-center text-white px-2 py-1 rounded" style={{ backgroundColor: '#0B1F32', fontSize: '10px' }}>
-                          {getItemInSlot('systemic-ex-1')!.text}
-                        </div>
-                      ) : (
-                        <span style={{ color: '#9CA3AF' }}>Drop here</span>
-                      )}
-                    </div>
-                    <div
-                      className="h-16 rounded border-2 border-dashed p-2 flex items-center justify-center text-xs mt-2 transition-all"
-                      style={{ borderColor: '#0B1F32' }}
-                      onDragOver={(e) => e.preventDefault()}
-                      onDrop={() => handleDrop('systemic-ex-2', 'systemic', 'example')}
-                    >
-                      {getItemInSlot('systemic-ex-2') ? (
-                        <div className="text-center text-white px-2 py-1 rounded" style={{ backgroundColor: '#0B1F32', fontSize: '10px' }}>
-                          {getItemInSlot('systemic-ex-2')!.text}
-                        </div>
-                      ) : (
-                        <span style={{ color: '#9CA3AF' }}>Drop here</span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="mt-3">
-                    <div className="text-xs font-semibold mb-1" style={{ color: '#0B1F32' }}>Response:</div>
-                    <div
-                      className="h-16 rounded border-2 border-dashed p-2 flex items-center justify-center text-xs transition-all"
-                      style={{ borderColor: '#0B1F32' }}
-                      onDragOver={(e) => e.preventDefault()}
-                      onDrop={() => handleDrop('systemic-res', 'systemic', 'response')}
-                    >
-                      {getItemInSlot('systemic-res') ? (
-                        <div className="text-center text-white px-2 py-1 rounded" style={{ backgroundColor: '#0B1F32', fontSize: '10px' }}>
-                          {getItemInSlot('systemic-res')!.text}
-                        </div>
-                      ) : (
-                        <span style={{ color: '#9CA3AF' }}>Drop here</span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
 
-            {/* Draggable Items Panel */}
-            <div className="w-64 rounded-lg p-4 space-y-4" style={{ backgroundColor: '#f5f5f5' }}>
-              <div>
-                <h4 className="text-xs font-semibold mb-2" style={{ color: '#6C757D' }}>Risk Examples</h4>
-                <div className="space-y-2">
-                  {riskItems.filter(item => !isItemPlaced(item.id)).map(item => (
-                    <div
-                      key={item.id}
-                      draggable
-                      onDragStart={() => handleDragStart(item.id)}
-                      className="bg-white border-2 rounded p-2 cursor-move text-xs hover:shadow-md transition-all"
-                      style={{ borderColor: '#0B1F32', color: '#0B1F32' }}
-                    >
-                      {item.text}
-                    </div>
-                  ))}
+            {/* Draggable Items Panel - Scrollable */}
+            <div className="w-64 rounded-lg p-4" style={{ backgroundColor: '#f5f5f5', maxHeight: '600px', overflowY: 'auto' }}>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-xs font-semibold mb-2" style={{ color: '#6C757D' }}>Risk Examples</h4>
+                  <div className="space-y-2">
+                    {riskItems.filter(item => !isItemPlaced(item.id)).map(item => (
+                      <div
+                        key={item.id}
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, item.id)}
+                        className="bg-white border-2 rounded p-2 cursor-move text-xs hover:shadow-md transition-all"
+                        style={{ borderColor: '#0B1F32', color: '#0B1F32' }}
+                      >
+                        {item.text}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <h4 className="text-xs font-semibold mb-2" style={{ color: '#6C757D' }}>Response Approaches</h4>
-                <div className="space-y-2">
-                  {responseItems.filter(item => !isItemPlaced(item.id)).map(item => (
-                    <div
-                      key={item.id}
-                      draggable
-                      onDragStart={() => handleDragStart(item.id)}
-                      className="bg-white border-2 rounded p-2 cursor-move text-xs hover:shadow-md transition-all"
-                      style={{ borderColor: '#0B1F32', color: '#0B1F32' }}
-                    >
-                      {item.text}
-                    </div>
-                  ))}
+                <div>
+                  <h4 className="text-xs font-semibold mb-2" style={{ color: '#6C757D' }}>Response Approaches</h4>
+                  <div className="space-y-2">
+                    {responseItems.filter(item => !isItemPlaced(item.id)).map(item => (
+                      <div
+                        key={item.id}
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, item.id)}
+                        className="bg-white border-2 rounded p-2 cursor-move text-xs hover:shadow-md transition-all"
+                        style={{ borderColor: '#0B1F32', color: '#0B1F32' }}
+                      >
+                        {item.text}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -641,6 +552,14 @@ export default function CategorizationPage() {
               style={{ backgroundColor: '#6C757D', color: '#ffffff' }}
             >
               Reset Exercise
+            </button>
+            
+            <button
+              onClick={handleMarkComplete}
+              className="px-6 py-2 rounded text-sm font-semibold transition-opacity hover:opacity-90"
+              style={{ backgroundColor: '#0B1F32', color: '#ffffff' }}
+            >
+              {isCompleted ? '✓ Activity Completed' : 'Mark this activity as complete'}
             </button>
           </div>
         </div>
