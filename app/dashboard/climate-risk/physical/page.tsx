@@ -409,134 +409,154 @@ export default function PhysicalRiskPage() {
                   <span style={{ color: '#FF5B35' }}>Future Climate ({loadedTotal} rolls)</span>
                 </div>
               </div>
-              <div className="relative h-48 flex items-end justify-around gap-1 px-4">
-                {/* SVG overlay for smooth curves */}
-                <svg className="absolute inset-0 pointer-events-none" style={{ width: '100%', height: '100%' }}>
-                  {/* Regular dice curve (blue) */}
+              <div className="relative h-48 px-8 py-4">
+                <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none" style={{ overflow: 'visible' }}>
+                  {/* Y-axis grid lines */}
+                  {[0, 25, 50, 75, 100].map((percent) => (
+                    <g key={percent}>
+                      <line
+                        x1="0"
+                        y1={100 - percent}
+                        x2="100"
+                        y2={100 - percent}
+                        stroke="#e5e7eb"
+                        strokeWidth="0.2"
+                        vectorEffect="non-scaling-stroke"
+                      />
+                      <text
+                        x="-2"
+                        y={100 - percent}
+                        fontSize="3"
+                        fill="#6C757D"
+                        textAnchor="end"
+                        dominantBaseline="middle"
+                      >
+                        {percent}%
+                      </text>
+                    </g>
+                  ))}
+                  
+                  {/* Regular dice line (blue) */}
                   {regularTotal > 0 && (() => {
                     const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-                    const numValues = values.length
-                    const chartHeight = 170
-                    const padding = 20
-                    const leftPadding = 4 // px-4 on container
-                    const rightPadding = 4
-                    
-                    const points = values.map((value, index) => {
+                    const linePoints = values.map((value, index) => {
                       const count = regularRolls[value] || 0
-                      const height = globalMax > 0 ? (count / globalMax) * chartHeight : 0
-                      // Calculate x position: left padding + (index / numValues) * content width + offset for left bar center
-                      const xPercent = (leftPadding/100 + (index / numValues) * (1 - (leftPadding + rightPadding)/100) + (0.25/numValues) * (1 - (leftPadding + rightPadding)/100)) * 100
-                      const yPercent = ((192 - padding - height) / 192) * 100
-                      return `${xPercent},${yPercent}`
-                    }).join(' ')
+                      const percentage = regularTotal > 0 ? (count / regularTotal) * 100 : 0
+                      const x = (index / (values.length - 1)) * 100
+                      const y = 100 - percentage
+                      return { x, y, value, percentage: Math.round(percentage) }
+                    })
+                    
+                    const pathData = linePoints.map((point, i) => 
+                      `${i === 0 ? 'M' : 'L'} ${point.x} ${point.y}`
+                    ).join(' ')
                     
                     return (
-                      <polyline
-                        points={points}
-                        fill="none"
-                        stroke="#0B1F32"
-                        strokeWidth="2"
-                        vectorEffect="non-scaling-stroke"
-                      />
+                      <g>
+                        <path
+                          d={pathData}
+                          fill="none"
+                          stroke="#0B1F32"
+                          strokeWidth="0.8"
+                          vectorEffect="non-scaling-stroke"
+                        />
+                        {linePoints.map((point, i) => (
+                          <g key={i}>
+                            <circle
+                              cx={point.x}
+                              cy={point.y}
+                              r="1.2"
+                              fill="#0B1F32"
+                              vectorEffect="non-scaling-stroke"
+                            />
+                            {point.percentage > 2 && (
+                              <text
+                                x={point.x}
+                                y={point.y - 3}
+                                fontSize="2.5"
+                                fill="#0B1F32"
+                                textAnchor="middle"
+                                fontWeight="bold"
+                              >
+                                {point.percentage}%
+                              </text>
+                            )}
+                          </g>
+                        ))}
+                      </g>
                     )
                   })()}
                   
-                  {/* Loaded dice curve (orange) */}
+                  {/* Loaded dice line (orange) */}
                   {loadedTotal > 0 && (() => {
                     const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-                    const numValues = values.length
-                    const chartHeight = 170
-                    const padding = 20
-                    const leftPadding = 4
-                    const rightPadding = 4
-                    
-                    const points = values.map((value, index) => {
+                    const linePoints = values.map((value, index) => {
                       const count = loadedRolls[value] || 0
-                      const height = globalMax > 0 ? (count / globalMax) * chartHeight : 0
-                      // Calculate x position: left padding + (index / numValues) * content width + offset for right bar center
-                      const xPercent = (leftPadding/100 + (index / numValues) * (1 - (leftPadding + rightPadding)/100) + (0.75/numValues) * (1 - (leftPadding + rightPadding)/100)) * 100
-                      const yPercent = ((192 - padding - height) / 192) * 100
-                      return `${xPercent},${yPercent}`
-                    }).join(' ')
+                      const percentage = loadedTotal > 0 ? (count / loadedTotal) * 100 : 0
+                      const x = (index / (values.length - 1)) * 100
+                      const y = 100 - percentage
+                      return { x, y, value, percentage: Math.round(percentage) }
+                    })
+                    
+                    const pathData = linePoints.map((point, i) => 
+                      `${i === 0 ? 'M' : 'L'} ${point.x} ${point.y}`
+                    ).join(' ')
                     
                     return (
-                      <polyline
-                        points={points}
-                        fill="none"
-                        stroke="#FF5B35"
-                        strokeWidth="2"
-                        vectorEffect="non-scaling-stroke"
-                      />
+                      <g>
+                        <path
+                          d={pathData}
+                          fill="none"
+                          stroke="#FF5B35"
+                          strokeWidth="0.8"
+                          vectorEffect="non-scaling-stroke"
+                        />
+                        {linePoints.map((point, i) => (
+                          <g key={i}>
+                            <circle
+                              cx={point.x}
+                              cy={point.y}
+                              r="1.2"
+                              fill="#FF5B35"
+                              vectorEffect="non-scaling-stroke"
+                            />
+                            {point.percentage > 2 && (
+                              <text
+                                x={point.x}
+                                y={point.y + 4}
+                                fontSize="2.5"
+                                fill="#FF5B35"
+                                textAnchor="middle"
+                                fontWeight="bold"
+                              >
+                                {point.percentage}%
+                              </text>
+                            )}
+                          </g>
+                        ))}
+                      </g>
                     )
                   })()}
-                </svg>
-                
-                {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((value) => {
-                  const regularCount = regularRolls[value] || 0
-                  const loadedCount = loadedRolls[value] || 0
-                  const isExtreme = value >= extremeThreshold
                   
-                  // Calculate bar heights (as pixels for better control)
-                  const maxHeight = 170 // pixels (h-48 = 192px, leave room for labels)
-                  const regularHeight = globalMax > 0 ? (regularCount / globalMax) * maxHeight : 0
-                  const loadedHeight = globalMax > 0 ? (loadedCount / globalMax) * maxHeight : 0
-                  
-                  return (
-                    <div key={value} className="flex-1 flex flex-col items-center justify-end" style={{ minWidth: '30px' }}>
-                      {/* Transparent bars with top border line and percentages */}
-                      <div className="w-full flex gap-0.5 items-end justify-center" style={{ height: '170px' }}>
-                        {/* Regular dice bar (left, blue) */}
-                        <div 
-                          className="transition-all duration-300 flex-1 relative"
-                          style={{ 
-                            height: `${regularHeight}px`,
-                            minHeight: regularCount > 0 ? '3px' : '0px',
-                            backgroundColor: isExtreme ? 'rgba(11, 31, 50, 0.08)' : 'rgba(11, 31, 50, 0.15)',
-                            borderRadius: '2px 2px 0 0',
-                          }}
-                        >
-                          {regularCount > 0 && (
-                            <>
-                              <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: '#0B1F32' }}></div>
-                              {regularTotal > 0 && regularHeight > 15 && (
-                                <div className="absolute bottom-1 left-0 right-0 text-center text-[8px] font-bold" style={{ color: '#0B1F32' }}>
-                                  {Math.round((regularCount / regularTotal) * 100)}%
-                                </div>
-                              )}
-                            </>
-                          )}
-                        </div>
-                        
-                        {/* Loaded dice bar (right, orange) */}
-                        <div 
-                          className="transition-all duration-300 flex-1 relative"
-                          style={{ 
-                            height: `${loadedHeight}px`,
-                            minHeight: loadedCount > 0 ? '3px' : '0px',
-                            backgroundColor: isExtreme ? 'rgba(255, 91, 53, 0.08)' : 'rgba(255, 91, 53, 0.15)',
-                            borderRadius: '2px 2px 0 0',
-                          }}
-                        >
-                          {loadedCount > 0 && (
-                            <>
-                              <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: '#FF5B35' }}></div>
-                              {loadedTotal > 0 && loadedHeight > 15 && (
-                                <div className="absolute bottom-1 left-0 right-0 text-center text-[8px] font-bold" style={{ color: '#FF5B35' }}>
-                                  {Math.round((loadedCount / loadedTotal) * 100)}%
-                                </div>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      </div>
-                      
-                      {/* X-axis label */}
-                      <div className="text-[10px] mt-1 font-semibold" style={{ color: '#0B1F32' }}>
+                  {/* X-axis labels */}
+                  {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((value, index) => {
+                    const x = (index / 12) * 100
+                    const isExtreme = value >= extremeThreshold
+                    return (
+                      <text
+                        key={value}
+                        x={x}
+                        y="105"
+                        fontSize="3"
+                        fill={isExtreme ? '#FF5B35' : '#0B1F32'}
+                        textAnchor="middle"
+                        fontWeight={isExtreme ? 'bold' : 'normal'}
+                      >
                         {value}
-                      </div>
-                    </div>
-                  )
-                })}
+                      </text>
+                    )
+                  })}
+                </svg>
               </div>
               <div className="mt-2 pt-1 border-t" style={{ borderColor: '#f5f5f5' }}>
                 <div className="text-[10px] text-center p-1 rounded" style={{ backgroundColor: 'rgba(255, 91, 53, 0.1)', color: '#0B1F32' }}>
