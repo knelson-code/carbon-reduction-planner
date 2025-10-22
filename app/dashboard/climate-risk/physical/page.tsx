@@ -82,7 +82,7 @@ export default function PhysicalRiskPage() {
       newRolls[roll - 2]++
     }
     setClimateRolls(newRolls)
-    setClimateTotal(climateTotal + times)
+    setClimateTotal(times) // Set to match regular total, not add
   }
 
   const handleReset = () => {
@@ -201,7 +201,7 @@ export default function PhysicalRiskPage() {
               }`}
               disabled={!climateEnabled}
             >
-              Now roll the climate dice {regularTotal > 0 ? `${regularTotal}×` : ''}
+              Now roll the climate dice the same number of times
             </button>
             <button
               onClick={handleReset}
@@ -244,6 +244,38 @@ export default function PhysicalRiskPage() {
               <span>0%</span>
             </div>
 
+            {/* Line overlay - draw connecting lines */}
+            <svg className="absolute inset-0 pointer-events-none" style={{ width: '100%', height: '100%' }}>
+              {/* Regular dice line (navy) */}
+              {regularTotal > 0 && (
+                <polyline
+                  points={[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((roll, index) => {
+                    const x = ((index + 0.5) / 11) * 100
+                    const regularHeight = maxPercentage > 0 ? (regularPercentages[index] / maxPercentage) * 100 : 0
+                    const y = 100 - regularHeight
+                    return `${x}%,${y}%`
+                  }).join(' ')}
+                  fill="none"
+                  stroke="#0B1F32"
+                  strokeWidth="2"
+                />
+              )}
+              {/* Climate dice line (orange) */}
+              {climateTotal > 0 && (
+                <polyline
+                  points={[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((roll, index) => {
+                    const x = ((index + 0.5) / 11) * 100
+                    const climateHeight = maxPercentage > 0 ? (climatePercentages[index] / maxPercentage) * 100 : 0
+                    const y = 100 - climateHeight
+                    return `${x}%,${y}%`
+                  }).join(' ')}
+                  fill="none"
+                  stroke="#FF5B35"
+                  strokeWidth="2"
+                />
+              )}
+            </svg>
+
             {/* Bars Container */}
             <div className="h-full flex items-end justify-around gap-2 px-2">
               {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((roll, index) => {
@@ -258,19 +290,24 @@ export default function PhysicalRiskPage() {
                     <div className="w-full flex-1 flex items-end justify-center gap-0.5">
                       {/* Regular dice bar */}
                       <div 
-                        className="bg-[#0B1F32] w-4 transition-all duration-300"
+                        className="bg-[#0B1F32] w-4 transition-all duration-300 opacity-30"
                         style={{ height: regularHeight > 0 ? `${regularHeight}%` : '0%' }}
                         title={`Regular: ${regularPct.toFixed(1)}%`}
                       />
                       {/* Climate dice bar */}
                       <div 
-                        className="bg-[#FF5B35] w-4 transition-all duration-300"
+                        className="bg-[#FF5B35] w-4 transition-all duration-300 opacity-30"
                         style={{ height: climateHeight > 0 ? `${climateHeight}%` : '0%' }}
                         title={`Climate: ${climatePct.toFixed(1)}%`}
                       />
                     </div>
                     {/* X-axis label */}
                     <div className="text-xs font-semibold text-[#0B1F32] mt-2">{roll}</div>
+                    {/* Percentages below bars */}
+                    <div className="text-[10px] text-gray-600 mt-1 flex gap-1">
+                      {regularPct > 0 && <span className="text-[#0B1F32]">{regularPct.toFixed(1)}%</span>}
+                      {climatePct > 0 && <span className="text-[#FF5B35]">{climatePct.toFixed(1)}%</span>}
+                    </div>
                   </div>
                 )
               })}
