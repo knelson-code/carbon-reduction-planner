@@ -117,13 +117,11 @@ export default function PhysicalRiskPage() {
     return die1 + die2
   }
 
-  // Loaded dice - biased toward higher numbers
+  // Loaded dice - faces are 2,3,4,5,6,7 instead of 1,2,3,4,5,6
   const rollLoadedDice = () => {
-    // Weighted dice: add +2 to one die 60% of the time
-    const die1 = Math.floor(Math.random() * 6) + 1
-    const die2 = Math.floor(Math.random() * 6) + 1
-    const bonus = Math.random() < 0.6 ? 2 : 0
-    return Math.min(die1 + die2 + bonus, 12) // Cap at 12
+    const die1 = Math.floor(Math.random() * 6) + 2 // 2-7
+    const die2 = Math.floor(Math.random() * 6) + 2 // 2-7
+    return die1 + die2 // Range: 4-14
   }
 
   const handleRollRegular = (times: number) => {
@@ -426,12 +424,10 @@ export default function PhysicalRiskPage() {
                   <span style={{ color: '#FF5B35' }}>Future Climate ({loadedTotal} rolls)</span>
                 </div>
               </div>
-              <div className="relative h-80 flex items-end justify-around gap-2 px-4">
-                {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((value) => {
+              <div className="relative h-80 flex items-end justify-around gap-1 px-4">
+                {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((value) => {
                   const regularCount = regularRolls[value] || 0
                   const loadedCount = loadedRolls[value] || 0
-                  const regularPercent = regularTotal > 0 ? ((regularCount / regularTotal) * 100).toFixed(1) : '0.0'
-                  const loadedPercent = loadedTotal > 0 ? ((loadedCount / loadedTotal) * 100).toFixed(1) : '0.0'
                   const isExtreme = value >= extremeThreshold
                   
                   // Calculate bar heights (as pixels for better control)
@@ -440,43 +436,40 @@ export default function PhysicalRiskPage() {
                   const loadedHeight = globalMax > 0 ? (loadedCount / globalMax) * maxHeight : 0
                   
                   return (
-                    <div key={value} className="flex-1 flex flex-col items-center justify-end relative" style={{ minWidth: '40px' }}>
-                      {/* Regular dice bar (behind) */}
-                      <div className="absolute bottom-0 left-0 w-full flex justify-center">
+                    <div key={value} className="flex-1 flex flex-col items-center justify-end" style={{ minWidth: '30px' }}>
+                      {/* Side-by-side bars */}
+                      <div className="w-full flex gap-0.5 items-end justify-center" style={{ height: '280px' }}>
+                        {/* Regular dice bar (left, blue) */}
                         <div 
-                          className="transition-all duration-300"
+                          className="transition-all duration-300 flex-1"
                           style={{ 
-                            width: '70%',
                             height: `${regularHeight}px`,
                             minHeight: regularCount > 0 ? '15px' : '0px',
-                            backgroundColor: isExtreme ? 'rgba(11, 31, 50, 0.4)' : 'rgba(11, 31, 50, 0.7)',
-                            border: isExtreme ? '2px dashed rgba(255, 91, 53, 0.5)' : 'none',
-                            borderRadius: '4px 4px 0 0',
+                            backgroundColor: isExtreme ? 'rgba(11, 31, 50, 0.4)' : '#0B1F32',
+                            border: isExtreme ? '2px dashed rgba(255, 91, 53, 0.6)' : 'none',
+                            borderRadius: '2px 2px 0 0',
                           }}
                         >
                           {regularCount > 0 && (
-                            <div className="text-[9px] font-bold text-center pt-1" style={{ color: '#ffffff' }}>
+                            <div className="text-[8px] font-bold text-center pt-0.5" style={{ color: '#ffffff' }}>
                               {regularCount}
                             </div>
                           )}
                         </div>
-                      </div>
-                      
-                      {/* Loaded dice bar (in front, slightly offset) */}
-                      <div className="absolute bottom-0 right-0 w-full flex justify-center">
+                        
+                        {/* Loaded dice bar (right, orange) */}
                         <div 
-                          className="transition-all duration-300"
+                          className="transition-all duration-300 flex-1"
                           style={{ 
-                            width: '70%',
                             height: `${loadedHeight}px`,
                             minHeight: loadedCount > 0 ? '15px' : '0px',
-                            backgroundColor: isExtreme ? 'rgba(255, 91, 53, 0.9)' : 'rgba(255, 91, 53, 0.8)',
-                            border: isExtreme ? '2px dashed rgba(139, 0, 0, 0.8)' : 'none',
-                            borderRadius: '4px 4px 0 0',
+                            backgroundColor: isExtreme ? 'rgba(255, 0, 0, 0.7)' : '#FF5B35',
+                            border: isExtreme ? '2px dashed rgba(139, 0, 0, 0.9)' : 'none',
+                            borderRadius: '2px 2px 0 0',
                           }}
                         >
                           {loadedCount > 0 && (
-                            <div className="text-[9px] font-bold text-center pt-1" style={{ color: '#ffffff' }}>
+                            <div className="text-[8px] font-bold text-center pt-0.5" style={{ color: '#ffffff' }}>
                               {loadedCount}
                             </div>
                           )}
@@ -484,7 +477,7 @@ export default function PhysicalRiskPage() {
                       </div>
                       
                       {/* X-axis label */}
-                      <div className="absolute -bottom-6 text-xs font-semibold" style={{ color: '#0B1F32' }}>
+                      <div className="text-[10px] mt-1 font-semibold" style={{ color: '#0B1F32' }}>
                         {value}
                       </div>
                     </div>
