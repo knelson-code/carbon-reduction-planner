@@ -115,8 +115,9 @@ export default function PhysicalRiskPage() {
     }
   }
 
-  // Calculate percentages for display
+  // Calculate percentages for display - only on client
   const getPercentages = (rolls: number[], total: number) => {
+    if (!isMounted) return Array(11).fill(0)
     return rolls.map(count => total > 0 ? (count / total) * 100 : 0)
   }
 
@@ -124,7 +125,7 @@ export default function PhysicalRiskPage() {
   const climatePercentages = getPercentages(climateRolls, climateTotal)
 
   // Find max percentage for scaling
-  const maxPercentage = Math.max(...regularPercentages, ...climatePercentages, 1)
+  const maxPercentage = isMounted ? Math.max(...regularPercentages, ...climatePercentages, 1) : 1
 
   // Enable climate dice after enough regular rolls
   useEffect(() => {
@@ -132,6 +133,14 @@ export default function PhysicalRiskPage() {
       setClimateEnabled(true)
     }
   }, [regularTotal, climateEnabled])
+
+  if (!isMounted) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg text-[#0B1F32]">Loading...</div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-white">
