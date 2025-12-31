@@ -298,27 +298,6 @@ export default function ClimateRiskManagementPage() {
                     </Link>
                   </li>
                 </ul>
-
-                {/* Top Secret Folder Icon - moved to bottom */}
-                <div className="flex justify-center mt-6">
-                  <div className="flex flex-col items-center">
-                    <p className="text-xs mb-1" style={{ color: '#0B1F32' }}>Top Secret</p>
-                    <button
-                      onClick={() => {
-                        window.scrollTo({ top: 0, behavior: 'smooth' })
-                        setShowSpyPopup(true)
-                      }}
-                      className="cursor-pointer hover:opacity-80 transition-opacity"
-                    >
-                      <img 
-                        src="/folder-icon.svg" 
-                        alt="Top Secret Folder" 
-                        width="48" 
-                        height="48"
-                      />
-                    </button>
-                  </div>
-                </div>
               </div>
             )}
           </div>

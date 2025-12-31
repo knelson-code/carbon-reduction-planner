@@ -11,6 +11,7 @@ export default function Header() {
   const router = useRouter()
   const pathname = usePathname()
   const isHomePage = pathname === "/"
+  const isClimateRiskManagement = pathname.startsWith("/climate-risk-management")
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [score, setScore] = useState(0)
   const [displayScore, setDisplayScore] = useState(0)
@@ -133,18 +134,22 @@ export default function Header() {
                   >
                     Climate Risk Management
                   </Link>
-                  <Link 
-                    href="/store" 
-                    className="text-lg font-semibold transition-colors"
-                    style={{ color: '#ffffff' }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
-                    onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
-                  >
-                    Use Points
-                  </Link>
-                  <div className="text-lg font-semibold" style={{ color: '#ffffff', minWidth: '150px' }}>
-                    Your Points: {Math.round(displayScore)}
-                  </div>
+                  {!isClimateRiskManagement && (
+                    <>
+                      <Link 
+                        href="/store" 
+                        className="text-lg font-semibold transition-colors"
+                        style={{ color: '#ffffff' }}
+                        onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
+                        onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
+                      >
+                        Use Points
+                      </Link>
+                      <div className="text-lg font-semibold" style={{ color: '#ffffff', minWidth: '150px' }}>
+                        Your Points: {Math.round(displayScore)}
+                      </div>
+                    </>
+                  )}
                   <div className="flex items-center space-x-4">
                     <span className="text-base font-medium" style={{ color: '#ffffff' }}>
                       {session.user?.email}
@@ -230,14 +235,16 @@ export default function Header() {
                 >
                   Climate Risk Management
                 </Link>
-                <Link 
-                  href="/store"
-                  className="text-3xl font-bold transition-colors"
-                  style={{ color: '#ffffff' }}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Use Points
-                </Link>
+                {!isClimateRiskManagement && (
+                  <Link 
+                    href="/store"
+                    className="text-3xl font-bold transition-colors"
+                    style={{ color: '#ffffff' }}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Use Points
+                  </Link>
+                )}
                 <div className="text-xl font-medium" style={{ color: '#ffffff' }}>
                   {session.user?.email}
                 </div>
