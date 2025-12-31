@@ -33,10 +33,10 @@ const modules: ModuleCard[] = [
     bgColor: "#dbeafe",
   },
   {
-    title: "Prioritization",
-    description: "• Build a clear vision of the specific change you are trying to produce\n• Identify sensitive intervention points in the political and economic system where you can have disproportionate impact\n• Define the actions that are most likely to produce that impact",
+    title: "Decision Making",
+    description: "• Methodology\n• Prioritization\n• Recommendations",
     icon: "💡",
-    href: "/climate-risk-management/prioritization",
+    href: "/climate-risk-management/decision-making",
     color: "#8b5cf6",
     bgColor: "#ede9fe",
   },
