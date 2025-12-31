@@ -132,7 +132,7 @@ export default function Header() {
                     onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                     onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
                   >
-                    Climate Risk Management
+                    {isClimateRiskManagement ? "Dashboard" : "Climate Risk Management"}
                   </Link>
                   {!isClimateRiskManagement && (
                     <>
@@ -233,7 +233,7 @@ export default function Header() {
                   style={{ color: '#ffffff' }}
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Climate Risk Management
+                  {isClimateRiskManagement ? "Dashboard" : "Climate Risk Management"}
                 </Link>
                 {!isClimateRiskManagement && (
                   <Link 
