@@ -4,6 +4,6 @@ timeout /t 3 /nobreak >nul
 if exist ".git\index.lock" del /F /Q ".git\index.lock" 2>nul
 timeout /t 1 /nobreak >nul
 git add -A
-git commit -m "Refactor: Reorganize sections - swap Prioritization and Scenario Analysis, change accordion to Methodology"
+git commit -m "Update: Replace Analyze Risks subpages with 8 new risk categories"
 git push
 pause
