@@ -44,6 +44,10 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
+      // Get the callbackUrl from URL params (where user was trying to go)
+      const searchParams = new URLSearchParams(window.location.search)
+      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
+
       const result = await signIn("credentials", {
         username,
         password,
@@ -54,7 +58,8 @@ export default function LoginPage() {
         setError("Invalid username or password")
         playErrorSound()
       } else {
-        router.push("/dashboard")
+        // Redirect to where they were trying to go, or dashboard by default
+        router.push(callbackUrl)
         router.refresh()
       }
     } catch {

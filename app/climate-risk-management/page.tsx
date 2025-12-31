@@ -82,7 +82,8 @@ export default function ClimateRiskManagementPage() {
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push("/login")
+      // Redirect to login with callback to return here after login
+      router.push("/login?callbackUrl=/climate-risk-management")
     }
   }, [status, router])
 
