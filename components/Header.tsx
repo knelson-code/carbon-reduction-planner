@@ -105,7 +105,7 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-[92px]">
             {/* Logo */}
-            <Link href={session ? "/dashboard" : "/"} className="flex items-center space-x-3 hover:opacity-80 transition-opacity z-50">
+            <Link href={session ? "/climate-risk-management" : "/"} className="flex items-center space-x-3 hover:opacity-80 transition-opacity z-50">
               <Image 
                 src="/logo_ND_white.svg" 
                 alt="New Day Climate" 
@@ -125,13 +125,13 @@ export default function Header() {
               {session ? (
                 <>
                   <Link 
-                    href="/dashboard" 
+                    href="/climate-risk-management" 
                     className="text-lg font-semibold transition-colors"
                     style={{ color: '#ffffff' }}
                     onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
                     onMouseLeave={(e) => e.currentTarget.style.color = '#ffffff'}
                   >
-                    Dashboard
+                    Climate Risk Management
                   </Link>
                   <Link 
                     href="/store" 
@@ -223,12 +223,12 @@ export default function Header() {
             {session ? (
               <>
                 <Link 
-                  href="/dashboard"
+                  href="/climate-risk-management"
                   className="text-3xl font-bold transition-colors"
                   style={{ color: '#ffffff' }}
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Dashboard
+                  Climate Risk Management
                 </Link>
                 <Link 
                   href="/store"
