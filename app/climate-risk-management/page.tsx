@@ -33,20 +33,20 @@ const modules: ModuleCard[] = [
     bgColor: "#dbeafe",
   },
   {
-    title: "Decision Making",
-    description: "• Methodology\n• Prioritization\n• Recommendations",
-    icon: "💡",
-    href: "/climate-risk-management/decision-making",
-    color: "#8b5cf6",
-    bgColor: "#ede9fe",
-  },
-  {
     title: "Scenario Analysis",
     description: "• Scenario Explorer\n• Storylines",
     icon: "🌱",
     href: "/climate-risk-management/scenario-analysis",
     color: "#10b981",
     bgColor: "#d1fae5",
+  },
+  {
+    title: "Decision Making",
+    description: "• Methodology\n• Prioritization\n• Recommendations",
+    icon: "💡",
+    href: "/climate-risk-management/decision-making",
+    color: "#8b5cf6",
+    bgColor: "#ede9fe",
   },
 ]
 

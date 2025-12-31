@@ -44,6 +44,15 @@ const menuItems: MenuItem[] = [
     ],
   },
   {
+    name: "Scenario Analysis",
+    href: "/climate-risk-management/scenario-analysis",
+    icon: "Scenario",
+    subItems: [
+      { name: "Scenario Explorer", href: "/climate-risk-management/scenario-analysis/scenario-explorer" },
+      { name: "Storylines", href: "/climate-risk-management/scenario-analysis/storylines" },
+    ],
+  },
+  {
     name: "Decision Making",
     href: "/climate-risk-management/decision-making",
     icon: "Decision",
@@ -51,15 +60,6 @@ const menuItems: MenuItem[] = [
       { name: "Methodology", href: "/climate-risk-management/decision-making/methodology" },
       { name: "Prioritization", href: "/climate-risk-management/decision-making/prioritization" },
       { name: "Recommendations", href: "/climate-risk-management/decision-making/recommendations" },
-    ],
-  },
-  {
-    name: "Scenario Analysis",
-    href: "/climate-risk-management/scenario-analysis",
-    icon: "Scenario",
-    subItems: [
-      { name: "Scenario Explorer", href: "/climate-risk-management/scenario-analysis/scenario-explorer" },
-      { name: "Storylines", href: "/climate-risk-management/scenario-analysis/storylines" },
     ],
   },
 ]
