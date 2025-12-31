@@ -4,6 +4,6 @@ timeout /t 3 /nobreak >nul
 if exist ".git\index.lock" del /F /Q ".git\index.lock" 2>nul
 timeout /t 1 /nobreak >nul
 git add -A
-git commit -m "Add New Day Climate Risk Management app section at /climate-risk-management"
+git commit -m "Fix: Downgrade Next.js to v15 for NextAuth compatibility"
 git push
 pause
