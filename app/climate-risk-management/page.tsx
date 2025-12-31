@@ -17,34 +17,34 @@ interface ModuleCard {
 
 const modules: ModuleCard[] = [
   {
-    title: "Climate and Risk",
+    title: "Analyze Risks",
     description: "• Identify and understand risks\n• Improve your ability to make decisions, even in the face of uncertainty\n• Incorporate these insights into your processes in a simple and clear way",
     icon: "⚠️",
-    href: "/climate-risk-management/climate-risk",
+    href: "/climate-risk-management/analyze-risks",
     color: "#f59e0b",
     bgColor: "#fef3c7",
   },
   {
-    title: "Energy Transition",
+    title: "Risks by Location",
     description: "• Understand your role in a world affected by climate change\n• Determine what you can do to speed up the energy transition\n• Decide what you are willing to do",
     icon: "🚀",
-    href: "/climate-risk-management/transition-strategy",
+    href: "/climate-risk-management/risks-by-location",
     color: "#3b82f6",
     bgColor: "#dbeafe",
   },
   {
-    title: "Systemic Focus",
+    title: "Scenario Analysis",
     description: "• Build a clear vision of the specific change you are trying to produce\n• Identify sensitive intervention points in the political and economic system where you can have disproportionate impact\n• Define the actions that are most likely to produce that impact",
     icon: "💡",
-    href: "/climate-risk-management/impact-strategy",
+    href: "/climate-risk-management/scenario-analysis",
     color: "#8b5cf6",
     bgColor: "#ede9fe",
   },
   {
-    title: "CO₂ Management",
+    title: "Methodology",
     description: "• Measure emissions\n• Set reduction Targets\n• Create detailed reduction plan",
     icon: "🌱",
-    href: "/climate-risk-management/co2-management",
+    href: "/climate-risk-management/methodology",
     color: "#10b981",
     bgColor: "#d1fae5",
   },
@@ -270,7 +270,7 @@ export default function ClimateRiskManagementPage() {
                   <li>
                     <span style={{ color: '#163E64' }}>• </span>
                     <Link 
-                      href="/climate-risk-management/transition-strategy/defining-objectives"
+                      href="/climate-risk-management/risks-by-location/defining-objectives"
                       className="text-sm underline hover:opacity-70 transition-opacity"
                       style={{ color: '#163E64', textDecorationColor: '#FF5B35' }}
                     >
@@ -280,7 +280,7 @@ export default function ClimateRiskManagementPage() {
                   <li>
                     <span style={{ color: '#163E64' }}>• </span>
                     <Link 
-                      href="/climate-risk-management/impact-strategy/point-1/theory-of-change"
+                      href="/climate-risk-management/scenario-analysis/point-1/theory-of-change"
                       className="text-sm underline hover:opacity-70 transition-opacity"
                       style={{ color: '#163E64', textDecorationColor: '#FF5B35' }}
                     >
@@ -290,7 +290,7 @@ export default function ClimateRiskManagementPage() {
                   <li>
                     <span style={{ color: '#163E64' }}>• </span>
                     <Link 
-                      href="/climate-risk-management/climate-risk"
+                      href="/climate-risk-management/analyze-risks"
                       className="text-sm underline hover:opacity-70 transition-opacity"
                       style={{ color: '#163E64', textDecorationColor: '#FF5B35' }}
                     >
