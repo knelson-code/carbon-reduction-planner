@@ -6,7 +6,7 @@ import { useEffect } from "react"
 import Sidebar from "@/components/Sidebar"
 import Link from "next/link"
 
-export default function ImpactStrategyPage() {
+export default function CO2ManagementPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
 
@@ -37,7 +37,7 @@ export default function ImpactStrategyPage() {
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold mb-2" style={{ color: "#163E64" }}>
-              Systemic Focus
+              CO₂ Management
             </h1>
             <h2 className="text-lg" style={{ color: "#163E64" }}>
               In this section you can learn to:
@@ -55,7 +55,7 @@ export default function ImpactStrategyPage() {
               }}
             >
               <h3 className="text-base font-semibold" style={{ color: '#ffffff' }}>
-                Build a clear vision of the specific change you are trying to produce
+                Measure emissions
               </h3>
             </div>
 
@@ -68,7 +68,7 @@ export default function ImpactStrategyPage() {
               }}
             >
               <h3 className="text-base font-semibold" style={{ color: '#ffffff' }}>
-                Identify sensitive intervention points in the political and economic system where you can have disproportionate impact
+                Set reduction Targets
               </h3>
             </div>
 
@@ -81,7 +81,7 @@ export default function ImpactStrategyPage() {
               }}
             >
               <h3 className="text-base font-semibold" style={{ color: '#ffffff' }}>
-                Define the actions that are most likely to produce that impact
+                Create detailed reduction plan
               </h3>
             </div>
           </div>
@@ -99,14 +99,14 @@ export default function ImpactStrategyPage() {
               {/* Timeline items */}
               <div className="flex justify-between w-full relative z-10 gap-4">
                 {[
-                  { label: 'Theory of Change', completed: false, href: '/dashboard/impact-strategy/point-1/theory-of-change' },
-                  { label: 'Systems Point 2', completed: false, href: '/dashboard/impact-strategy/point-2' },
-                  { label: 'Systems Point 3', completed: false, href: '/dashboard/impact-strategy/point-3' },
-                  { label: 'Systems Point 4', completed: false, href: '/dashboard/impact-strategy/point-4' },
-                  { label: 'Systems Point 5', completed: false, href: '/dashboard/impact-strategy/point-5' },
-                  { label: 'Systems Point 6', completed: false, href: '/dashboard/impact-strategy/point-6' },
-                  { label: 'Systems Point 7', completed: false, href: '/dashboard/impact-strategy/point-7' },
-                  { label: 'Systems Point 8', completed: false, href: '/dashboard/impact-strategy/point-8' },
+                  { label: 'CO₂ Point 1', completed: false, href: '/dashboard/co2-management/point-1' },
+                  { label: 'CO₂ Point 2', completed: false, href: '/dashboard/co2-management/point-2' },
+                  { label: 'CO₂ Point 3', completed: false, href: '/dashboard/co2-management/point-3' },
+                  { label: 'CO₂ Point 4', completed: false, href: '/dashboard/co2-management/point-4' },
+                  { label: 'CO₂ Point 5', completed: false, href: '/dashboard/co2-management/point-5' },
+                  { label: 'CO₂ Point 6', completed: false, href: '/dashboard/co2-management/point-6' },
+                  { label: 'CO₂ Point 7', completed: false, href: '/dashboard/co2-management/point-7' },
+                  { label: 'CO₂ Point 8', completed: false, href: '/dashboard/co2-management/point-8' },
                 ].map((item, index) => (
                   <Link 
                     key={index} 

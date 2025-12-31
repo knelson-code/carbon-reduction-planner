@@ -33,18 +33,18 @@ const modules: ModuleCard[] = [
     bgColor: "#dbeafe",
   },
   {
-    title: "Scenario Analysis",
+    title: "Prioritization",
     description: "• Build a clear vision of the specific change you are trying to produce\n• Identify sensitive intervention points in the political and economic system where you can have disproportionate impact\n• Define the actions that are most likely to produce that impact",
     icon: "💡",
-    href: "/climate-risk-management/scenario-analysis",
+    href: "/climate-risk-management/prioritization",
     color: "#8b5cf6",
     bgColor: "#ede9fe",
   },
   {
-    title: "Methodology",
+    title: "Scenario Analysis",
     description: "• Measure emissions\n• Set reduction Targets\n• Create detailed reduction plan",
     icon: "🌱",
-    href: "/climate-risk-management/methodology",
+    href: "/climate-risk-management/scenario-analysis",
     color: "#10b981",
     bgColor: "#d1fae5",
   },
@@ -236,7 +236,7 @@ export default function ClimateRiskManagementPage() {
                 className="flex-1 text-left font-semibold"
                 style={{ color: '#163E64', fontSize: '18px' }}
               >
-                So there's some stuff you should know...
+                Methodology
               </span>
               {/* Orange Triangle Indicator */}
               <div
@@ -280,7 +280,7 @@ export default function ClimateRiskManagementPage() {
                   <li>
                     <span style={{ color: '#163E64' }}>• </span>
                     <Link 
-                      href="/climate-risk-management/scenario-analysis/point-1/theory-of-change"
+                      href="/climate-risk-management/prioritization/point-1/theory-of-change"
                       className="text-sm underline hover:opacity-70 transition-opacity"
                       style={{ color: '#163E64', textDecorationColor: '#FF5B35' }}
                     >

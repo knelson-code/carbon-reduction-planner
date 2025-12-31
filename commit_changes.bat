@@ -4,6 +4,6 @@ timeout /t 3 /nobreak >nul
 if exist ".git\index.lock" del /F /Q ".git\index.lock" 2>nul
 timeout /t 1 /nobreak >nul
 git add -A
-git commit -m "Update: Change navigation link to 'Dashboard' when on climate-risk-management section"
+git commit -m "Refactor: Reorganize sections - swap Prioritization and Scenario Analysis, change accordion to Methodology"
 git push
 pause
