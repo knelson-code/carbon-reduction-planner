@@ -46,7 +46,7 @@ export default function LoginPage() {
     try {
       // Get the callbackUrl from URL params (where user was trying to go)
       const searchParams = new URLSearchParams(window.location.search)
-      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
+      const callbackUrl = searchParams.get('callbackUrl') || '/climate-risk-management'
 
       const result = await signIn("credentials", {
         username,
