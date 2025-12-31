@@ -58,14 +58,8 @@ const menuItems: MenuItem[] = [
     href: "/climate-risk-management/scenario-analysis",
     icon: "Scenario",
     subItems: [
-      { name: "Scenario Point 1", href: "/climate-risk-management/scenario-analysis/point-1" },
-      { name: "Scenario Point 2", href: "/climate-risk-management/scenario-analysis/point-2" },
-      { name: "Scenario Point 3", href: "/climate-risk-management/scenario-analysis/point-3" },
-      { name: "Scenario Point 4", href: "/climate-risk-management/scenario-analysis/point-4" },
-      { name: "Scenario Point 5", href: "/climate-risk-management/scenario-analysis/point-5" },
-      { name: "Scenario Point 6", href: "/climate-risk-management/scenario-analysis/point-6" },
-      { name: "Scenario Point 7", href: "/climate-risk-management/scenario-analysis/point-7" },
-      { name: "Scenario Point 8", href: "/climate-risk-management/scenario-analysis/point-8" },
+      { name: "Scenario Explorer", href: "/climate-risk-management/scenario-analysis/scenario-explorer" },
+      { name: "Storylines", href: "/climate-risk-management/scenario-analysis/storylines" },
     ],
   },
 ]

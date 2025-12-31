@@ -42,7 +42,7 @@ const modules: ModuleCard[] = [
   },
   {
     title: "Scenario Analysis",
-    description: "• Measure emissions\n• Set reduction Targets\n• Create detailed reduction plan",
+    description: "• Scenario Explorer\n• Storylines",
     icon: "🌱",
     href: "/climate-risk-management/scenario-analysis",
     color: "#10b981",
