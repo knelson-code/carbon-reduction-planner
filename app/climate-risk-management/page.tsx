@@ -26,7 +26,7 @@ const modules: ModuleCard[] = [
   },
   {
     title: "Risks by Location",
-    description: "• Understand your role in a world affected by climate change\n• Determine what you can do to speed up the energy transition\n• Decide what you are willing to do",
+    description: "• Spain\n• India\n• Brazil\n• Global",
     icon: "🚀",
     href: "/climate-risk-management/risks-by-location",
     color: "#3b82f6",
