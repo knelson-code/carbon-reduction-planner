@@ -18,7 +18,7 @@ interface ModuleCard {
 const modules: ModuleCard[] = [
   {
     title: "Analyze Risks",
-    description: "• Identify and understand risks\n• Improve your ability to make decisions, even in the face of uncertainty\n• Incorporate these insights into your processes in a simple and clear way",
+    description: "• Understanding climate risk\n• Labor productivity loss\n• Delay in policy implementation\n• Extreme events\n• Operational interruptions\n• Decline in resilience of our clients\n• Deterioration of our operational context\n• Risks to employees",
     icon: "⚠️",
     href: "/climate-risk-management/analyze-risks",
     color: "#f59e0b",
