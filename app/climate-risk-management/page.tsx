@@ -270,7 +270,7 @@ export default function ClimateRiskManagementPage() {
                   <li>
                     <span style={{ color: '#163E64' }}>• </span>
                     <Link 
-                      href="/climate-risk-management/risks-by-location/defining-objectives"
+                      href="/climate-risk-management/risks-by-location"
                       className="text-sm underline hover:opacity-70 transition-opacity"
                       style={{ color: '#163E64', textDecorationColor: '#FF5B35' }}
                     >

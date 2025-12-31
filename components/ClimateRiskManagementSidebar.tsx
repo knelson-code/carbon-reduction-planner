@@ -37,14 +37,10 @@ const menuItems: MenuItem[] = [
     href: "/climate-risk-management/risks-by-location",
     icon: "Location",
     subItems: [
-      { name: "Think about what you're trying to accomplish", href: "/climate-risk-management/risks-by-location/defining-objectives" },
-      { name: "Location Point 2", href: "/climate-risk-management/risks-by-location/point-2" },
-      { name: "Location Point 3", href: "/climate-risk-management/risks-by-location/point-3" },
-      { name: "Location Point 4", href: "/climate-risk-management/risks-by-location/point-4" },
-      { name: "Location Point 5", href: "/climate-risk-management/risks-by-location/point-5" },
-      { name: "Location Point 6", href: "/climate-risk-management/risks-by-location/point-6" },
-      { name: "Location Point 7", href: "/climate-risk-management/risks-by-location/point-7" },
-      { name: "Location Point 8", href: "/climate-risk-management/risks-by-location/point-8" },
+      { name: "Spain", href: "/climate-risk-management/risks-by-location/spain" },
+      { name: "India", href: "/climate-risk-management/risks-by-location/india" },
+      { name: "Brazil", href: "/climate-risk-management/risks-by-location/brazil" },
+      { name: "Global", href: "/climate-risk-management/risks-by-location/global" },
     ],
   },
   {
