@@ -232,12 +232,9 @@ export default function ClimateRiskManagementPage() {
                   borderColor: 'rgba(11, 31, 50, 0.15)' 
                 }}
               >
-                <h3 className="text-lg font-bold mb-2" style={{ color: '#0B1F32' }}>
+                <h3 className="text-lg font-bold" style={{ color: '#0B1F32' }}>
                   {module.title}
                 </h3>
-                <p className="leading-relaxed text-sm whitespace-pre-line" style={{ color: '#0B1F32' }}>
-                  {module.description}
-                </p>
               </div>
             ))}
           </div>
