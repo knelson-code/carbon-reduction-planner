@@ -2,10 +2,22 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useState, useEffect } from "react"
 
 export default function Footer() {
   const pathname = usePathname()
-  const isClimateRiskManagement = pathname.startsWith("/climate-risk-management")
+  
+  // Check if we're in climate risk subdomain or if callbackUrl indicates we should be
+  const [callbackUrl, setCallbackUrl] = useState<string | null>(null)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      setCallbackUrl(params.get('callbackUrl'))
+    }
+  }, [pathname])
+  
+  const isClimateRiskManagement = pathname.startsWith("/climate-risk-management") || 
+    (callbackUrl?.startsWith("/climate-risk-management") ?? false)
 
   return (
     <footer className="mt-auto" style={{ backgroundColor: '#0B1F32' }}>

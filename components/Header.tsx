@@ -31,7 +31,18 @@ export default function Header() {
   const router = useRouter()
   const pathname = usePathname()
   const isHomePage = pathname === "/"
-  const isClimateRiskManagement = pathname.startsWith("/climate-risk-management")
+  
+  // Check if we're in climate risk subdomain or if callbackUrl indicates we should be
+  const [callbackUrl, setCallbackUrl] = useState<string | null>(null)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      setCallbackUrl(params.get('callbackUrl'))
+    }
+  }, [pathname])
+  
+  const isClimateRiskManagement = pathname.startsWith("/climate-risk-management") || 
+    (callbackUrl?.startsWith("/climate-risk-management") ?? false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [score, setScore] = useState(0)
   const [displayScore, setDisplayScore] = useState(0)
