@@ -9,6 +9,7 @@ function RegisterForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
+  const isClimateRiskManagement = callbackUrl.startsWith('/climate-risk-management')
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -246,7 +247,7 @@ This is a privacy-focused system. Since you used an anonymous username, no one, 
               />
               <label htmlFor="privacy" className="text-sm text-gray-700">
                 I have read and accept the{" "}
-                <Link href="/privacy" target="_blank" className="text-orange-500 hover:text-orange-600 underline">
+                <Link href={isClimateRiskManagement ? "/climate-risk-management/privacy" : "/privacy"} target="_blank" className="text-orange-500 hover:text-orange-600 underline">
                   Privacy Policy
                 </Link>
               </label>
@@ -263,7 +264,7 @@ This is a privacy-focused system. Since you used an anonymous username, no one, 
               />
               <label htmlFor="terms" className="text-sm text-gray-700">
                 I have read and accept the{" "}
-                <Link href="/terms" target="_blank" className="text-orange-500 hover:text-orange-600 underline">
+                <Link href={isClimateRiskManagement ? "/climate-risk-management/terms" : "/terms"} target="_blank" className="text-orange-500 hover:text-orange-600 underline">
                   Terms of Service
                 </Link>
               </label>
@@ -281,7 +282,7 @@ This is a privacy-focused system. Since you used an anonymous username, no one, 
 
         <p className="mt-4 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link href="/login" className="text-orange-500 hover:text-orange-600 font-semibold">
+          <Link href={isClimateRiskManagement ? `/login?callbackUrl=${callbackUrl}` : "/login"} className="text-orange-500 hover:text-orange-600 font-semibold">
             Sign in
           </Link>
         </p>
