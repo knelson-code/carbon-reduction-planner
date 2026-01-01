@@ -1,12 +1,14 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { signIn } from "next-auth/react"
 
 export default function RegisterPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -303,7 +305,7 @@ This is a privacy-focused system. Since you used an anonymous username, no one, 
               <button
                 onClick={() => {
                   setShowCredentialsModal(false)
-                  router.push("/dashboard")
+                  router.push(callbackUrl)
                   router.refresh()
                   playSuccessSound()
                 }}

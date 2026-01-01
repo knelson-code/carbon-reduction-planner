@@ -126,7 +126,7 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-[92px]">
             {/* Logo */}
-            <Link href={session ? "/climate-risk-management" : "/"} className="flex items-center space-x-3 hover:opacity-80 transition-opacity z-50">
+            <Link href={isClimateRiskManagement ? "/climate-risk-management" : (session ? "/climate-risk-management" : "/")} className="flex items-center space-x-3 hover:opacity-80 transition-opacity z-50">
               <Image 
                 src="/logo_ND_white.svg" 
                 alt="New Day Climate" 
