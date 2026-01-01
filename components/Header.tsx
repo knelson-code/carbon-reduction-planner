@@ -127,7 +127,12 @@ export default function Header() {
       windAudioRef.current.play().catch(err => console.log('Error playing sound:', err))
     }
     await signOut({ redirect: false })
-    router.push("/login")
+    // If in climate risk subdomain, redirect to login with callbackUrl
+    if (isClimateRiskManagement) {
+      router.push("/login?callbackUrl=/climate-risk-management")
+    } else {
+      router.push("/login")
+    }
     setMobileMenuOpen(false)
   }
 
