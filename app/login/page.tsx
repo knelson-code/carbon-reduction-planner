@@ -38,15 +38,16 @@ export default function LoginPage() {
     }
   }
 
+  // Get callbackUrl from URL params
+  const searchParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '')
+  const callbackUrl = searchParams.get('callbackUrl') || '/climate-risk-management'
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
     setLoading(true)
 
     try {
-      // Get the callbackUrl from URL params (where user was trying to go)
-      const searchParams = new URLSearchParams(window.location.search)
-      const callbackUrl = searchParams.get('callbackUrl') || '/climate-risk-management'
 
       const result = await signIn("credentials", {
         username,
@@ -127,7 +128,7 @@ export default function LoginPage() {
         <p className="mt-4 text-center text-sm" style={{ color: '#5a6c6f' }}>
           Don&apos;t have an account?{" "}
           <Link 
-            href="/register" 
+            href={callbackUrl !== '/climate-risk-management' ? `/register?callbackUrl=${encodeURIComponent(callbackUrl)}` : "/register?callbackUrl=/climate-risk-management"}
             className="font-semibold transition-colors"
             style={{ color: '#FF5B35' }}
             onMouseEnter={(e) => e.currentTarget.style.color = '#E54A24'}
