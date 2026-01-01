@@ -190,7 +190,7 @@ export default function Header() {
                   {!isHomePage && (
                     <>
                       <Link 
-                        href="/login" 
+                        href={isClimateRiskManagement ? "/login?callbackUrl=/climate-risk-management" : "/login"}
                         className="text-lg font-semibold transition-colors"
                         style={{ color: '#ffffff' }}
                         onMouseEnter={(e) => e.currentTarget.style.color = '#FF5B35'}
@@ -199,7 +199,7 @@ export default function Header() {
                         Login
                       </Link>
                       <Link 
-                        href="/register" 
+                        href={isClimateRiskManagement ? "/register?callbackUrl=/climate-risk-management" : "/register"}
                         className="px-7 py-2.5 text-lg rounded-lg font-semibold transition-colors"
                         style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
                         onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#E54A24'}
@@ -281,7 +281,7 @@ export default function Header() {
                 {!isHomePage && (
                   <>
                     <Link 
-                      href="/login"
+                      href={isClimateRiskManagement ? "/login?callbackUrl=/climate-risk-management" : "/login"}
                       className="text-3xl font-bold transition-colors"
                       style={{ color: '#ffffff' }}
                       onClick={() => setMobileMenuOpen(false)}
@@ -289,7 +289,7 @@ export default function Header() {
                       Login
                     </Link>
                     <Link 
-                      href="/register"
+                      href={isClimateRiskManagement ? "/register?callbackUrl=/climate-risk-management" : "/register"}
                       className="px-10 py-4 text-2xl rounded-lg font-bold transition-colors"
                       style={{ backgroundColor: '#FF5B35', color: '#ffffff' }}
                       onClick={() => setMobileMenuOpen(false)}
