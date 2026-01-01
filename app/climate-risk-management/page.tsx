@@ -80,12 +80,7 @@ export default function ClimateRiskManagementPage() {
   const [isFadingOut, setIsFadingOut] = useState(false)
   const [morseAudio, setMorseAudio] = useState<HTMLAudioElement | null>(null)
 
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      // Redirect to login with callback to return here after login
-      router.push("/login?callbackUrl=/climate-risk-management")
-    }
-  }, [status, router])
+  // NO REDIRECT - Show landing page instead for unauthenticated users
 
   // Preload typewriter audio on page load
   useEffect(() => {
@@ -170,10 +165,88 @@ export default function ClimateRiskManagementPage() {
     )
   }
 
+  // LANDING PAGE for unauthenticated users
   if (!session) {
-    return null
+    return (
+      <div className="flex items-center justify-center bg-white min-h-[calc(100vh-92px)]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+          <h1 className="text-5xl font-bold mb-6" style={{ color: '#0B1F32' }}>
+            Climate Management Platform
+          </h1>
+          <p className="text-xl mb-8 max-w-2xl mx-auto leading-relaxed" style={{ color: '#5a6c6f' }}>
+            Comprehensive climate strategy tools for emissions management, risk assessment, transition planning, and impact measurement.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <Link 
+              href="/register"
+              className="px-8 py-4 rounded-lg font-semibold text-lg transition-all"
+              style={{ 
+                backgroundColor: '#f5f5f5', 
+                color: '#FF5B35',
+                boxShadow: '0 2px 8px rgba(255, 91, 53, 0.15)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#FF5B35'
+                e.currentTarget.style.color = '#ffffff'
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 91, 53, 0.25)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#f5f5f5'
+                e.currentTarget.style.color = '#FF5B35'
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 91, 53, 0.15)'
+              }}
+            >
+              Get Started
+            </Link>
+            <Link 
+              href="/login?callbackUrl=/climate-risk-management"
+              className="px-8 py-4 rounded-lg font-semibold text-lg transition-all"
+              style={{ 
+                backgroundColor: '#f5f5f5', 
+                color: '#0B1F32',
+                boxShadow: '0 2px 8px rgba(11, 31, 50, 0.15)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#0B1F32'
+                e.currentTarget.style.color = '#ffffff'
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(11, 31, 50, 0.25)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#f5f5f5'
+                e.currentTarget.style.color = '#0B1F32'
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(11, 31, 50, 0.15)'
+              }}
+            >
+              Sign In
+            </Link>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+            {modules.map((module) => (
+              <div 
+                key={module.title}
+                className="p-6 rounded-lg border" 
+                style={{ 
+                  backgroundColor: 'transparent', 
+                  borderColor: 'rgba(11, 31, 50, 0.15)' 
+                }}
+              >
+                <h3 className="text-lg font-bold mb-2" style={{ color: '#0B1F32' }}>
+                  {module.title}
+                </h3>
+                <p className="leading-relaxed text-sm whitespace-pre-line" style={{ color: '#0B1F32' }}>
+                  {module.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
   }
 
+  // AUTHENTICATED DASHBOARD
   return (
     <div className="flex min-h-[calc(100vh-92px)]">
       <ClimateRiskManagementSidebar />
@@ -261,12 +334,22 @@ export default function ClimateRiskManagementPage() {
             {isAccordionOpen && (
               <div className="mt-4 space-y-3" style={{ color: '#163E64' }}>
                 <p className="text-sm leading-relaxed">
-                  If you complete all of these activities, you'll have a robust transition strategy. That means understanding your role in a world affected by climate change, and having a clear plan for what you intend to do about it.
+                  If you complete all of these activities, you'll have a robust climate risk management strategy. That means understanding the climate risks specific to your organization, analyzing scenarios, and developing clear decision-making frameworks.
                 </p>
                 <p className="text-sm leading-relaxed">
-                  This software is completely modular. You can jump in anywhere you like. <span className="font-bold">However, we recommend that at a minimum, before rushing into the CO₂ management section as most users do, you take a look at these three points:</span>
+                  This software is completely modular. You can jump in anywhere you like. <span className="font-bold">However, we recommend starting with these foundational modules:</span>
                 </p>
                 <ul className="space-y-2 pl-4">
+                  <li>
+                    <span style={{ color: '#163E64' }}>• </span>
+                    <Link 
+                      href="/climate-risk-management/analyze-risks/understanding"
+                      className="text-sm underline hover:opacity-70 transition-opacity"
+                      style={{ color: '#163E64', textDecorationColor: '#FF5B35' }}
+                    >
+                      Understanding Climate Risk - Build a foundation of what climate risk means
+                    </Link>
+                  </li>
                   <li>
                     <span style={{ color: '#163E64' }}>• </span>
                     <Link 
@@ -274,27 +357,27 @@ export default function ClimateRiskManagementPage() {
                       className="text-sm underline hover:opacity-70 transition-opacity"
                       style={{ color: '#163E64', textDecorationColor: '#FF5B35' }}
                     >
-                      Think about what you're trying to accomplish
+                      Risks by Location - Identify location-specific climate threats
                     </Link>
                   </li>
                   <li>
                     <span style={{ color: '#163E64' }}>• </span>
                     <Link 
-                      href="/climate-risk-management/prioritization/point-1/theory-of-change"
+                      href="/climate-risk-management/scenario-analysis"
                       className="text-sm underline hover:opacity-70 transition-opacity"
                       style={{ color: '#163E64', textDecorationColor: '#FF5B35' }}
                     >
-                      Think about whether the actions you're planning are logically likely to produce the change you're trying to achieve
+                      Scenario Analysis - Explore different climate futures
                     </Link>
                   </li>
                   <li>
                     <span style={{ color: '#163E64' }}>• </span>
                     <Link 
-                      href="/climate-risk-management/analyze-risks"
+                      href="/climate-risk-management/decision-making"
                       className="text-sm underline hover:opacity-70 transition-opacity"
                       style={{ color: '#163E64', textDecorationColor: '#FF5B35' }}
                     >
-                      Think about the nature of the problem
+                      Decision Making - Develop prioritized action plans
                     </Link>
                   </li>
                 </ul>

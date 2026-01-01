@@ -1,26 +1,59 @@
-# Climate Risk Management Module - Complete Documentation
+# Climate Risk Management App - Complete Documentation
 
-## Overview
-On December 31, 2025, we created a new, distinct software module within the existing carbon-reduction-planner codebase focused exclusively on Climate Risk Management. This module operates as a separate subdomain with its own navigation, structure, and user experience, while sharing the same codebase and authentication system as the main CO₂ Reduction Planner.
+## ⚠️ CRITICAL: TWO COMPLETELY SEPARATE APPLICATIONS ⚠️
+
+**THIS IS NOT ONE APP WITH TWO SECTIONS. THESE ARE TWO SEPARATE APPLICATIONS THAT HAPPEN TO SHARE THE SAME CODEBASE AND INFRASTRUCTURE.**
+
+### Understanding the Separation
+
+We are building **TWO DISTINCT, ISOLATED APPLICATIONS**:
+
+#### 1. 🚀 CLIMATE RISK MANAGEMENT APP (URGENT - CLIENT DELIVERY)
+- **URL**: `https://risk-software.newdayclimate.com/climate-risk-management`
+- **Status**: ACTIVE CLIENT PROJECT - Must be delivered NOW
+- **Isolation**: **COMPLETELY SELF-CONTAINED** - Users must NEVER leave this subdomain
+- **Purpose**: Professional climate risk analysis, scenario planning, decision support
+- **Base Path**: `/app/climate-risk-management/*`
+- **Sidebar**: Uses `ClimateRiskManagementSidebar.tsx` 
+- **Navigation**: Only links within `/climate-risk-management/*` paths
+- **Features**: 4 major modules with 17 subpages - ALL content focused on climate risk
+
+#### 2. 📊 MAIN "MAGNUM OPUS" APP (LONG-TERM PROJECT - INCOMPLETE)
+- **URL**: `https://risk-software.newdayclimate.com/dashboard` (and `/store`, `/organizations`, etc.)
+- **Status**: INCOMPLETE - Long-term development project
+- **Access**: Should be COMPLETELY INACCESSIBLE from Climate Risk Management App
+- **Purpose**: CO₂ emission tracking, reduction planning, gamification with points/store
+- **Base Path**: `/app/dashboard/*` (plus `/store/*`, `/organizations/*`, etc.)
+- **Sidebar**: Uses standard `Sidebar.tsx` component
+- **Features**: Organizations, Activities, Points system, Store for rewards
 
 ---
 
-## Two Distinct Sections in One Codebase
+## 🚫 CRITICAL ISOLATION REQUIREMENTS
 
-### 1. Main Dashboard (Original CO₂ Reduction Planner)
-- **URL**: `https://carbon-reduction-planner.vercel.app/dashboard`
-- **Purpose**: CO₂ emission tracking, reduction planning, gamification with points/store
-- **Features**: Organizations, Activities, Points system, Store for rewards
-- **Sidebar**: Uses standard `Sidebar.tsx` component
-- **Base Path**: `/app/dashboard/*`
+### Why Complete Separation is Essential
 
-### 2. Climate Risk Management (New Module - Built Today)
-- **URL**: `https://risk-software.newdayclimate.com/climate-risk-management`
-- **Subdomain**: `risk-software.newdayclimate.com` (configured in Vercel)
-- **Purpose**: Climate risk analysis, location-based risk assessment, scenario planning, decision support
-- **Features**: 4 major modules with 17 total subpages
-- **Sidebar**: Uses dedicated `ClimateRiskManagementSidebar.tsx` component
-- **Base Path**: `/app/climate-risk-management/*`
+1. **Client needs Climate Risk App NOW** - It must be production-ready
+2. **Magnum Opus is INCOMPLETE** - Not ready for client access
+3. **Users must never accidentally navigate** from Climate Risk App → Magnum Opus
+4. **Different user experiences** - Professional tool vs. gamified tracker
+5. **May eventually merge** - But that's far future, not now
+
+### Isolation Checklist
+
+**Climate Risk Management App MUST:**
+- ✅ Only show links to pages within `/climate-risk-management/*`
+- ✅ Have NO links to `/dashboard`, `/store`, `/organizations`, etc.
+- ✅ Hide all gamification elements (points, store)
+- ✅ Use only `ClimateRiskManagementSidebar.tsx` for navigation
+- ✅ Have its own legal pages (privacy, terms, support) within subdomain
+- ✅ Redirect to login with callback URL within `/climate-risk-management/*`
+- ✅ Header "Dashboard" link goes to `/climate-risk-management` (NOT `/dashboard`)
+
+**Magnum Opus App (when complete) WILL:**
+- Have its own separate navigation structure
+- May eventually incorporate climate risk functionality
+- But for now, exists in parallel, not connected
 
 ---
 

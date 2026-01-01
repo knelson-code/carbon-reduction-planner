@@ -1,5 +1,23 @@
 "use client"
 
+/*
+ * ⚠️ CRITICAL: CLIMATE RISK MANAGEMENT APP - ISOLATION REQUIRED ⚠️
+ * 
+ * This sidebar is EXCLUSIVELY for the Climate Risk Management App:
+ * - URL: https://risk-software.newdayclimate.com/climate-risk-management
+ * - This is a CLIENT-READY, PRODUCTION app
+ * - Must be COMPLETELY ISOLATED from the incomplete "magnum opus" app
+ * 
+ * ALL LINKS MUST:
+ * ✅ Start with /climate-risk-management/*
+ * ❌ NEVER link to /dashboard, /store, /organizations, or any magnum opus paths
+ * 
+ * Users of the Climate Risk app should NEVER accidentally navigate to the 
+ * incomplete magnum opus app at /dashboard, /store, etc.
+ * 
+ * When adding new menu items: ALWAYS ensure href starts with /climate-risk-management
+ */
+
 import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"

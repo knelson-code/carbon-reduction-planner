@@ -1,5 +1,25 @@
 "use client"
 
+/*
+ * ⚠️ CRITICAL: TWO SEPARATE APPLICATIONS SHARE THIS HEADER ⚠️
+ * 
+ * This header serves TWO COMPLETELY ISOLATED APPLICATIONS:
+ * 
+ * 1. CLIMATE RISK MANAGEMENT APP (CLIENT-READY, PRODUCTION)
+ *    - URL: https://risk-software.newdayclimate.com/climate-risk-management
+ *    - Must be completely self-contained
+ *    - NO links to /dashboard, /store, or /organizations
+ *    - Hides points, store, organizations dropdown
+ * 
+ * 2. MAGNUM OPUS APP (INCOMPLETE, LONG-TERM PROJECT)
+ *    - URL: https://risk-software.newdayclimate.com/dashboard (and /store, /organizations)
+ *    - Not accessible from Climate Risk Management App
+ *    - Shows full navigation including points/store
+ * 
+ * When making changes: ALWAYS check pathname.startsWith('/climate-risk-management')
+ * to ensure proper isolation!
+ */
+
 import Link from "next/link"
 import Image from "next/image"
 import { useSession, signOut } from "next-auth/react"
