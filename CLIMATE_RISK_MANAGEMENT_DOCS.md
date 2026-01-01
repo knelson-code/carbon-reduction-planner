@@ -451,5 +451,192 @@ Same across both modules:
 
 ---
 
+## Session Update: January 1, 2026 - Complete Subdomain Isolation
+
+### Critical Fixes: 100% Subdomain Link Isolation
+
+Today we completed comprehensive work to ensure **PERFECT ISOLATION** of the Climate Risk Management subdomain. Previously, several edge cases caused users to accidentally leave the subdomain. All issues are now resolved.
+
+### Issues Fixed
+
+#### 1. Header Logo & Title Link (Unauthenticated Users)
+**Problem**: When unauthenticated users clicked the logo or "Climate Management Platform" text, it redirected to "/" instead of staying in subdomain.
+
+**Solution**: Updated Header.tsx logo link logic:
+```typescript
+href={isClimateRiskManagement ? "/climate-risk-management" : (session ? "/climate-risk-management" : "/")}
+```
+
+#### 2. Registration Redirect Flow
+**Problem**: After registering from `/register?callbackUrl=/climate-risk-management`, users were redirected to `/dashboard` instead of staying in subdomain.
+
+**Solution**: 
+- Modified `/app/register/page.tsx` to read `callbackUrl` from URL parameters
+- Redirects user to correct subdomain after successful registration
+- Defaults to `/dashboard` for Magnum Opus users
+
+#### 3. Register Page Links
+**Problem**: Privacy Policy, Terms of Service, and "Sign in" links on register page all took users outside subdomain.
+
+**Solution**: Added subdomain detection and updated all links:
+```typescript
+const isClimateRiskManagement = callbackUrl.startsWith('/climate-risk-management')
+
+// Privacy link
+href={isClimateRiskManagement ? "/climate-risk-management/privacy" : "/privacy"}
+
+// Terms link  
+href={isClimateRiskManagement ? "/climate-risk-management/terms" : "/terms"}
+
+// Sign in link
+href={isClimateRiskManagement ? `/login?callbackUrl=${callbackUrl}` : "/login"}
+```
+
+#### 4. Login Page "Sign up" Link
+**Problem**: Sign up link on login page didn't pass callbackUrl parameter, breaking subdomain context.
+
+**Solution**: Updated to include callbackUrl:
+```typescript
+href={callbackUrl !== '/climate-risk-management' ? `/register?callbackUrl=${encodeURIComponent(callbackUrl)}` : "/register?callbackUrl=/climate-risk-management"}
+```
+
+#### 5. Header & Footer on Login/Register Pages
+**Problem**: When users visited `/login?callbackUrl=/climate-risk-management` or `/register?callbackUrl=/climate-risk-management`, the Header and Footer didn't recognize subdomain context (pathname was `/login` or `/register`), so links went outside subdomain.
+
+**Solution**: Modified both Header.tsx and Footer.tsx to detect callbackUrl parameter:
+```typescript
+const [callbackUrl, setCallbackUrl] = useState<string | null>(null)
+useEffect(() => {
+  if (typeof window !== 'undefined') {
+    const params = new URLSearchParams(window.location.search)
+    setCallbackUrl(params.get('callbackUrl'))
+  }
+}, [pathname])
+
+const isClimateRiskManagement = pathname.startsWith("/climate-risk-management") || 
+  (callbackUrl?.startsWith("/climate-risk-management") ?? false)
+```
+
+#### 6. Sign Out Flow
+**Problem**: When users signed out from subdomain, they were redirected to `/login` without callbackUrl, losing subdomain context.
+
+**Solution**: Modified sign out handler to check subdomain and include callbackUrl:
+```typescript
+if (isClimateRiskManagement) {
+  router.push("/login?callbackUrl=/climate-risk-management")
+} else {
+  router.push("/login")
+}
+```
+
+#### 7. Suspense Boundary Error (Build Fix)
+**Problem**: Build failed with error: `useSearchParams() should be wrapped in a suspense boundary at page "/register"`
+
+**Solution**: Refactored register page:
+- Created `RegisterForm` component that uses `useSearchParams()`
+- Wrapped it in `Suspense` boundary in main `RegisterPage` component
+- Added loading fallback
+
+### UX Improvements
+
+#### 8. Landing Page Header Simplification
+**Change**: Hid Login and Get Started buttons from header on `/climate-risk-management` landing page only (for unauthenticated users).
+
+**Reasoning**: These buttons are already prominently displayed as large buttons in the center of the page. Having them in both places was redundant and cluttered the header.
+
+**Implementation**:
+```typescript
+const isClimateRiskLandingPage = pathname === "/climate-risk-management"
+
+// In both desktop and mobile navigation:
+{!isHomePage && !isClimateRiskLandingPage && (
+  // Login and Get Started buttons
+)}
+```
+
+#### 9. Landing Page Module Boxes Simplified
+**Change**: Removed all bullet point descriptions from module preview boxes on landing page.
+
+**Before**: Boxes showed titles + long lists of subpages (e.g., "• Understanding climate risk • Labor productivity loss...")
+
+**After**: Boxes show clean titles only: "Analyze Risks", "Risks by Location", "Scenario Analysis", "Decision Making"
+
+**Reasoning**: Cleaner, more professional look. Details are available once users log in and access the authenticated dashboard.
+
+### Complete User Journey - All Tested & Working
+
+**Unauthenticated User Starting at Landing Page:**
+1. Visits `https://risk-software.newdayclimate.com/climate-risk-management` ✅
+2. Clicks logo → Stays on landing page ✅
+3. Clicks "Get Started" → `/register?callbackUrl=/climate-risk-management` ✅
+4. On register page, all links stay in subdomain:
+   - Privacy Policy → `/climate-risk-management/privacy` ✅
+   - Terms → `/climate-risk-management/terms` ✅
+   - "Sign in" → `/login?callbackUrl=/climate-risk-management` ✅
+5. Registers → Auto-login → Redirects to `/climate-risk-management` ✅
+
+**Authenticated User:**
+1. Using subdomain features ✅
+2. Signs out → `/login?callbackUrl=/climate-risk-management` ✅
+3. On login page, all header/footer links stay in subdomain ✅
+4. Signs back in → Returns to `/climate-risk-management` ✅
+
+### Files Modified in This Session
+
+1. **components/Header.tsx**
+   - Added callbackUrl detection for subdomain context
+   - Fixed logo link for unauthenticated users
+   - Fixed sign out to include callbackUrl
+   - Hidden header buttons on landing page only
+
+2. **components/Footer.tsx**
+   - Added callbackUrl detection for subdomain context
+
+3. **app/register/page.tsx**
+   - Wrapped useSearchParams in Suspense boundary
+   - Added subdomain detection based on callbackUrl
+   - Updated all links (privacy, terms, sign in) to respect subdomain
+   - Fixed redirect after registration to use callbackUrl
+
+4. **app/login/page.tsx**
+   - Added callbackUrl detection
+   - Updated "Sign up" link to include callbackUrl parameter
+
+5. **app/climate-risk-management/page.tsx**
+   - Removed description text from landing page module boxes for cleaner design
+
+### Git Commits (January 1, 2026)
+
+1. `2eb67ca` - Fix: Header logo link and register redirect for subdomain isolation
+2. `c218576` - Fix: Wrap useSearchParams in Suspense boundary to resolve build error
+3. `a52dc11` - Fix: All register page links now respect climate risk subdomain context
+4. `32baf17` - Fix: Login page Sign up link now includes callbackUrl parameter
+5. `4b98fbd` - Fix: Header and Footer now detect callbackUrl to stay in subdomain context
+6. `105ff8d` - Fix: Sign Out now includes callbackUrl to keep users in subdomain
+7. `84e7258` - Hide Login/Get Started header buttons on climate risk landing page
+8. `26c96a5` - Remove description text from landing page module boxes for cleaner design
+
+### Testing Status
+
+**All User Flows Verified:**
+- ✅ Landing page → Registration → Login → Dashboard
+- ✅ Landing page → Login → Dashboard → Sign out → Login
+- ✅ All header links on login/register pages
+- ✅ All footer links on login/register pages
+- ✅ Privacy/Terms/Support pages accessible within subdomain
+- ✅ Build deploys successfully to Vercel
+- ✅ No broken links anywhere in subdomain
+
+### Production Status
+
+**The Climate Risk Management subdomain is now:**
+- ✅ 100% isolated - zero links escape the subdomain
+- ✅ Production-ready for client delivery
+- ✅ Clean UX with no duplicate buttons or clutter
+- ✅ All authentication flows working perfectly
+- ✅ Successfully deployed to `https://risk-software.newdayclimate.com/climate-risk-management`
+
+---
+
 *Documentation created: December 31, 2025*
-*Last updated: December 31, 2025*
+*Last updated: January 1, 2026*

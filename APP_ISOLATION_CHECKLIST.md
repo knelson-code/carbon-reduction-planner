@@ -60,46 +60,52 @@ CO₂ emission tracking, reduction planning, gamification with points/store syst
 
 ### Navigation & Links
 
-- [ ] **ALL** Climate Risk Management links start with `/climate-risk-management/*`
-- [ ] **NO** links from Climate Risk app to `/dashboard`, `/store`, or `/organizations`
-- [ ] Header "Dashboard" link in Climate Risk context goes to `/climate-risk-management` (NOT `/dashboard`)
-- [ ] Footer links in Climate Risk app point to `/climate-risk-management/privacy`, `/terms`, `/support`
-- [ ] ClimateRiskManagementSidebar only contains `/climate-risk-management/*` links
-- [ ] No references to "CO₂ management" or "magnum opus" features in Climate Risk content
+- [x] **ALL** Climate Risk Management links start with `/climate-risk-management/*`
+- [x] **NO** links from Climate Risk app to `/dashboard`, `/store`, or `/organizations`
+- [x] Header "Dashboard" link in Climate Risk context goes to `/climate-risk-management` (NOT `/dashboard`)
+- [x] Footer links in Climate Risk app point to `/climate-risk-management/privacy`, `/terms`, `/support`
+- [x] ClimateRiskManagementSidebar only contains `/climate-risk-management/*` links
+- [x] No references to "CO₂ management" or "magnum opus" features in Climate Risk content
 
 ### Header Component (`/components/Header.tsx`)
 
-When `pathname.startsWith('/climate-risk-management')`:
+When `pathname.startsWith('/climate-risk-management')` OR `callbackUrl` contains `/climate-risk-management`:
 
-- [ ] ✅ Shows "Dashboard" link → `/climate-risk-management`
-- [ ] ❌ Hides "Store" link
-- [ ] ❌ Hides "Points" display
-- [ ] ❌ Hides "Organizations" dropdown
-- [ ] ✅ Shows Logo, Username, Sign Out only
+- [x] ✅ Shows "Dashboard" link → `/climate-risk-management`
+- [x] ❌ Hides "Store" link
+- [x] ❌ Hides "Points" display
+- [x] ❌ Hides "Organizations" dropdown
+- [x] ✅ Shows Logo, Username, Sign Out only
+- [x] ✅ Logo link goes to `/climate-risk-management` for unauthenticated users in subdomain
+- [x] ✅ Sign Out includes callbackUrl to keep users in subdomain context
+- [x] ✅ Login/Get Started buttons hidden on landing page only
 
 ### Footer Component (`/components/Footer.tsx`)
 
-When `pathname.startsWith('/climate-risk-management')`:
+When `pathname.startsWith('/climate-risk-management')` OR `callbackUrl` contains `/climate-risk-management`:
 
-- [ ] Shows title: "Climate Risk Management Platform"
-- [ ] NO subtext displayed
-- [ ] Privacy link → `/climate-risk-management/privacy`
-- [ ] Terms link → `/climate-risk-management/terms`
-- [ ] Support link → `/climate-risk-management/support`
+- [x] Shows title: "Climate Risk Management Platform"
+- [x] NO subtext displayed
+- [x] Privacy link → `/climate-risk-management/privacy`
+- [x] Terms link → `/climate-risk-management/terms`
+- [x] Support link → `/climate-risk-management/support`
 
 ### Authentication Redirects
 
-- [ ] All Climate Risk pages redirect to `/login?callbackUrl=/climate-risk-management/...`
-- [ ] Callback URLs keep users within `/climate-risk-management/*` path
-- [ ] NO redirect loops between apps
+- [x] All Climate Risk pages redirect to `/login?callbackUrl=/climate-risk-management/...`
+- [x] Callback URLs keep users within `/climate-risk-management/*` path
+- [x] NO redirect loops between apps
+- [x] Register page respects callbackUrl and redirects correctly
+- [x] Login page includes callbackUrl in Sign up link
+- [x] Sign out includes callbackUrl when in subdomain
 
 ### Content & Messaging
 
-- [ ] No mention of "points" or "store" in Climate Risk app
-- [ ] No mention of "dashboard" (magnum opus) features
-- [ ] All accordion/help text refers only to Climate Risk modules
-- [ ] No gamification elements visible in Climate Risk app
-- [ ] Professional, business-focused language only
+- [x] No mention of "points" or "store" in Climate Risk app
+- [x] No mention of "dashboard" (magnum opus) features
+- [x] All accordion/help text refers only to Climate Risk modules
+- [x] No gamification elements visible in Climate Risk app
+- [x] Professional, business-focused language only
 
 ---
 
