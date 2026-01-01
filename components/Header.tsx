@@ -43,6 +43,7 @@ export default function Header() {
   
   const isClimateRiskManagement = pathname.startsWith("/climate-risk-management") || 
     (callbackUrl?.startsWith("/climate-risk-management") ?? false)
+  const isClimateRiskLandingPage = pathname === "/climate-risk-management"
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [score, setScore] = useState(0)
   const [displayScore, setDisplayScore] = useState(0)
@@ -203,7 +204,7 @@ export default function Header() {
                 </>
               ) : (
                 <>
-                  {!isHomePage && (
+                  {!isHomePage && !isClimateRiskLandingPage && (
                     <>
                       <Link 
                         href={isClimateRiskManagement ? "/login?callbackUrl=/climate-risk-management" : "/login"}
@@ -294,7 +295,7 @@ export default function Header() {
               </>
             ) : (
               <>
-                {!isHomePage && (
+                {!isHomePage && !isClimateRiskLandingPage && (
                   <>
                     <Link 
                       href={isClimateRiskManagement ? "/login?callbackUrl=/climate-risk-management" : "/login"}
