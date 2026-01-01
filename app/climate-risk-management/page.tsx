@@ -179,7 +179,7 @@ export default function ClimateRiskManagementPage() {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Link 
-              href="/register"
+              href="/register?callbackUrl=/climate-risk-management"
               className="px-8 py-4 rounded-lg font-semibold text-lg transition-all"
               style={{ 
                 backgroundColor: '#f5f5f5', 
