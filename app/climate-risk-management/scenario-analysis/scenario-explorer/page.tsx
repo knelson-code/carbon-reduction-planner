@@ -357,8 +357,8 @@ export default function ScenarioExplorerPage() {
                       <table className="text-xs border-collapse" style={{ minWidth: '1400px' }}>
                         <thead className="sticky top-0 bg-white" style={{ zIndex: 10 }}>
                           <tr>
-                            <th rowSpan={2} className="border px-1 py-0.5 text-left font-semibold text-[10px] whitespace-nowrap" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>Service Line</th>
-                            <th rowSpan={2} className="border px-1 py-0.5 text-center font-semibold text-[10px]" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>Code</th>
+                            <th rowSpan={2} className="border px-1 py-0.5 text-left font-semibold text-[10px] whitespace-nowrap sticky left-0" style={{ backgroundColor: '#163E64', color: '#ffffff', zIndex: 20 }}>Service Line</th>
+                            <th rowSpan={2} className="border px-1 py-0.5 text-center font-semibold text-[10px] sticky" style={{ backgroundColor: '#163E64', color: '#ffffff', left: '120px', zIndex: 20 }}>Code</th>
                             {years.map(year => (
                               <th key={year} colSpan={2} className="border px-1 py-0.5 text-center font-semibold text-[10px]" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>
                                 {year}
@@ -377,8 +377,8 @@ export default function ScenarioExplorerPage() {
                         <tbody>
                           {tableData.map((row, index) => (
                             <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                              <td className="border px-1 py-0.5 text-left font-medium text-[10px] whitespace-nowrap" style={{ color: '#163E64' }}>{row.serviceLine}</td>
-                              <td className="border px-1 py-0.5 text-center font-mono text-[10px]">{row.code}</td>
+                              <td className="border px-1 py-0.5 text-left font-medium text-[10px] whitespace-nowrap sticky left-0" style={{ color: '#163E64', backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9fafb', zIndex: 5 }}>{row.serviceLine}</td>
+                              <td className="border px-1 py-0.5 text-center font-mono text-[10px] sticky" style={{ left: '120px', backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9fafb', zIndex: 5 }}>{row.code}</td>
                               {years.map(year => (
                                 <>
                                   <td key={`${year}-ebitda`} className="border px-1 py-0.5 text-right font-mono text-[10px]">
@@ -392,8 +392,8 @@ export default function ScenarioExplorerPage() {
                             </tr>
                           ))}
                           <tr className="font-bold" style={{ backgroundColor: '#E8F0F2' }}>
-                            <td className="border px-1 py-0.5 text-left text-[10px] whitespace-nowrap" style={{ color: '#0B1F32' }}>{totalRow.serviceLine}</td>
-                            <td className="border px-1 py-0.5 text-center text-[10px]">{totalRow.code}</td>
+                            <td className="border px-1 py-0.5 text-left text-[10px] whitespace-nowrap sticky left-0" style={{ color: '#0B1F32', backgroundColor: '#E8F0F2', zIndex: 5 }}>{totalRow.serviceLine}</td>
+                            <td className="border px-1 py-0.5 text-center text-[10px] sticky" style={{ left: '120px', backgroundColor: '#E8F0F2', zIndex: 5 }}>{totalRow.code}</td>
                             {years.map(year => (
                               <>
                                 <td key={`${year}-ebitda`} className="border px-1 py-0.5 text-right font-mono text-[10px]" style={{ color: '#0B1F32' }}>
@@ -519,8 +519,8 @@ export default function ScenarioExplorerPage() {
                       <table className="text-xs border-collapse" style={{ minWidth: '1400px' }}>
                         <thead className="sticky top-0 bg-white" style={{ zIndex: 10 }}>
                           <tr>
-                            <th rowSpan={2} className="border px-1 py-0.5 text-left font-semibold text-[10px] whitespace-nowrap" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>Service Line</th>
-                            <th rowSpan={2} className="border px-1 py-0.5 text-center font-semibold text-[10px]" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>Code</th>
+                            <th rowSpan={2} className="border px-1 py-0.5 text-left font-semibold text-[10px] whitespace-nowrap sticky left-0" style={{ backgroundColor: '#163E64', color: '#ffffff', zIndex: 20 }}>Service Line</th>
+                            <th rowSpan={2} className="border px-1 py-0.5 text-center font-semibold text-[10px] sticky" style={{ backgroundColor: '#163E64', color: '#ffffff', left: '120px', zIndex: 20 }}>Code</th>
                             {years.map(year => (
                               <th key={year} colSpan={2} className="border px-1 py-0.5 text-center font-semibold text-[10px]" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>
                                 {year}
@@ -539,8 +539,8 @@ export default function ScenarioExplorerPage() {
                         <tbody>
                           {tableData.map((row, index) => (
                             <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                              <td className="border px-1 py-0.5 text-left font-medium text-[10px] whitespace-nowrap" style={{ color: '#163E64' }}>{row.serviceLine}</td>
-                              <td className="border px-1 py-0.5 text-center font-mono text-[10px]">{row.code}</td>
+                              <td className="border px-1 py-0.5 text-left font-medium text-[10px] whitespace-nowrap sticky left-0" style={{ color: '#163E64', backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9fafb', zIndex: 5 }}>{row.serviceLine}</td>
+                              <td className="border px-1 py-0.5 text-center font-mono text-[10px] sticky" style={{ left: '120px', backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9fafb', zIndex: 5 }}>{row.code}</td>
                               {years.map(year => (
                                 <>
                                   <td key={`${year}-ebitda`} className="border px-1 py-0.5 text-right font-mono text-[10px]">
@@ -554,8 +554,8 @@ export default function ScenarioExplorerPage() {
                             </tr>
                           ))}
                           <tr className="font-bold" style={{ backgroundColor: '#E8F0F2' }}>
-                            <td className="border px-1 py-0.5 text-left text-[10px] whitespace-nowrap" style={{ color: '#0B1F32' }}>{totalRow.serviceLine}</td>
-                            <td className="border px-1 py-0.5 text-center text-[10px]">{totalRow.code}</td>
+                            <td className="border px-1 py-0.5 text-left text-[10px] whitespace-nowrap sticky left-0" style={{ color: '#0B1F32', backgroundColor: '#E8F0F2', zIndex: 5 }}>{totalRow.serviceLine}</td>
+                            <td className="border px-1 py-0.5 text-center text-[10px] sticky" style={{ left: '120px', backgroundColor: '#E8F0F2', zIndex: 5 }}>{totalRow.code}</td>
                             {years.map(year => (
                               <>
                                 <td key={`${year}-ebitda`} className="border px-1 py-0.5 text-right font-mono text-[10px]" style={{ color: '#0B1F32' }}>
