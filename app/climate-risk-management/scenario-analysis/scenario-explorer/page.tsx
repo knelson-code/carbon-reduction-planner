@@ -579,7 +579,7 @@ export default function ScenarioExplorerPage() {
                   {/* Right: Fleet Assumptions or General Info */}
                   <div className="space-y-4">
                     {/* Fleet Assumptions - only for Combustion Engine Phase Out */}
-                    {'fleetAssumptions' in selectedSlider && (
+                    {'fleetAssumptions' in selectedSlider && selectedSlider.fleetAssumptions && (
                       <div className="bg-blue-50 rounded-lg p-4 border" style={{ borderColor: '#4682B4' }}>
                         <h3 className="text-sm font-semibold mb-3" style={{ color: '#163E64' }}>
                           Fleet Turnover Assumptions
@@ -590,7 +590,7 @@ export default function ScenarioExplorerPage() {
                               Turnover Period:
                             </span>
                             <span className="text-gray-700">
-                              {selectedSlider.fleetAssumptions.turnoverYears} years
+                              {selectedSlider.fleetAssumptions?.turnoverYears} years
                             </span>
                           </div>
                           <div className="flex items-start gap-2">
@@ -598,7 +598,7 @@ export default function ScenarioExplorerPage() {
                               Annual Renewal:
                             </span>
                             <span className="text-gray-700">
-                              {selectedSlider.fleetAssumptions.annualRenewalRate}% of fleet per year
+                              {selectedSlider.fleetAssumptions?.annualRenewalRate}% of fleet per year
                             </span>
                           </div>
                           <div className="flex items-start gap-2">
@@ -606,7 +606,7 @@ export default function ScenarioExplorerPage() {
                               ZEV Replacement:
                             </span>
                             <span className="text-gray-700">
-                              {selectedSlider.fleetAssumptions.zeroEmissionReplacementRate}% replaced with zero-emission vehicles
+                              {selectedSlider.fleetAssumptions?.zeroEmissionReplacementRate}% replaced with zero-emission vehicles
                             </span>
                           </div>
                           <div className="flex items-start gap-2">
@@ -614,7 +614,7 @@ export default function ScenarioExplorerPage() {
                               Not Replaced:
                             </span>
                             <span className="text-gray-700">
-                              {selectedSlider.fleetAssumptions.notReplacedRate}% not replaced (fleet reduction)
+                              {selectedSlider.fleetAssumptions?.notReplacedRate}% not replaced (fleet reduction)
                             </span>
                           </div>
                         </div>
