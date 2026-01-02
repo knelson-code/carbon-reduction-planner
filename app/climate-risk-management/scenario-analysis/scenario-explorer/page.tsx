@@ -16,16 +16,68 @@ const graphOptions = [
   { id: 'employee-health', label: 'Employee Health Risk' },
 ]
 
-// Policy slider configuration
+// Slider level options (discrete positions)
+const sliderLevels = ['None', 'Low', 'Medium', 'High', 'Very High'] as const
+type SliderLevel = typeof sliderLevels[number]
+
+// Policy slider configuration with assumptions
 const policySliders = [
-  { id: 'ice-controls', label: 'ICE Controls', min: 0, max: 100, defaultValue: 50 },
-  { id: 'traffic-mgmt', label: 'Traffic Management', min: 0, max: 100, defaultValue: 50 },
-  { id: 'ev-promotion', label: 'EV Promotion', min: 0, max: 100, defaultValue: 50 },
-  { id: 'active-transport', label: 'Active Transport', min: 0, max: 100, defaultValue: 50 },
-  { id: 'carbon-pricing', label: 'Carbon Pricing', min: 0, max: 100, defaultValue: 50 },
-  { id: 'public-transport', label: 'Public Transport', min: 0, max: 100, defaultValue: 50 },
-  { id: 'autonomous-vehicles', label: 'Autonomous Vehicles', min: 0, max: 100, defaultValue: 50 },
-  { id: 'alternative-fuels', label: 'Alternative Fuels', min: 0, max: 100, defaultValue: 50 },
+  { 
+    id: 'ice-controls', 
+    label: 'ICE Controls',
+    description: 'Restrictions and controls on Internal Combustion Engine vehicles in urban areas.',
+    assumptions: 'Implementation starts in 2026 with gradual phase-in over 5 years.',
+    startYear: 2026
+  },
+  { 
+    id: 'traffic-mgmt', 
+    label: 'Traffic Management',
+    description: 'Smart traffic management systems and congestion pricing to reduce vehicle use.',
+    assumptions: 'Leverages existing infrastructure with incremental technology deployment.',
+    startYear: 2025
+  },
+  { 
+    id: 'ev-promotion', 
+    label: 'EV Promotion',
+    description: 'Incentives and subsidies for electric vehicle adoption.',
+    assumptions: 'Includes purchase incentives, tax benefits, and charging infrastructure development.',
+    startYear: 2024
+  },
+  { 
+    id: 'active-transport', 
+    label: 'Active Transport',
+    description: 'Infrastructure for walking, cycling, and other non-motorized transport.',
+    assumptions: 'Requires urban planning changes and dedicated infrastructure investment.',
+    startYear: 2025
+  },
+  { 
+    id: 'carbon-pricing', 
+    label: 'Carbon Pricing',
+    description: 'Tax or fee on carbon emissions from transportation and fuel use.',
+    assumptions: 'Price increases annually to incentivize emissions reduction.',
+    startYear: 2026
+  },
+  { 
+    id: 'public-transport', 
+    label: 'Public Transport',
+    description: 'Expansion and improvement of public transportation networks.',
+    assumptions: 'Includes new routes, frequency improvements, and fleet modernization.',
+    startYear: 2025
+  },
+  { 
+    id: 'autonomous-vehicles', 
+    label: 'Autonomous Vehicles',
+    description: 'Support for autonomous and shared mobility services.',
+    assumptions: 'Technology adoption curve assumes gradual regulatory approval.',
+    startYear: 2027
+  },
+  { 
+    id: 'alternative-fuels', 
+    label: 'Alternative Fuels',
+    description: 'Promotion of hydrogen, biofuels, and other alternative fuel sources.',
+    assumptions: 'Requires fuel production infrastructure and vehicle compatibility.',
+    startYear: 2026
+  },
 ]
 
 // Generate revenue projection data from actual year-by-year values
@@ -84,9 +136,10 @@ export default function ScenarioExplorerPage() {
   const [rightGraph, setRightGraph] = useState('profitability')
   const [timeFrame, setTimeFrame] = useState<'5year' | '10year'>('10year')
   const [sliderValues, setSliderValues] = useState<Record<string, number>>(
-    policySliders.reduce((acc, slider) => ({ ...acc, [slider.id]: slider.defaultValue }), {})
+    policySliders.reduce((acc, slider) => ({ ...acc, [slider.id]: 2 }), {}) // Default to "Medium" (index 2)
   )
   const [chartData, setChartData] = useState(generateRevenueData(timeFrame))
+  const [selectedSliderForAssumptions, setSelectedSliderForAssumptions] = useState<string | null>(null)
 
   // Recalculate chart data when timeframe changes
   useEffect(() => {
@@ -106,10 +159,22 @@ export default function ScenarioExplorerPage() {
   const resetSliders = () => {
     const resetValues = policySliders.reduce((acc, slider) => ({ 
       ...acc, 
-      [slider.id]: slider.defaultValue 
+      [slider.id]: 2 // Reset to "Medium"
     }), {})
     setSliderValues(resetValues)
   }
+
+  const openAssumptions = (sliderId: string) => {
+    setSelectedSliderForAssumptions(sliderId)
+  }
+
+  const closeAssumptions = () => {
+    setSelectedSliderForAssumptions(null)
+  }
+
+  const selectedSlider = selectedSliderForAssumptions 
+    ? policySliders.find(s => s.id === selectedSliderForAssumptions)
+    : null
 
   if (status === "loading") {
     return <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center"><div className="text-lg text-gray-600">Loading...</div></div>
@@ -242,32 +307,45 @@ export default function ScenarioExplorerPage() {
                 </button>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {policySliders.map(slider => (
                   <div key={slider.id} className="space-y-1">
                     <div className="flex items-center justify-between">
-                      <label className="text-xs font-medium" style={{ color: '#163E64' }}>
-                        {slider.label}
-                      </label>
-                      <span className="text-xs font-mono" style={{ color: '#6C757D' }}>
-                        {sliderValues[slider.id]}%
+                      <div className="flex items-center gap-2">
+                        <label className="text-xs font-medium" style={{ color: '#163E64' }}>
+                          {slider.label}
+                        </label>
+                        <button
+                          onClick={() => openAssumptions(slider.id)}
+                          className="text-gray-400 hover:text-gray-600 text-xs"
+                          title="View assumptions"
+                        >
+                          ⋮
+                        </button>
+                      </div>
+                      <span className="text-xs font-semibold" style={{ color: '#163E64' }}>
+                        {sliderLevels[sliderValues[slider.id]]}
                       </span>
                     </div>
                     <div className="relative">
                       <input
                         type="range"
-                        min={slider.min}
-                        max={slider.max}
+                        min={0}
+                        max={4}
+                        step={1}
                         value={sliderValues[slider.id]}
                         onChange={(e) => handleSliderChange(slider.id, parseInt(e.target.value))}
                         className="w-full h-2 rounded-lg appearance-none cursor-pointer"
                         style={{
-                          background: `linear-gradient(to right, #FF5B35 0%, #FF5B35 ${sliderValues[slider.id]}%, #d4dfe0 ${sliderValues[slider.id]}%, #d4dfe0 100%)`
+                          background: `linear-gradient(to right, #FF5B35 0%, #FF5B35 ${(sliderValues[slider.id] / 4) * 100}%, #d4dfe0 ${(sliderValues[slider.id] / 4) * 100}%, #d4dfe0 100%)`
                         }}
                       />
-                      <div className="flex justify-between mt-1">
-                        <span className="text-xs" style={{ color: '#6C757D' }}>status quo</span>
-                        <span className="text-xs" style={{ color: '#6C757D' }}>highly aggressive</span>
+                      <div className="flex justify-between mt-1 text-[10px]" style={{ color: '#6C757D' }}>
+                        {sliderLevels.map((level, index) => (
+                          <span key={level} className={sliderValues[slider.id] === index ? 'font-semibold' : ''}>
+                            {level}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -284,6 +362,117 @@ export default function ScenarioExplorerPage() {
             </div>
           </div>
         </div>
+
+        {/* Assumptions Popup Panel - Slides up from bottom */}
+        {selectedSliderForAssumptions && selectedSlider && (
+          <>
+            {/* Backdrop */}
+            <div 
+              className="fixed inset-0 bg-black bg-opacity-30 z-40"
+              onClick={closeAssumptions}
+            />
+            
+            {/* Popup Panel */}
+            <div 
+              className="fixed bottom-0 left-0 right-0 bg-white border-t-2 shadow-2xl z-50 animate-slide-up"
+              style={{ 
+                borderColor: '#163E64',
+                maxHeight: '60vh',
+                animation: 'slideUp 0.3s ease-out'
+              }}
+            >
+              <div className="max-w-6xl mx-auto p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1">
+                    <h2 className="text-xl font-bold mb-2" style={{ color: '#0B1F32' }}>
+                      {selectedSlider.label}
+                    </h2>
+                    <p className="text-sm text-gray-600 mb-4">
+                      {selectedSlider.description}
+                    </p>
+                  </div>
+                  <button
+                    onClick={closeAssumptions}
+                    className="text-2xl text-gray-400 hover:text-gray-600 ml-4"
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Left: Assumptions and Settings */}
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="text-sm font-semibold mb-2" style={{ color: '#163E64' }}>
+                        Key Assumptions
+                      </h3>
+                      <p className="text-sm text-gray-700">
+                        {selectedSlider.assumptions}
+                      </p>
+                    </div>
+
+                    <div>
+                      <h3 className="text-sm font-semibold mb-2" style={{ color: '#163E64' }}>
+                        Implementation Start Year
+                      </h3>
+                      <input
+                        type="number"
+                        min={2024}
+                        max={2035}
+                        defaultValue={selectedSlider.startYear}
+                        className="w-32 px-3 py-2 border rounded text-sm"
+                        style={{ borderColor: '#d4dfe0' }}
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Year when policy implementation begins
+                      </p>
+                    </div>
+
+                    <div>
+                      <h3 className="text-sm font-semibold mb-2" style={{ color: '#163E64' }}>
+                        Current Setting
+                      </h3>
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg font-bold" style={{ color: '#FF5B35' }}>
+                          {sliderLevels[sliderValues[selectedSlider.id]]}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          (Level {sliderValues[selectedSlider.id] + 1} of 5)
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right: Additional Info or Related Graphs */}
+                  <div className="bg-gray-50 rounded-lg p-4 border" style={{ borderColor: '#d4dfe0' }}>
+                    <h3 className="text-sm font-semibold mb-3" style={{ color: '#163E64' }}>
+                      Related Impact Factors
+                    </h3>
+                    <div className="space-y-2 text-sm text-gray-700">
+                      <p>• Urban service revenue impact: Moderate to High</p>
+                      <p>• Interurban service revenue impact: Low to Moderate</p>
+                      <p>• Safety & Operations revenue impact: Moderate</p>
+                      <p>• Implementation timeframe: 3-5 years</p>
+                      <p>• Market adoption curve: S-curve trajectory</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Add animation CSS */}
+            <style jsx>{`
+              @keyframes slideUp {
+                from {
+                  transform: translateY(100%);
+                }
+                to {
+                  transform: translateY(0);
+                }
+              }
+            `}</style>
+          </>
+        )}
       </div>
     </div>
   )
