@@ -328,9 +328,34 @@ export default function ScenarioExplorerPage() {
                 {leftGraph === 'ebitda-table' && (() => {
                   const { tableData, totalRow, years } = generateEBITDATable()
                   return (
-                    <div className="h-full overflow-auto border rounded" style={{ borderColor: '#d4dfe0' }}>
+                    <div 
+                      className="h-full border rounded" 
+                      style={{ 
+                        borderColor: '#d4dfe0',
+                        overflow: 'auto',
+                        scrollbarWidth: 'thin', // For Firefox
+                        scrollbarColor: '#163E64 #e5e7eb' // For Firefox
+                      }}
+                    >
+                      <style jsx>{`
+                        div::-webkit-scrollbar {
+                          width: 12px;
+                          height: 12px;
+                        }
+                        div::-webkit-scrollbar-track {
+                          background: #e5e7eb;
+                          border-radius: 6px;
+                        }
+                        div::-webkit-scrollbar-thumb {
+                          background: #163E64;
+                          border-radius: 6px;
+                        }
+                        div::-webkit-scrollbar-thumb:hover {
+                          background: #0B1F32;
+                        }
+                      `}</style>
                       <table className="text-xs border-collapse" style={{ minWidth: '1400px' }}>
-                        <thead className="sticky top-0 bg-white">
+                        <thead className="sticky top-0 bg-white" style={{ zIndex: 10 }}>
                           <tr>
                             <th className="border px-2 py-1 text-left font-semibold" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>Service Line</th>
                             <th className="border px-2 py-1 text-center font-semibold" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>Code</th>
