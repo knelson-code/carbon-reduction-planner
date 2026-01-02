@@ -28,38 +28,70 @@ const policySliders = [
   { id: 'alternative-fuels', label: 'Alternative Fuels', min: 0, max: 100, defaultValue: 50 },
 ]
 
-// Generate sample data for EBITDA growth - will be replaced with real calculation
-const generateEBITDAData = (sliderValues: Record<string, number>) => {
+// Generate revenue projection data with actual values
+const generateRevenueData = (timeFrame: '5year' | '10year') => {
   const years = []
-  const currentYear = new Date().getFullYear()
+  const startYear = 2024
+  const endYear = timeFrame === '5year' ? 2030 : 2035
   
-  // Base growth factors influenced by policies
-  const policyImpact = Object.values(sliderValues).reduce((sum, val) => sum + val, 0) / (100 * Object.keys(sliderValues).length)
-  
-  for (let year = currentYear; year <= currentYear + 30; year++) {
-    const timeProgress = (year - currentYear) / 30
-    const growthMultiplier = 1 + (timeProgress * policyImpact * 0.5)
+  for (let year = startYear; year <= endYear; year++) {
+    const dataPoint: any = { year }
     
-    years.push({
-      year,
-      consulting: Math.round(50 + (timeProgress * 30 * growthMultiplier)),
-      technology: Math.round(80 + (timeProgress * 50 * growthMultiplier)),
-      training: Math.round(40 + (timeProgress * 25 * growthMultiplier)),
-      research: Math.round(30 + (timeProgress * 20 * growthMultiplier)),
-      advisory: Math.round(60 + (timeProgress * 35 * growthMultiplier)),
+    // Interpolate each service line
+    Object.entries(revenueData).forEach(([key, values]) => {
+      dataPoint[key] = Number(interpolateRevenue(
+        2024, values[2024],
+        2030, values[2030],
+        2035, values[2035],
+        year
+      ).toFixed(1))
     })
+    
+    years.push(dataPoint)
   }
   
   return years
 }
 
-// Color palette for service lines (similar to En-ROADS aesthetic)
+// Color palette matching the revenue projection table
 const serviceLineColors = {
-  consulting: '#8B4513',
-  technology: '#FF6B35',
-  training: '#4A90E2',
-  research: '#50C878',
-  advisory: '#9B59B6',
+  urbanON: '#1B3A5C',      // Dark Navy Blue
+  urbanOFF: '#4682B4',     // Steel Blue
+  urbanLEZ: '#87CEEB',     // Sky Blue
+  urbanOTH: '#AFEEEE',     // Pale Cyan
+  interurbanTOL: '#556B2F', // Forest/Olive Green
+  interurbanSystems: '#4CBB17', // Kelly Green
+  interurbanMTRK: '#CCFF00', // Lime/Electric Green
+  safetyOSAFE: '#8B008B',  // Deep Magenta
+  safetyODATA: '#FF1493',  // Bright Pink
+  safetyOMAPP: '#FFB6C1',  // Pastel Pink
+}
+
+// Actual revenue data from the table (in millions €)
+const revenueData = {
+  urbanON: { 2024: 22.4, 2030: 39.3, 2035: 86.1 },
+  urbanOFF: { 2024: 4.6, 2030: 10.5, 2035: 23.0 },
+  urbanLEZ: { 2024: 2.6, 2030: 11.8, 2035: 25.8 },
+  urbanOTH: { 2024: 3.1, 2030: 6.6, 2035: 14.4 },
+  interurbanTOL: { 2024: 5.6, 2030: 21.0, 2035: 45.9 },
+  interurbanSystems: { 2024: 1.5, 2030: 5.2, 2035: 11.5 },
+  interurbanMTRK: { 2024: 3.6, 2030: 10.5, 2035: 23.0 },
+  safetyOSAFE: { 2024: 7.1, 2030: 21.0, 2035: 45.9 },
+  safetyODATA: { 2024: 0.0, 2030: 3.9, 2035: 8.6 },
+  safetyOMAPP: { 2024: 0.0, 2030: 1.3, 2035: 2.9 },
+}
+
+// Interpolate revenue between data points
+const interpolateRevenue = (startYear: number, startValue: number, midYear: number, midValue: number, endYear: number, endValue: number, targetYear: number): number => {
+  if (targetYear <= midYear) {
+    // Interpolate between start and mid
+    const ratio = (targetYear - startYear) / (midYear - startYear)
+    return startValue + (midValue - startValue) * ratio
+  } else {
+    // Interpolate between mid and end
+    const ratio = (targetYear - midYear) / (endYear - midYear)
+    return midValue + (endValue - midValue) * ratio
+  }
 }
 
 export default function ScenarioExplorerPage() {
@@ -68,15 +100,16 @@ export default function ScenarioExplorerPage() {
 
   const [leftGraph, setLeftGraph] = useState('ebitda')
   const [rightGraph, setRightGraph] = useState('profitability')
+  const [timeFrame, setTimeFrame] = useState<'5year' | '10year'>('10year')
   const [sliderValues, setSliderValues] = useState<Record<string, number>>(
     policySliders.reduce((acc, slider) => ({ ...acc, [slider.id]: slider.defaultValue }), {})
   )
-  const [chartData, setChartData] = useState(generateEBITDAData(sliderValues))
+  const [chartData, setChartData] = useState(generateRevenueData(timeFrame))
 
-  // Recalculate chart data when sliders change
+  // Recalculate chart data when timeframe changes
   useEffect(() => {
-    setChartData(generateEBITDAData(sliderValues))
-  }, [sliderValues])
+    setChartData(generateRevenueData(timeFrame))
+  }, [timeFrame])
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -114,16 +147,27 @@ export default function ScenarioExplorerPage() {
             {/* Left Graph */}
             <div className="flex flex-col bg-gray-50 rounded-lg p-4 border" style={{ borderColor: '#d4dfe0' }}>
               <div className="flex items-center justify-between mb-3">
-                <select
-                  value={leftGraph}
-                  onChange={(e) => setLeftGraph(e.target.value)}
-                  className="text-sm font-semibold px-3 py-1.5 rounded border"
-                  style={{ backgroundColor: '#ffffff', color: '#0B1F32', borderColor: '#d4dfe0' }}
-                >
-                  {graphOptions.map(option => (
-                    <option key={option.id} value={option.id}>{option.label}</option>
-                  ))}
-                </select>
+                <div className="flex items-center gap-3">
+                  <select
+                    value={leftGraph}
+                    onChange={(e) => setLeftGraph(e.target.value)}
+                    className="text-sm font-semibold px-3 py-1.5 rounded border"
+                    style={{ backgroundColor: '#ffffff', color: '#0B1F32', borderColor: '#d4dfe0' }}
+                  >
+                    {graphOptions.map(option => (
+                      <option key={option.id} value={option.id}>{option.label}</option>
+                    ))}
+                  </select>
+                  <select
+                    value={timeFrame}
+                    onChange={(e) => setTimeFrame(e.target.value as '5year' | '10year')}
+                    className="text-xs px-2 py-1 rounded border"
+                    style={{ backgroundColor: '#ffffff', color: '#163E64', borderColor: '#d4dfe0' }}
+                  >
+                    <option value="5year">5 Years (2024-2030)</option>
+                    <option value="10year">10 Years (2024-2035)</option>
+                  </select>
+                </div>
                 <button className="text-gray-400 hover:text-gray-600">⋮</button>
               </div>
               
@@ -139,7 +183,7 @@ export default function ScenarioExplorerPage() {
                       />
                       <YAxis 
                         tick={{ fontSize: 11 }}
-                        label={{ value: 'EBITDA (Million €)', angle: -90, position: 'insideLeft', fontSize: 12 }}
+                        label={{ value: 'Revenue (Million €)', angle: -90, position: 'insideLeft', fontSize: 12 }}
                       />
                       <Tooltip 
                         contentStyle={{ 
@@ -150,49 +194,22 @@ export default function ScenarioExplorerPage() {
                         }}
                       />
                       <Legend 
-                        wrapperStyle={{ fontSize: '11px' }}
+                        wrapperStyle={{ fontSize: '10px' }}
                         iconType="square"
                       />
-                      <Area 
-                        type="monotone" 
-                        dataKey="consulting" 
-                        stackId="1" 
-                        stroke={serviceLineColors.consulting} 
-                        fill={serviceLineColors.consulting}
-                        name="Consulting"
-                      />
-                      <Area 
-                        type="monotone" 
-                        dataKey="technology" 
-                        stackId="1" 
-                        stroke={serviceLineColors.technology} 
-                        fill={serviceLineColors.technology}
-                        name="Technology"
-                      />
-                      <Area 
-                        type="monotone" 
-                        dataKey="training" 
-                        stackId="1" 
-                        stroke={serviceLineColors.training} 
-                        fill={serviceLineColors.training}
-                        name="Training"
-                      />
-                      <Area 
-                        type="monotone" 
-                        dataKey="research" 
-                        stackId="1" 
-                        stroke={serviceLineColors.research} 
-                        fill={serviceLineColors.research}
-                        name="Research"
-                      />
-                      <Area 
-                        type="monotone" 
-                        dataKey="advisory" 
-                        stackId="1" 
-                        stroke={serviceLineColors.advisory} 
-                        fill={serviceLineColors.advisory}
-                        name="Advisory"
-                      />
+                      {/* Urban services */}
+                      <Area type="monotone" dataKey="urbanON" stackId="1" stroke={serviceLineColors.urbanON} fill={serviceLineColors.urbanON} name="Urban ON" />
+                      <Area type="monotone" dataKey="urbanOFF" stackId="1" stroke={serviceLineColors.urbanOFF} fill={serviceLineColors.urbanOFF} name="Urban OFF" />
+                      <Area type="monotone" dataKey="urbanLEZ" stackId="1" stroke={serviceLineColors.urbanLEZ} fill={serviceLineColors.urbanLEZ} name="Urban LEZ" />
+                      <Area type="monotone" dataKey="urbanOTH" stackId="1" stroke={serviceLineColors.urbanOTH} fill={serviceLineColors.urbanOTH} name="Urban OTH" />
+                      {/* Interurban services */}
+                      <Area type="monotone" dataKey="interurbanTOL" stackId="1" stroke={serviceLineColors.interurbanTOL} fill={serviceLineColors.interurbanTOL} name="Interurban TOL" />
+                      <Area type="monotone" dataKey="interurbanSystems" stackId="1" stroke={serviceLineColors.interurbanSystems} fill={serviceLineColors.interurbanSystems} name="Interurban Systems" />
+                      <Area type="monotone" dataKey="interurbanMTRK" stackId="1" stroke={serviceLineColors.interurbanMTRK} fill={serviceLineColors.interurbanMTRK} name="Interurban M-TRK" />
+                      {/* Safety & Operations services */}
+                      <Area type="monotone" dataKey="safetyOSAFE" stackId="1" stroke={serviceLineColors.safetyOSAFE} fill={serviceLineColors.safetyOSAFE} name="Safety SAFE" />
+                      <Area type="monotone" dataKey="safetyODATA" stackId="1" stroke={serviceLineColors.safetyODATA} fill={serviceLineColors.safetyODATA} name="Safety DATA" />
+                      <Area type="monotone" dataKey="safetyOMAPP" stackId="1" stroke={serviceLineColors.safetyOMAPP} fill={serviceLineColors.safetyOMAPP} name="Safety M-APP" />
                     </AreaChart>
                   </ResponsiveContainer>
                 )}
