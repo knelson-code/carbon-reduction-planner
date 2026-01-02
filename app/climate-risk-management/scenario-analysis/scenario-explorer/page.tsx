@@ -421,21 +421,162 @@ export default function ScenarioExplorerPage() {
             {/* Right Graph */}
             <div className="flex flex-col bg-gray-50 rounded-lg p-4 border" style={{ borderColor: '#d4dfe0' }}>
               <div className="flex items-center justify-between mb-3">
-                <select
-                  value={rightGraph}
-                  onChange={(e) => setRightGraph(e.target.value)}
-                  className="text-sm font-semibold px-3 py-1.5 rounded border"
-                  style={{ backgroundColor: '#ffffff', color: '#0B1F32', borderColor: '#d4dfe0' }}
-                >
-                  {graphOptions.map(option => (
-                    <option key={option.id} value={option.id}>{option.label}</option>
-                  ))}
-                </select>
+                <div className="flex items-center gap-3">
+                  <select
+                    value={rightGraph}
+                    onChange={(e) => setRightGraph(e.target.value)}
+                    className="text-sm font-semibold px-3 py-1.5 rounded border"
+                    style={{ backgroundColor: '#ffffff', color: '#0B1F32', borderColor: '#d4dfe0' }}
+                  >
+                    {graphOptions.map(option => (
+                      <option key={option.id} value={option.id}>{option.label}</option>
+                    ))}
+                  </select>
+                  <select
+                    value={timeFrame}
+                    onChange={(e) => setTimeFrame(e.target.value as '5year' | '10year')}
+                    className="text-xs px-2 py-1 rounded border"
+                    style={{ backgroundColor: '#ffffff', color: '#163E64', borderColor: '#d4dfe0' }}
+                  >
+                    <option value="5year">5 Years (2024-2030)</option>
+                    <option value="10year">10 Years (2024-2035)</option>
+                  </select>
+                </div>
                 <button className="text-gray-400 hover:text-gray-600">⋮</button>
               </div>
               
-              <div className="flex items-center justify-center flex-1 text-gray-400 text-sm">
-                Chart data coming soon...
+              <div className="flex-1">
+                {rightGraph === 'ebitda' && (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 20 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                      <XAxis 
+                        dataKey="year" 
+                        tick={{ fontSize: 11 }}
+                        label={{ value: 'Year', position: 'insideBottom', offset: -10, fontSize: 12 }}
+                      />
+                      <YAxis 
+                        tick={{ fontSize: 11 }}
+                        label={{ value: 'Revenue (Million €)', angle: -90, position: 'insideLeft', fontSize: 12 }}
+                      />
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: '#ffffff', 
+                          border: '1px solid #d4dfe0',
+                          borderRadius: '6px',
+                          fontSize: '12px'
+                        }}
+                      />
+                      <Legend 
+                        wrapperStyle={{ fontSize: '10px' }}
+                        iconType="square"
+                      />
+                      {/* Urban services */}
+                      <Area type="monotone" dataKey="urbanON" stackId="1" stroke={serviceLineColors.urbanON} fill={serviceLineColors.urbanON} name="Urban ON" />
+                      <Area type="monotone" dataKey="urbanOFF" stackId="1" stroke={serviceLineColors.urbanOFF} fill={serviceLineColors.urbanOFF} name="Urban OFF" />
+                      <Area type="monotone" dataKey="urbanLEZ" stackId="1" stroke={serviceLineColors.urbanLEZ} fill={serviceLineColors.urbanLEZ} name="Urban LEZ" />
+                      <Area type="monotone" dataKey="urbanOTH" stackId="1" stroke={serviceLineColors.urbanOTH} fill={serviceLineColors.urbanOTH} name="Urban OTH" />
+                      {/* Interurban services */}
+                      <Area type="monotone" dataKey="interurbanTOL" stackId="1" stroke={serviceLineColors.interurbanTOL} fill={serviceLineColors.interurbanTOL} name="Interurban TOL" />
+                      <Area type="monotone" dataKey="interurbanSystems" stackId="1" stroke={serviceLineColors.interurbanSystems} fill={serviceLineColors.interurbanSystems} name="Interurban Systems" />
+                      <Area type="monotone" dataKey="interurbanMTRK" stackId="1" stroke={serviceLineColors.interurbanMTRK} fill={serviceLineColors.interurbanMTRK} name="Interurban M-TRK" />
+                      {/* Safety & Operations services */}
+                      <Area type="monotone" dataKey="safetyOSAFE" stackId="1" stroke={serviceLineColors.safetyOSAFE} fill={serviceLineColors.safetyOSAFE} name="Safety SAFE" />
+                      <Area type="monotone" dataKey="safetyODATA" stackId="1" stroke={serviceLineColors.safetyODATA} fill={serviceLineColors.safetyODATA} name="Safety DATA" />
+                      <Area type="monotone" dataKey="safetyOMAPP" stackId="1" stroke={serviceLineColors.safetyOMAPP} fill={serviceLineColors.safetyOMAPP} name="Safety M-APP" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                )}
+                {rightGraph === 'ebitda-table' && (() => {
+                  const { tableData, totalRow, years } = generateEBITDATable()
+                  return (
+                    <div 
+                      className="h-full border rounded" 
+                      style={{ 
+                        borderColor: '#d4dfe0',
+                        overflow: 'auto',
+                        scrollbarWidth: 'thin',
+                        scrollbarColor: '#163E64 #e5e7eb'
+                      }}
+                    >
+                      <style jsx>{`
+                        div::-webkit-scrollbar {
+                          width: 12px;
+                          height: 12px;
+                        }
+                        div::-webkit-scrollbar-track {
+                          background: #e5e7eb;
+                          border-radius: 6px;
+                        }
+                        div::-webkit-scrollbar-thumb {
+                          background: #163E64;
+                          border-radius: 6px;
+                        }
+                        div::-webkit-scrollbar-thumb:hover {
+                          background: #0B1F32;
+                        }
+                      `}</style>
+                      <table className="text-xs border-collapse" style={{ minWidth: '1400px' }}>
+                        <thead className="sticky top-0 bg-white" style={{ zIndex: 10 }}>
+                          <tr>
+                            <th rowSpan={2} className="border px-1 py-0.5 text-left font-semibold text-[10px] whitespace-nowrap" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>Service Line</th>
+                            <th rowSpan={2} className="border px-1 py-0.5 text-center font-semibold text-[10px]" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>Code</th>
+                            {years.map(year => (
+                              <th key={year} colSpan={2} className="border px-1 py-0.5 text-center font-semibold text-[10px]" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>
+                                {year}
+                              </th>
+                            ))}
+                          </tr>
+                          <tr>
+                            {years.map(year => (
+                              <>
+                                <th key={`${year}-ebitda`} className="border px-1 py-0.5 text-center font-semibold text-[9px]" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>EBITDA</th>
+                                <th key={`${year}-cagr`} className="border px-1 py-0.5 text-center font-semibold text-[9px]" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>CAGR</th>
+                              </>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {tableData.map((row, index) => (
+                            <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                              <td className="border px-1 py-0.5 text-left font-medium text-[10px] whitespace-nowrap" style={{ color: '#163E64' }}>{row.serviceLine}</td>
+                              <td className="border px-1 py-0.5 text-center font-mono text-[10px]">{row.code}</td>
+                              {years.map(year => (
+                                <>
+                                  <td key={`${year}-ebitda`} className="border px-1 py-0.5 text-right font-mono text-[10px]">
+                                    €{row[`year${year}`].toFixed(2)}
+                                  </td>
+                                  <td key={`${year}-cagr`} className="border px-1 py-0.5 text-right text-[10px]">
+                                    {row.cagr.toFixed(2)}%
+                                  </td>
+                                </>
+                              ))}
+                            </tr>
+                          ))}
+                          <tr className="font-bold" style={{ backgroundColor: '#E8F0F2' }}>
+                            <td className="border px-1 py-0.5 text-left text-[10px] whitespace-nowrap" style={{ color: '#0B1F32' }}>{totalRow.serviceLine}</td>
+                            <td className="border px-1 py-0.5 text-center text-[10px]">{totalRow.code}</td>
+                            {years.map(year => (
+                              <>
+                                <td key={`${year}-ebitda`} className="border px-1 py-0.5 text-right font-mono text-[10px]" style={{ color: '#0B1F32' }}>
+                                  €{totalRow[`year${year}`].toFixed(2)}
+                                </td>
+                                <td key={`${year}-cagr`} className="border px-1 py-0.5 text-right text-[10px]" style={{ color: '#0B1F32' }}>
+                                  -
+                                </td>
+                              </>
+                            ))}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  )
+                })()}
+                {rightGraph !== 'ebitda' && rightGraph !== 'ebitda-table' && (
+                  <div className="flex items-center justify-center h-full text-gray-400 text-sm">
+                    Chart data coming soon...
+                  </div>
+                )}
               </div>
             </div>
           </div>
