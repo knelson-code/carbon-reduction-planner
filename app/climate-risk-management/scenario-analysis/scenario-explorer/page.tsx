@@ -328,8 +328,8 @@ export default function ScenarioExplorerPage() {
                 {leftGraph === 'ebitda-table' && (() => {
                   const { tableData, totalRow, years } = generateEBITDATable()
                   return (
-                    <div className="h-full overflow-auto">
-                      <table className="w-full text-xs border-collapse">
+                    <div className="h-full overflow-auto border rounded" style={{ borderColor: '#d4dfe0' }}>
+                      <table className="text-xs border-collapse" style={{ minWidth: '1400px' }}>
                         <thead className="sticky top-0 bg-white">
                           <tr>
                             <th className="border px-2 py-1 text-left font-semibold" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>Service Line</th>
