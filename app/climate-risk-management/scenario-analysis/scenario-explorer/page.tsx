@@ -357,10 +357,10 @@ export default function ScenarioExplorerPage() {
                       <table className="text-xs border-collapse" style={{ minWidth: '1400px' }}>
                         <thead className="sticky top-0 bg-white" style={{ zIndex: 10 }}>
                           <tr>
-                            <th rowSpan={2} className="border px-2 py-1 text-left font-semibold text-xs" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>Service Line</th>
-                            <th rowSpan={2} className="border px-2 py-1 text-center font-semibold text-xs" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>Code</th>
+                            <th rowSpan={2} className="border px-1 py-0.5 text-left font-semibold text-[10px] whitespace-nowrap" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>Service Line</th>
+                            <th rowSpan={2} className="border px-1 py-0.5 text-center font-semibold text-[10px]" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>Code</th>
                             {years.map(year => (
-                              <th key={year} colSpan={2} className="border px-2 py-1 text-center font-semibold text-xs" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>
+                              <th key={year} colSpan={2} className="border px-1 py-0.5 text-center font-semibold text-[10px]" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>
                                 {year}
                               </th>
                             ))}
@@ -368,8 +368,8 @@ export default function ScenarioExplorerPage() {
                           <tr>
                             {years.map(year => (
                               <>
-                                <th key={`${year}-ebitda`} className="border px-1 py-1 text-center font-semibold text-[10px]" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>EBITDA</th>
-                                <th key={`${year}-cagr`} className="border px-1 py-1 text-center font-semibold text-[10px]" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>CAGR</th>
+                                <th key={`${year}-ebitda`} className="border px-1 py-0.5 text-center font-semibold text-[9px]" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>EBITDA</th>
+                                <th key={`${year}-cagr`} className="border px-1 py-0.5 text-center font-semibold text-[9px]" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>CAGR</th>
                               </>
                             ))}
                           </tr>
@@ -377,14 +377,14 @@ export default function ScenarioExplorerPage() {
                         <tbody>
                           {tableData.map((row, index) => (
                             <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                              <td className="border px-2 py-1 text-left font-medium text-xs" style={{ color: '#163E64' }}>{row.serviceLine}</td>
-                              <td className="border px-2 py-1 text-center font-mono text-xs">{row.code}</td>
+                              <td className="border px-1 py-0.5 text-left font-medium text-[10px] whitespace-nowrap" style={{ color: '#163E64' }}>{row.serviceLine}</td>
+                              <td className="border px-1 py-0.5 text-center font-mono text-[10px]">{row.code}</td>
                               {years.map(year => (
                                 <>
-                                  <td key={`${year}-ebitda`} className="border px-2 py-1 text-right font-mono text-xs">
+                                  <td key={`${year}-ebitda`} className="border px-1 py-0.5 text-right font-mono text-[10px]">
                                     €{row[`year${year}`].toFixed(2)}
                                   </td>
-                                  <td key={`${year}-cagr`} className="border px-2 py-1 text-right text-xs">
+                                  <td key={`${year}-cagr`} className="border px-1 py-0.5 text-right text-[10px]">
                                     {row.cagr.toFixed(2)}%
                                   </td>
                                 </>
@@ -392,14 +392,14 @@ export default function ScenarioExplorerPage() {
                             </tr>
                           ))}
                           <tr className="font-bold" style={{ backgroundColor: '#E8F0F2' }}>
-                            <td className="border px-2 py-1 text-left text-xs" style={{ color: '#0B1F32' }}>{totalRow.serviceLine}</td>
-                            <td className="border px-2 py-1 text-center text-xs">{totalRow.code}</td>
+                            <td className="border px-1 py-0.5 text-left text-[10px] whitespace-nowrap" style={{ color: '#0B1F32' }}>{totalRow.serviceLine}</td>
+                            <td className="border px-1 py-0.5 text-center text-[10px]">{totalRow.code}</td>
                             {years.map(year => (
                               <>
-                                <td key={`${year}-ebitda`} className="border px-2 py-1 text-right font-mono text-xs" style={{ color: '#0B1F32' }}>
+                                <td key={`${year}-ebitda`} className="border px-1 py-0.5 text-right font-mono text-[10px]" style={{ color: '#0B1F32' }}>
                                   €{totalRow[`year${year}`].toFixed(2)}
                                 </td>
-                                <td key={`${year}-cagr`} className="border px-2 py-1 text-right text-xs" style={{ color: '#0B1F32' }}>
+                                <td key={`${year}-cagr`} className="border px-1 py-0.5 text-right text-[10px]" style={{ color: '#0B1F32' }}>
                                   -
                                 </td>
                               </>
