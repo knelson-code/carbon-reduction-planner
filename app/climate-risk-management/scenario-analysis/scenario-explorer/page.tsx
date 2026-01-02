@@ -23,11 +23,24 @@ type SliderLevel = typeof sliderLevels[number]
 // Policy slider configuration with assumptions
 const policySliders = [
   { 
-    id: 'ice-controls', 
-    label: 'ICE Controls',
-    description: 'Restrictions and controls on Internal Combustion Engine vehicles in urban areas.',
-    assumptions: 'Implementation starts in 2026 with gradual phase-in over 5 years.',
-    startYear: 2026
+    id: 'combustion-phaseout', 
+    label: 'Combustion Engine Phase Out',
+    description: 'Restrictions on combustion engine vehicle production and sales, transitioning to zero-emission vehicles.',
+    assumptions: 'Percentage of combustion engine production/sales restricted per year. Fleet turnover: 7 years (14% renewed annually). Of vehicles retired: 50% replaced with zero-emission vehicles, 50% not replaced.',
+    startYear: 2026,
+    levelDefinitions: {
+      0: { label: 'None', percentage: 0, description: 'No restrictions on combustion engine sales' },
+      1: { label: 'Low', percentage: 25, description: '25% of new vehicle sales must be zero-emission' },
+      2: { label: 'Medium', percentage: 50, description: '50% of new vehicle sales must be zero-emission' },
+      3: { label: 'High', percentage: 75, description: '75% of new vehicle sales must be zero-emission' },
+      4: { label: 'Very High', percentage: 100, description: '100% of new vehicle sales must be zero-emission' }
+    },
+    fleetAssumptions: {
+      turnoverYears: 7,
+      annualRenewalRate: 14,
+      zeroEmissionReplacementRate: 50,
+      notReplacedRate: 50
+    }
   },
   { 
     id: 'traffic-mgmt', 
@@ -400,16 +413,37 @@ export default function ScenarioExplorerPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Left: Assumptions and Settings */}
+                  {/* Left: Level Definitions and Settings */}
                   <div className="space-y-4">
-                    <div>
-                      <h3 className="text-sm font-semibold mb-2" style={{ color: '#163E64' }}>
-                        Key Assumptions
-                      </h3>
-                      <p className="text-sm text-gray-700">
-                        {selectedSlider.assumptions}
-                      </p>
-                    </div>
+                    {/* Level Definitions - only for Combustion Engine Phase Out */}
+                    {'levelDefinitions' in selectedSlider && selectedSlider.levelDefinitions && (
+                      <div>
+                        <h3 className="text-sm font-semibold mb-3" style={{ color: '#163E64' }}>
+                          Policy Level Definitions
+                        </h3>
+                        <div className="space-y-2">
+                          {Object.entries(selectedSlider.levelDefinitions).map(([key, level]: [string, any]) => (
+                            <div 
+                              key={key} 
+                              className={`p-2 rounded border ${sliderValues[selectedSlider.id] === parseInt(key) ? 'bg-orange-50' : 'bg-white'}`}
+                              style={{ borderColor: sliderValues[selectedSlider.id] === parseInt(key) ? '#FF5B35' : '#d4dfe0' }}
+                            >
+                              <div className="flex items-center justify-between mb-1">
+                                <span className="text-xs font-bold" style={{ color: '#163E64' }}>
+                                  {level.label}
+                                </span>
+                                <span className="text-sm font-bold" style={{ color: '#FF5B35' }}>
+                                  {level.percentage}%
+                                </span>
+                              </div>
+                              <p className="text-xs text-gray-600">
+                                {level.description}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                     <div>
                       <h3 className="text-sm font-semibold mb-2" style={{ color: '#163E64' }}>
@@ -436,24 +470,72 @@ export default function ScenarioExplorerPage() {
                         <span className="text-lg font-bold" style={{ color: '#FF5B35' }}>
                           {sliderLevels[sliderValues[selectedSlider.id]]}
                         </span>
-                        <span className="text-xs text-gray-500">
-                          (Level {sliderValues[selectedSlider.id] + 1} of 5)
-                        </span>
+                        {'levelDefinitions' in selectedSlider && (
+                          <span className="text-sm font-semibold" style={{ color: '#163E64' }}>
+                            ({selectedSlider.levelDefinitions[sliderValues[selectedSlider.id] as keyof typeof selectedSlider.levelDefinitions].percentage}% Phase Out)
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
 
-                  {/* Right: Additional Info or Related Graphs */}
-                  <div className="bg-gray-50 rounded-lg p-4 border" style={{ borderColor: '#d4dfe0' }}>
-                    <h3 className="text-sm font-semibold mb-3" style={{ color: '#163E64' }}>
-                      Related Impact Factors
-                    </h3>
-                    <div className="space-y-2 text-sm text-gray-700">
-                      <p>• Urban service revenue impact: Moderate to High</p>
-                      <p>• Interurban service revenue impact: Low to Moderate</p>
-                      <p>• Safety & Operations revenue impact: Moderate</p>
-                      <p>• Implementation timeframe: 3-5 years</p>
-                      <p>• Market adoption curve: S-curve trajectory</p>
+                  {/* Right: Fleet Assumptions or General Info */}
+                  <div className="space-y-4">
+                    {/* Fleet Assumptions - only for Combustion Engine Phase Out */}
+                    {'fleetAssumptions' in selectedSlider && (
+                      <div className="bg-blue-50 rounded-lg p-4 border" style={{ borderColor: '#4682B4' }}>
+                        <h3 className="text-sm font-semibold mb-3" style={{ color: '#163E64' }}>
+                          Fleet Turnover Assumptions
+                        </h3>
+                        <div className="space-y-3 text-sm">
+                          <div className="flex items-start gap-2">
+                            <span className="font-bold min-w-[120px]" style={{ color: '#163E64' }}>
+                              Turnover Period:
+                            </span>
+                            <span className="text-gray-700">
+                              {selectedSlider.fleetAssumptions.turnoverYears} years
+                            </span>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <span className="font-bold min-w-[120px]" style={{ color: '#163E64' }}>
+                              Annual Renewal:
+                            </span>
+                            <span className="text-gray-700">
+                              {selectedSlider.fleetAssumptions.annualRenewalRate}% of fleet per year
+                            </span>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <span className="font-bold min-w-[120px]" style={{ color: '#163E64' }}>
+                              ZEV Replacement:
+                            </span>
+                            <span className="text-gray-700">
+                              {selectedSlider.fleetAssumptions.zeroEmissionReplacementRate}% replaced with zero-emission vehicles
+                            </span>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <span className="font-bold min-w-[120px]" style={{ color: '#163E64' }}>
+                              Not Replaced:
+                            </span>
+                            <span className="text-gray-700">
+                              {selectedSlider.fleetAssumptions.notReplacedRate}% not replaced (fleet reduction)
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* General Impact Info - for all policies */}
+                    <div className="bg-gray-50 rounded-lg p-4 border" style={{ borderColor: '#d4dfe0' }}>
+                      <h3 className="text-sm font-semibold mb-3" style={{ color: '#163E64' }}>
+                        Revenue Impact Overview
+                      </h3>
+                      <div className="space-y-2 text-sm text-gray-700">
+                        <p>• Urban services: Moderate to High impact</p>
+                        <p>• Interurban services: Low to Moderate impact</p>
+                        <p>• Safety & Operations: Moderate impact</p>
+                        <p>• Implementation timeline: 3-5 years</p>
+                        <p>• Adoption curve: S-curve trajectory</p>
+                      </div>
                     </div>
                   </div>
                 </div>
