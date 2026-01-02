@@ -28,26 +28,19 @@ const policySliders = [
   { id: 'alternative-fuels', label: 'Alternative Fuels', min: 0, max: 100, defaultValue: 50 },
 ]
 
-// Generate revenue projection data with actual values
+// Generate revenue projection data from actual year-by-year values
 const generateRevenueData = (timeFrame: '5year' | '10year') => {
-  const years = []
   const startYear = 2024
   const endYear = timeFrame === '5year' ? 2030 : 2035
   
+  const years = []
   for (let year = startYear; year <= endYear; year++) {
-    const dataPoint: any = { year }
-    
-    // Interpolate each service line
-    Object.entries(revenueData).forEach(([key, values]) => {
-      dataPoint[key] = Number(interpolateRevenue(
-        2024, values[2024],
-        2030, values[2030],
-        2035, values[2035],
-        year
-      ).toFixed(1))
-    })
-    
-    years.push(dataPoint)
+    if (revenueDataByYear[year]) {
+      years.push({
+        year,
+        ...revenueDataByYear[year]
+      })
+    }
   }
   
   return years
@@ -67,31 +60,20 @@ const serviceLineColors = {
   safetyOMAPP: '#FFB6C1',  // Pastel Pink
 }
 
-// Actual revenue data from the table (in millions €)
-const revenueData = {
-  urbanON: { 2024: 22.4, 2030: 39.3, 2035: 86.1 },
-  urbanOFF: { 2024: 4.6, 2030: 10.5, 2035: 23.0 },
-  urbanLEZ: { 2024: 2.6, 2030: 11.8, 2035: 25.8 },
-  urbanOTH: { 2024: 3.1, 2030: 6.6, 2035: 14.4 },
-  interurbanTOL: { 2024: 5.6, 2030: 21.0, 2035: 45.9 },
-  interurbanSystems: { 2024: 1.5, 2030: 5.2, 2035: 11.5 },
-  interurbanMTRK: { 2024: 3.6, 2030: 10.5, 2035: 23.0 },
-  safetyOSAFE: { 2024: 7.1, 2030: 21.0, 2035: 45.9 },
-  safetyODATA: { 2024: 0.0, 2030: 3.9, 2035: 8.6 },
-  safetyOMAPP: { 2024: 0.0, 2030: 1.3, 2035: 2.9 },
-}
-
-// Interpolate revenue between data points
-const interpolateRevenue = (startYear: number, startValue: number, midYear: number, midValue: number, endYear: number, endValue: number, targetYear: number): number => {
-  if (targetYear <= midYear) {
-    // Interpolate between start and mid
-    const ratio = (targetYear - startYear) / (midYear - startYear)
-    return startValue + (midValue - startValue) * ratio
-  } else {
-    // Interpolate between mid and end
-    const ratio = (targetYear - midYear) / (endYear - midYear)
-    return midValue + (endValue - midValue) * ratio
-  }
+// Actual year-by-year revenue data from the table (in millions €)
+const revenueDataByYear: Record<number, Record<string, number>> = {
+  2024: { urbanON: 22.4, urbanOFF: 4.6, urbanLEZ: 2.6, urbanOTH: 3.1, interurbanTOL: 5.6, interurbanSystems: 1.5, interurbanMTRK: 3.6, safetyOSAFE: 7.1, safetyODATA: 0.3, safetyOMAPP: 0.1 },
+  2025: { urbanON: 24.3, urbanOFF: 5.2, urbanLEZ: 3.2, urbanOTH: 3.5, interurbanTOL: 7.5, interurbanSystems: 1.9, interurbanMTRK: 4.4, safetyOSAFE: 8.8, safetyODATA: 0.7, safetyOMAPP: 0.2 },
+  2026: { urbanON: 26.1, urbanOFF: 6.0, urbanLEZ: 4.0, urbanOTH: 3.9, interurbanTOL: 9.9, interurbanSystems: 2.4, interurbanMTRK: 5.4, safetyOSAFE: 10.9, safetyODATA: 1.1, safetyOMAPP: 0.3 },
+  2027: { urbanON: 28.1, urbanOFF: 6.8, urbanLEZ: 5.1, urbanOTH: 4.3, interurbanTOL: 12.9, interurbanSystems: 2.9, interurbanMTRK: 6.4, safetyOSAFE: 13.1, safetyODATA: 1.7, safetyOMAPP: 0.5 },
+  2028: { urbanON: 30.2, urbanOFF: 7.7, urbanLEZ: 6.5, urbanOTH: 4.8, interurbanTOL: 16.4, interurbanSystems: 3.5, interurbanMTRK: 7.5, safetyOSAFE: 15.6, safetyODATA: 2.6, safetyOMAPP: 0.9 },
+  2029: { urbanON: 32.5, urbanOFF: 8.8, urbanLEZ: 8.2, urbanOTH: 5.4, interurbanTOL: 20.3, interurbanSystems: 4.2, interurbanMTRK: 8.6, safetyOSAFE: 18.2, safetyODATA: 4.0, safetyOMAPP: 1.7 },
+  2030: { urbanON: 39.3, urbanOFF: 10.5, urbanLEZ: 11.8, urbanOTH: 6.6, interurbanTOL: 21.0, interurbanSystems: 5.2, interurbanMTRK: 10.5, safetyOSAFE: 21.0, safetyODATA: 3.9, safetyOMAPP: 1.3 },
+  2031: { urbanON: 46.0, urbanOFF: 12.3, urbanLEZ: 13.8, urbanOTH: 7.7, interurbanTOL: 24.5, interurbanSystems: 6.1, interurbanMTRK: 12.3, safetyOSAFE: 24.5, safetyODATA: 4.6, safetyOMAPP: 1.5 },
+  2032: { urbanON: 53.8, urbanOFF: 14.4, urbanLEZ: 16.1, urbanOTH: 9.0, interurbanTOL: 28.7, interurbanSystems: 7.2, interurbanMTRK: 14.4, safetyOSAFE: 28.7, safetyODATA: 5.4, safetyOMAPP: 1.8 },
+  2033: { urbanON: 63.0, urbanOFF: 16.8, urbanLEZ: 18.9, urbanOTH: 10.5, interurbanTOL: 33.6, interurbanSystems: 8.4, interurbanMTRK: 16.8, safetyOSAFE: 33.6, safetyODATA: 6.3, safetyOMAPP: 2.1 },
+  2034: { urbanON: 73.7, urbanOFF: 19.7, urbanLEZ: 22.1, urbanOTH: 12.3, interurbanTOL: 39.3, interurbanSystems: 9.8, interurbanMTRK: 19.7, safetyOSAFE: 39.3, safetyODATA: 7.4, safetyOMAPP: 2.5 },
+  2035: { urbanON: 86.3, urbanOFF: 23.0, urbanLEZ: 25.9, urbanOTH: 14.4, interurbanTOL: 46.0, interurbanSystems: 11.5, interurbanMTRK: 23.0, safetyOSAFE: 46.0, safetyODATA: 8.6, safetyOMAPP: 2.9 },
 }
 
 export default function ScenarioExplorerPage() {
