@@ -567,9 +567,9 @@ export default function ScenarioExplorerPage() {
                         <span className="text-lg font-bold" style={{ color: '#FF5B35' }}>
                           {sliderLevels[sliderValues[selectedSlider.id]]}
                         </span>
-                        {'levelDefinitions' in selectedSlider && (
+                        {'levelDefinitions' in selectedSlider && selectedSlider.levelDefinitions && (
                           <span className="text-sm font-semibold" style={{ color: '#163E64' }}>
-                            ({selectedSlider.levelDefinitions[sliderValues[selectedSlider.id] as keyof typeof selectedSlider.levelDefinitions].percentage}% Phase Out)
+                            ({(selectedSlider.levelDefinitions as any)[sliderValues[selectedSlider.id]]?.percentage}% Phase Out)
                           </span>
                         )}
                       </div>
