@@ -9,12 +9,64 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 // Graph type options
 const graphOptions = [
   { id: 'ebitda', label: 'EBITDA Growth by Service Line' },
+  { id: 'ebitda-table', label: 'EBITDA per Year (Table)' },
   { id: 'profitability', label: 'Profitability' },
   { id: 'liquidity', label: 'Liquidity' },
   { id: 'solvency', label: 'Solvency' },
   { id: 'operating-efficiency', label: 'Operating Efficiency' },
   { id: 'employee-health', label: 'Employee Health Risk' },
 ]
+
+// EBITDA baseline data with CAGR rates
+const ebitdaBaseline = [
+  { serviceLine: 'On-Street', code: 'ON', baseline2024: 22.44, cagr: 9.91 },
+  { serviceLine: 'Off-Street', code: 'OFF', baseline2024: 4.59, cagr: 15.23 },
+  { serviceLine: 'Congestion Charging & LEZ', code: 'LEZ', baseline2024: 2.55, cagr: 29.55 },
+  { serviceLine: 'Other Urban', code: 'OTH', baseline2024: 3.06, cagr: 14.27 },
+  { serviceLine: 'Road User Charging (Tolling)', code: 'TOL', baseline2024: 5.61, cagr: 24.83 },
+  { serviceLine: 'Intelligent Traffic Systems', code: 'Systems', baseline2024: 1.53, cagr: 23.78 },
+  { serviceLine: 'Mowiz Truck', code: 'M-TRK', baseline2024: 3.57, cagr: 20.15 },
+  { serviceLine: 'Road Safety', code: 'SAFE', baseline2024: 7.14, cagr: 19.91 },
+  { serviceLine: 'SaaS Data-Centric Solutions', code: 'DATA', baseline2024: 0.26, cagr: 35.41 },
+  { serviceLine: 'Mowiz App', code: 'M-APP', baseline2024: 0.26, cagr: 35.41 },
+]
+
+// Calculate EBITDA for a given year using CAGR
+const calculateEBITDA = (baseline: number, cagr: number, yearsFromBaseline: number): number => {
+  return baseline * Math.pow(1 + (cagr / 100), yearsFromBaseline)
+}
+
+// Generate EBITDA projection table data
+const generateEBITDATable = () => {
+  const years = [2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035]
+  const tableData = ebitdaBaseline.map(service => {
+    const row: any = {
+      serviceLine: service.serviceLine,
+      code: service.code,
+      cagr: service.cagr
+    }
+    
+    years.forEach(year => {
+      const yearsFromBaseline = year - 2024
+      row[`year${year}`] = calculateEBITDA(service.baseline2024, service.cagr, yearsFromBaseline)
+    })
+    
+    return row
+  })
+  
+  // Add total row
+  const totalRow: any = {
+    serviceLine: 'Total',
+    code: 'TOTAL',
+    cagr: null
+  }
+  
+  years.forEach(year => {
+    totalRow[`year${year}`] = tableData.reduce((sum, row) => sum + row[`year${year}`], 0)
+  })
+  
+  return { tableData, totalRow, years }
+}
 
 // Slider level options (discrete positions)
 const sliderLevels = ['None', 'Low', 'Medium', 'High', 'Very High'] as const
@@ -273,7 +325,52 @@ export default function ScenarioExplorerPage() {
                     </AreaChart>
                   </ResponsiveContainer>
                 )}
-                {leftGraph !== 'ebitda' && (
+                {leftGraph === 'ebitda-table' && (() => {
+                  const { tableData, totalRow, years } = generateEBITDATable()
+                  return (
+                    <div className="h-full overflow-auto">
+                      <table className="w-full text-xs border-collapse">
+                        <thead className="sticky top-0 bg-white">
+                          <tr>
+                            <th className="border px-2 py-1 text-left font-semibold" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>Service Line</th>
+                            <th className="border px-2 py-1 text-center font-semibold" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>Code</th>
+                            <th className="border px-2 py-1 text-center font-semibold" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>CAGR %</th>
+                            {years.map(year => (
+                              <th key={year} className="border px-2 py-1 text-center font-semibold" style={{ backgroundColor: '#163E64', color: '#ffffff' }}>
+                                {year}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {tableData.map((row, index) => (
+                            <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                              <td className="border px-2 py-1 text-left font-medium" style={{ color: '#163E64' }}>{row.serviceLine}</td>
+                              <td className="border px-2 py-1 text-center font-mono text-xs">{row.code}</td>
+                              <td className="border px-2 py-1 text-center">{row.cagr.toFixed(2)}%</td>
+                              {years.map(year => (
+                                <td key={year} className="border px-2 py-1 text-right font-mono">
+                                  €{row[`year${year}`].toFixed(2)}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                          <tr className="font-bold" style={{ backgroundColor: '#E8F0F2' }}>
+                            <td className="border px-2 py-1 text-left" style={{ color: '#0B1F32' }}>{totalRow.serviceLine}</td>
+                            <td className="border px-2 py-1 text-center">{totalRow.code}</td>
+                            <td className="border px-2 py-1 text-center">-</td>
+                            {years.map(year => (
+                              <td key={year} className="border px-2 py-1 text-right font-mono" style={{ color: '#0B1F32' }}>
+                                €{totalRow[`year${year}`].toFixed(2)}
+                              </td>
+                            ))}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  )
+                })()}
+                {leftGraph !== 'ebitda' && leftGraph !== 'ebitda-table' && (
                   <div className="flex items-center justify-center h-full text-gray-400 text-sm">
                     Chart data coming soon...
                   </div>
