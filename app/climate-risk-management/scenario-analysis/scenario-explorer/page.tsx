@@ -145,22 +145,39 @@ const policySliders = [
   },
 ]
 
-// Generate revenue projection data from actual year-by-year values
-const generateRevenueData = (timeFrame: '5year' | '10year') => {
-  const startYear = 2024
+// Generate chart data from the same EBITDA calculation used by the table
+const generateChartData = (timeFrame: '5year' | '10year') => {
+  const { tableData, years: allYears } = generateEBITDATable()
   const endYear = timeFrame === '5year' ? 2030 : 2035
+  const years = allYears.filter(year => year <= endYear)
   
-  const years = []
-  for (let year = startYear; year <= endYear; year++) {
-    if (revenueDataByYear[year]) {
-      years.push({
-        year,
-        ...revenueDataByYear[year]
-      })
+  // Transform table data into chart format
+  return years.map(year => {
+    const chartRow: any = { year }
+    
+    // Map each service line to its chart data key
+    const serviceLineMapping: Record<string, string> = {
+      'On-Street': 'urbanON',
+      'Off-Street': 'urbanOFF',
+      'Congestion Charging & LEZ': 'urbanLEZ',
+      'Other Urban': 'urbanOTH',
+      'Road User Charging (Tolling)': 'interurbanTOL',
+      'Intelligent Traffic Systems': 'interurbanSystems',
+      'Mowiz Truck': 'interurbanMTRK',
+      'Road Safety': 'safetyOSAFE',
+      'SaaS Data-Centric Solutions': 'safetyODATA',
+      'Mowiz App': 'safetyOMAPP'
     }
-  }
-  
-  return years
+    
+    tableData.forEach(row => {
+      const chartKey = serviceLineMapping[row.serviceLine]
+      if (chartKey) {
+        chartRow[chartKey] = row[`year${year}`]
+      }
+    })
+    
+    return chartRow
+  })
 }
 
 // Color palette matching the revenue projection table
@@ -203,12 +220,12 @@ export default function ScenarioExplorerPage() {
   const [sliderValues, setSliderValues] = useState<Record<string, number>>(
     policySliders.reduce((acc, slider) => ({ ...acc, [slider.id]: 2 }), {}) // Default to "Medium" (index 2)
   )
-  const [chartData, setChartData] = useState(generateRevenueData(timeFrame))
+  const [chartData, setChartData] = useState(generateChartData(timeFrame))
   const [selectedSliderForAssumptions, setSelectedSliderForAssumptions] = useState<string | null>(null)
 
   // Recalculate chart data when timeframe changes
   useEffect(() => {
-    setChartData(generateRevenueData(timeFrame))
+    setChartData(generateChartData(timeFrame))
   }, [timeFrame])
 
   useEffect(() => {
