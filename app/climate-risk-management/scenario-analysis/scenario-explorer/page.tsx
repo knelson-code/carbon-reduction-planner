@@ -89,7 +89,8 @@ const generateEBITDATable = (sliderValues: Record<string, number> = {}) => {
       const combustionLevel = sliderValues['combustion-phaseout'] ?? 0
       const combustionStartYear = 2026 // Will make this configurable later
       if (year >= combustionStartYear && policyImpacts['combustion-phaseout']) {
-        const impact = policyImpacts['combustion-phaseout'][combustionLevel][service.serviceLine] || 0
+        const levelData = policyImpacts['combustion-phaseout'][combustionLevel as keyof typeof policyImpacts['combustion-phaseout']]
+        const impact = levelData?.[service.serviceLine as keyof typeof levelData] || 0
         effectiveCAGR += impact
       }
       
