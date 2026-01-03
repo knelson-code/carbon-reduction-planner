@@ -31,24 +31,70 @@ const ebitdaBaseline = [
   { serviceLine: 'Mowiz App', code: 'M-APP', baseline2024: 0.26, cagr: 35.41 },
 ]
 
+// Policy impact database: How each slider position affects each service line's CAGR
+const policyImpacts = {
+  'combustion-phaseout': {
+    0: { // None
+      'On-Street': 0, 'Off-Street': 0, 'Congestion Charging & LEZ': 0, 'Other Urban': 0,
+      'Road User Charging (Tolling)': 0, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
+      'Road Safety': 0, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
+    },
+    1: { // Low
+      'On-Street': -1.8, 'Off-Street': -1.8, 'Congestion Charging & LEZ': 0, 'Other Urban': 0,
+      'Road User Charging (Tolling)': -1.8, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
+      'Road Safety': -1.8, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
+    },
+    2: { // Medium
+      'On-Street': -3.6, 'Off-Street': -3.6, 'Congestion Charging & LEZ': 0, 'Other Urban': 0,
+      'Road User Charging (Tolling)': -3.6, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
+      'Road Safety': -3.6, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
+    },
+    3: { // High
+      'On-Street': -5.4, 'Off-Street': -5.4, 'Congestion Charging & LEZ': 0, 'Other Urban': 0,
+      'Road User Charging (Tolling)': -5.4, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
+      'Road Safety': -5.4, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
+    },
+    4: { // Very High
+      'On-Street': -7.1, 'Off-Street': -7.1, 'Congestion Charging & LEZ': 0, 'Other Urban': 0,
+      'Road User Charging (Tolling)': -7.1, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
+      'Road Safety': -7.1, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
+    }
+  }
+  // More policies will be added here
+}
+
 // Calculate EBITDA for a given year using CAGR
 const calculateEBITDA = (baseline: number, cagr: number, yearsFromBaseline: number): number => {
   return baseline * Math.pow(1 + (cagr / 100), yearsFromBaseline)
 }
 
-// Generate EBITDA projection table data
-const generateEBITDATable = () => {
+// Generate EBITDA projection table data with policy impacts
+const generateEBITDATable = (sliderValues: Record<string, number> = {}) => {
   const years = [2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035]
+  
   const tableData = ebitdaBaseline.map(service => {
     const row: any = {
       serviceLine: service.serviceLine,
       code: service.code,
-      cagr: service.cagr
+      cagr: service.cagr // This is the baseline CAGR
     }
     
     years.forEach(year => {
       const yearsFromBaseline = year - 2024
-      row[`year${year}`] = calculateEBITDA(service.baseline2024, service.cagr, yearsFromBaseline)
+      
+      // Calculate effective CAGR for this year by adding policy impacts
+      let effectiveCAGR = service.cagr
+      
+      // Apply combustion engine phase out impact (starts in 2026 by default)
+      const combustionLevel = sliderValues['combustion-phaseout'] ?? 0
+      const combustionStartYear = 2026 // Will make this configurable later
+      if (year >= combustionStartYear && policyImpacts['combustion-phaseout']) {
+        const impact = policyImpacts['combustion-phaseout'][combustionLevel][service.serviceLine] || 0
+        effectiveCAGR += impact
+      }
+      
+      // Calculate EBITDA using the effective CAGR
+      row[`year${year}`] = calculateEBITDA(service.baseline2024, effectiveCAGR, yearsFromBaseline)
     })
     
     return row
@@ -146,8 +192,8 @@ const policySliders = [
 ]
 
 // Generate chart data from the same EBITDA calculation used by the table
-const generateChartData = (timeFrame: '5year' | '10year') => {
-  const { tableData, years: allYears } = generateEBITDATable()
+const generateChartData = (timeFrame: '5year' | '10year', sliderValues: Record<string, number> = {}) => {
+  const { tableData, years: allYears } = generateEBITDATable(sliderValues)
   const endYear = timeFrame === '5year' ? 2030 : 2035
   const years = allYears.filter(year => year <= endYear)
   
@@ -218,15 +264,15 @@ export default function ScenarioExplorerPage() {
   const [rightGraph, setRightGraph] = useState('profitability')
   const [timeFrame, setTimeFrame] = useState<'5year' | '10year'>('10year')
   const [sliderValues, setSliderValues] = useState<Record<string, number>>(
-    policySliders.reduce((acc, slider) => ({ ...acc, [slider.id]: 2 }), {}) // Default to "Medium" (index 2)
+    policySliders.reduce((acc, slider) => ({ ...acc, [slider.id]: 0 }), {}) // Default to "None" (index 0)
   )
-  const [chartData, setChartData] = useState(generateChartData(timeFrame))
+  const [chartData, setChartData] = useState(() => generateChartData(timeFrame, sliderValues))
   const [selectedSliderForAssumptions, setSelectedSliderForAssumptions] = useState<string | null>(null)
 
-  // Recalculate chart data when timeframe changes
+  // Recalculate chart data when timeframe or slider values change
   useEffect(() => {
-    setChartData(generateChartData(timeFrame))
-  }, [timeFrame])
+    setChartData(generateChartData(timeFrame, sliderValues))
+  }, [timeFrame, sliderValues])
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -343,7 +389,7 @@ export default function ScenarioExplorerPage() {
                   </ResponsiveContainer>
                 )}
                 {leftGraph === 'ebitda-table' && (() => {
-                  const { tableData, totalRow, years } = generateEBITDATable()
+                  const { tableData, totalRow, years } = generateEBITDATable(sliderValues)
                   return (
                     <div 
                       className="h-full border rounded" 
@@ -502,7 +548,7 @@ export default function ScenarioExplorerPage() {
                   </ResponsiveContainer>
                 )}
                 {rightGraph === 'ebitda-table' && (() => {
-                  const { tableData, totalRow, years } = generateEBITDATable()
+                  const { tableData, totalRow, years } = generateEBITDATable(sliderValues)
                   return (
                     <div 
                       className="h-full border rounded" 
