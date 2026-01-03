@@ -262,7 +262,7 @@ export default function ScenarioExplorerPage() {
   const router = useRouter()
 
   const [leftGraph, setLeftGraph] = useState('ebitda')
-  const [rightGraph, setRightGraph] = useState('profitability')
+  const [rightGraph, setRightGraph] = useState('ebitda-table')
   const [timeFrame, setTimeFrame] = useState<'5year' | '10year'>('10year')
   const [sliderValues, setSliderValues] = useState<Record<string, number>>(
     policySliders.reduce((acc, slider) => ({ ...acc, [slider.id]: 0 }), {}) // Default to "None" (index 0)
