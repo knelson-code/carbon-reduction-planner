@@ -855,7 +855,7 @@ export default function ScenarioExplorerPage() {
                                     €{row[`year${year}`].toFixed(2)}
                                   </td>
                                   <td key={`${year}-cagr`} className="border px-1 py-0.5 text-right text-[10px]">
-                                    {row.cagr.toFixed(2)}%
+                                    {row[`cagr${year}`].toFixed(2)}%
                                   </td>
                                 </>
                               ))}
