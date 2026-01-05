@@ -116,7 +116,7 @@ const generateEBITDATable = (sliderValues: Record<string, number> = {}) => {
 }
 
 // Slider level options (discrete positions)
-const sliderLevels = ['None', 'Low', 'Medium', 'High', 'Very High'] as const
+const sliderLevels = ['Very Low', 'Low', 'Medium', 'High', 'Very High'] as const
 type SliderLevel = typeof sliderLevels[number]
 
 // Policy slider configuration with assumptions
@@ -143,10 +143,11 @@ const policySliders = [
   },
   { 
     id: 'traffic-mgmt', 
-    label: 'Traffic Management',
-    description: 'Smart traffic management systems and congestion pricing to reduce vehicle use.',
-    assumptions: 'Leverages existing infrastructure with incremental technology deployment.',
-    startYear: 2025
+    label: 'LEZ and Congestion Charging',
+    description: 'Low Emission Zones and congestion charging schemes to manage urban traffic and reduce emissions.',
+    assumptions: 'Implementation of urban access restrictions and pricing mechanisms to discourage high-emission vehicle use.',
+    startYear: 2025,
+    defaultValue: 2 // Medium matches baseline scenario
   },
   { 
     id: 'ev-promotion', 
@@ -265,7 +266,10 @@ export default function ScenarioExplorerPage() {
   const [rightGraph, setRightGraph] = useState('ebitda-table')
   const [timeFrame, setTimeFrame] = useState<'5year' | '10year'>('10year')
   const [sliderValues, setSliderValues] = useState<Record<string, number>>(
-    policySliders.reduce((acc, slider) => ({ ...acc, [slider.id]: 0 }), {}) // Default to "None" (index 0)
+    policySliders.reduce((acc, slider) => ({ 
+      ...acc, 
+      [slider.id]: ('defaultValue' in slider && slider.defaultValue !== undefined) ? slider.defaultValue : 0 
+    }), {})
   )
   const [chartData, setChartData] = useState(() => generateChartData(timeFrame, sliderValues))
   const [selectedSliderForAssumptions, setSelectedSliderForAssumptions] = useState<string | null>(null)
@@ -706,7 +710,7 @@ export default function ScenarioExplorerPage() {
 
             {/* Right: Climate/Environmental Conditions Placeholder */}
             <div className="bg-gray-50 rounded-lg p-4 border" style={{ borderColor: '#d4dfe0' }}>
-              <h3 className="text-sm font-bold mb-4" style={{ color: '#0B1F32' }}>Climate & Environmental <span style={{ color: '#ff0000' }}>Conditions</span></h3>
+              <h3 className="text-sm font-bold mb-4" style={{ color: '#0B1F32' }}>Climate & Environmental Conditions</h3>
               <div className="flex items-center justify-center h-[calc(100%-2rem)] border-2 border-dashed rounded" style={{ borderColor: '#d4dfe0' }}>
                 <p className="text-sm text-gray-400">Climate sliders coming soon...</p>
               </div>
