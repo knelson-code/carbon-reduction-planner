@@ -473,24 +473,29 @@ export default function ScenarioExplorerPage() {
       })
     })
     
-    // Fill Section 1 CAGR references
+    // Fill Section 1 EBITDA and CAGR values
     ebitdaBaseline.forEach((service, serviceIdx) => {
       const ebitdaRow = netAdjustedEbitdaStartRow + serviceIdx
       
       years.forEach((year, yearIdx) => {
-        const yearsFromBaseline = year - 2024
         const ebitdaCol = colToLetter(1 + (yearIdx * 2))
         const cagrCol = colToLetter(2 + (yearIdx * 2))
         const netCAGRCol = colToLetter(1 + yearIdx)
         const netCAGRRow = netAdjustedCAGRStartRow + serviceIdx
         
-        // EBITDA Formula
-        const ebitdaFormula = yearsFromBaseline === 0 
-          ? service.baseline2024 
-          : { f: `${service.baseline2024}*POWER(1+${cagrCol}${ebitdaRow + 1}/100,${yearsFromBaseline})` }
+        // EBITDA Formula: Each year = Previous year * (1 + This year's CAGR/100)
+        let ebitdaFormula
+        if (yearIdx === 0) {
+          // 2024 = baseline
+          ebitdaFormula = service.baseline2024
+        } else {
+          // 2025+ = Previous year EBITDA * (1 + This year's CAGR/100)
+          const prevEbitdaCol = colToLetter(1 + ((yearIdx - 1) * 2))
+          ebitdaFormula = { f: `${prevEbitdaCol}${ebitdaRow + 1}*(1+${cagrCol}${ebitdaRow + 1}/100)` }
+        }
         
         data[ebitdaRow][1 + (yearIdx * 2)] = ebitdaFormula
-        // CAGR Reference
+        // CAGR Reference to NET ADJUSTED CAGR section
         data[ebitdaRow][2 + (yearIdx * 2)] = { f: `${netCAGRCol}${netCAGRRow + 1}` }
       })
     })
