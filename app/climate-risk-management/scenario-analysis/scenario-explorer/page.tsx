@@ -351,7 +351,7 @@ export default function ScenarioExplorerPage() {
       return letter
     }
     
-    // Track section start rows for formula references
+    // STEP 1: Build all sections with placeholders, track row numbers
     let netAdjustedEbitdaStartRow = 0
     let netAdjustedCAGRStartRow = 0
     let baselineCAGRStartRow = 0
@@ -368,37 +368,18 @@ export default function ScenarioExplorerPage() {
     row++
     
     netAdjustedEbitdaStartRow = row
-    const baseline2024Col = 'B' // Will store baseline 2024 values
-    
-    ebitdaBaseline.forEach((service, serviceIdx) => {
+    ebitdaBaseline.forEach((service) => {
       const serviceRow: any[] = [service.serviceLine]
-      years.forEach((year, yearIdx) => {
-        const yearsFromBaseline = year - 2024
-        const ebitdaCol = colToLetter(1 + (yearIdx * 2)) // B, D, F, H, ...
-        const cagrCol = colToLetter(2 + (yearIdx * 2))   // C, E, G, I, ...
-        
-        // EBITDA Formula: baseline2024 * (1 + CAGR/100)^years
-        // We'll reference a baseline value we'll add later, and the NET ADJUSTED CAGR
-        // Formula: =$B${netAdjustedCAGRStartRow+serviceIdx+15}*(1+C${row+1}/100)^${yearsFromBaseline}
-        // For now, calculate manually to get structure right, will add formula in next iteration
-        const ebitdaFormula = yearsFromBaseline === 0 
-          ? service.baseline2024 
-          : { f: `${service.baseline2024}*POWER(1+${cagrCol}${row+1}/100,${yearsFromBaseline})` }
-        
-        serviceRow.push(ebitdaFormula)
-        
-        // CAGR: Reference to NET ADJUSTED CAGR section (will be calculated below)
-        // This will be filled after we know the NET ADJUSTED CAGR row numbers
-        serviceRow.push('') // Placeholder, will fill with formula
+      years.forEach(() => {
+        serviceRow.push('PLACEHOLDER_EBITDA', 'PLACEHOLDER_CAGR') // Will fill with formulas later
       })
       data[row++] = serviceRow
     })
     
     const ebitdaTotalRow = row
     data[row] = ['Total']
-    years.forEach((year, yearIdx) => {
-      const ebitdaCol = colToLetter(1 + (yearIdx * 2))
-      data[row].push({ f: `SUM(${ebitdaCol}${netAdjustedEbitdaStartRow+1}:${ebitdaCol}${ebitdaTotalRow})` }, '-')
+    years.forEach(() => {
+      data[row].push('PLACEHOLDER_TOTAL', '-')
     })
     row++
     
@@ -412,43 +393,10 @@ export default function ScenarioExplorerPage() {
     row++
     
     netAdjustedCAGRStartRow = row
-    
-    // Section 3: BASELINE CAGR (need to place this first to reference it)
-    const baselineCAGRStartRowTemp = row + ebitdaBaseline.length + 5
-    
-    // Section 4+: Policy sections start rows
-    const policySectionStarts = policySliders.map((policy, policyIdx) => {
-      return baselineCAGRStartRowTemp + ebitdaBaseline.length + 5 + (policyIdx * (ebitdaBaseline.length + 6))
-    })
-    
-    ebitdaBaseline.forEach((service, serviceIdx) => {
-      const serviceRow: any[] = [service.serviceLine]
-      years.forEach((year, yearIdx) => {
-        const yearCol = colToLetter(1 + yearIdx)
-        const baselineRow = baselineCAGRStartRowTemp + serviceIdx + 1
-        
-        // Formula: Baseline + Policy1 + Policy2 + ...
-        let formula = `${yearCol}${baselineRow}`
-        
-        policySliders.forEach((policy, policyIdx) => {
-          const policyRow = policySectionStarts[policyIdx] + serviceIdx + 1
-          formula += `+${yearCol}${policyRow}`
-        })
-        
-        serviceRow.push({ f: formula })
-      })
+    ebitdaBaseline.forEach(() => {
+      const serviceRow: any[] = [ebitdaBaseline[0].serviceLine] // Placeholder
+      years.forEach(() => serviceRow.push('PLACEHOLDER_NET_CAGR'))
       data[row++] = serviceRow
-    })
-    
-    // Now go back and fill in the CAGR references in Section 1
-    ebitdaBaseline.forEach((service, serviceIdx) => {
-      years.forEach((year, yearIdx) => {
-        const cagrCol = colToLetter(2 + (yearIdx * 2))
-        const netCAGRCol = colToLetter(1 + yearIdx)
-        const netCAGRRow = netAdjustedCAGRStartRow + serviceIdx + 1
-        // Update the CAGR cell in section 1 to reference NET ADJUSTED CAGR
-        data[netAdjustedEbitdaStartRow + serviceIdx][2 + (yearIdx * 2)] = { f: `${netCAGRCol}${netCAGRRow}` }
-      })
     })
     
     // Section 3: BASELINE CAGR
@@ -468,7 +416,7 @@ export default function ScenarioExplorerPage() {
     })
     
     // Section 4+: Individual Policy Sections
-    policySliders.forEach((policy, policyIdx) => {
+    policySliders.forEach((policy) => {
       row += 2
       data[row++] = [policy.label.toUpperCase()]
       data[row++] = ['Current slider setting:', sliderLevels[sliderValues[policy.id]]]
@@ -478,7 +426,7 @@ export default function ScenarioExplorerPage() {
       years.forEach(year => data[row].push(`${year} CAGR`))
       row++
       
-      policyCAGRStartRows.push(row)
+      policyCAGRStartRows.push(row) // Track the start row for this policy's data
       
       ebitdaBaseline.forEach(service => {
         const serviceRow: any[] = [service.serviceLine]
@@ -500,6 +448,56 @@ export default function ScenarioExplorerPage() {
         })
         data[row++] = serviceRow
       })
+    })
+    
+    // STEP 2: Now fill in formulas with correct row references
+    // Fill NET ADJUSTED CAGR formulas (Baseline + all policies)
+    ebitdaBaseline.forEach((service, serviceIdx) => {
+      const netCAGRRow = netAdjustedCAGRStartRow + serviceIdx
+      data[netCAGRRow][0] = service.serviceLine // Update service name
+      
+      years.forEach((year, yearIdx) => {
+        const yearCol = colToLetter(1 + yearIdx)
+        const baselineRow = baselineCAGRStartRow + serviceIdx
+        
+        // Formula: Baseline + Policy1 + Policy2 + ...
+        let formula = `${yearCol}${baselineRow + 1}` // Excel is 1-indexed
+        
+        policySliders.forEach((policy, policyIdx) => {
+          const policyRow = policyCAGRStartRows[policyIdx] + serviceIdx
+          formula += `+${yearCol}${policyRow + 1}` // Excel is 1-indexed
+        })
+        
+        data[netCAGRRow][1 + yearIdx] = { f: formula }
+      })
+    })
+    
+    // Fill Section 1 CAGR references
+    ebitdaBaseline.forEach((service, serviceIdx) => {
+      const ebitdaRow = netAdjustedEbitdaStartRow + serviceIdx
+      
+      years.forEach((year, yearIdx) => {
+        const yearsFromBaseline = year - 2024
+        const ebitdaCol = colToLetter(1 + (yearIdx * 2))
+        const cagrCol = colToLetter(2 + (yearIdx * 2))
+        const netCAGRCol = colToLetter(1 + yearIdx)
+        const netCAGRRow = netAdjustedCAGRStartRow + serviceIdx
+        
+        // EBITDA Formula
+        const ebitdaFormula = yearsFromBaseline === 0 
+          ? service.baseline2024 
+          : { f: `${service.baseline2024}*POWER(1+${cagrCol}${ebitdaRow + 1}/100,${yearsFromBaseline})` }
+        
+        data[ebitdaRow][1 + (yearIdx * 2)] = ebitdaFormula
+        // CAGR Reference
+        data[ebitdaRow][2 + (yearIdx * 2)] = { f: `${netCAGRCol}${netCAGRRow + 1}` }
+      })
+    })
+    
+    // Fill Total row formulas
+    years.forEach((year, yearIdx) => {
+      const ebitdaCol = colToLetter(1 + (yearIdx * 2))
+      data[ebitdaTotalRow][1 + (yearIdx * 2)] = { f: `SUM(${ebitdaCol}${netAdjustedEbitdaStartRow+1}:${ebitdaCol}${ebitdaTotalRow})` }
     })
     
     const ws = XLSX.utils.aoa_to_sheet(data)
