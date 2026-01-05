@@ -34,7 +34,7 @@ const ebitdaBaseline = [
 // Policy impact database: How each slider position affects each service line's CAGR
 const policyImpacts = {
   'combustion-phaseout': {
-    0: { // None
+    0: { // Very Low
       'On-Street': 0, 'Off-Street': 0, 'Congestion Charging & LEZ': 0, 'Other Urban': 0,
       'Road User Charging (Tolling)': 0, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
       'Road Safety': 0, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
@@ -59,6 +59,33 @@ const policyImpacts = {
       'Road User Charging (Tolling)': -7.1, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
       'Road Safety': -7.1, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
     }
+  },
+  'traffic-mgmt': {
+    0: { // Very Low: 50% less LEZ than expected
+      'On-Street': 0, 'Off-Street': 0, 'Congestion Charging & LEZ': -50, 'Other Urban': 0,
+      'Road User Charging (Tolling)': 0, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
+      'Road Safety': 0, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
+    },
+    1: { // Low: 25% less LEZ than expected
+      'On-Street': 0, 'Off-Street': 0, 'Congestion Charging & LEZ': -25, 'Other Urban': 0,
+      'Road User Charging (Tolling)': 0, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
+      'Road Safety': 0, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
+    },
+    2: { // Medium: LEZ growth matches the existing forecast (baseline)
+      'On-Street': 0, 'Off-Street': 0, 'Congestion Charging & LEZ': 0, 'Other Urban': 0,
+      'Road User Charging (Tolling)': 0, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
+      'Road Safety': 0, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
+    },
+    3: { // High: 25% more LEZ than expected
+      'On-Street': 5, 'Off-Street': 5, 'Congestion Charging & LEZ': 25, 'Other Urban': 0,
+      'Road User Charging (Tolling)': 0, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
+      'Road Safety': 0, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
+    },
+    4: { // Very High: 50% more LEZ than expected
+      'On-Street': 10, 'Off-Street': 10, 'Congestion Charging & LEZ': 50, 'Other Urban': 0,
+      'Road User Charging (Tolling)': 0, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
+      'Road Safety': 0, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
+    }
   }
   // More policies will be added here
 }
@@ -82,17 +109,27 @@ const generateEBITDATable = (sliderValues: Record<string, number> = {}) => {
     years.forEach(year => {
       const yearsFromBaseline = year - 2024
       
-      // Calculate effective CAGR for this year by adding policy impacts
+      // Calculate effective CAGR for this year by adding ALL policy impacts
       let effectiveCAGR = service.cagr
       
-      // Apply combustion engine phase out impact (starts in 2026 by default)
-      const combustionLevel = sliderValues['combustion-phaseout'] ?? 0
-      const combustionStartYear = 2026 // Will make this configurable later
-      if (year >= combustionStartYear && policyImpacts['combustion-phaseout']) {
-        const levelData = policyImpacts['combustion-phaseout'][combustionLevel as keyof typeof policyImpacts['combustion-phaseout']]
-        const impact = levelData?.[service.serviceLine as keyof typeof levelData] || 0
-        effectiveCAGR += impact
-      }
+      // Loop through all policies and apply their impacts
+      Object.keys(policyImpacts).forEach(policyId => {
+        const policyLevel = sliderValues[policyId] ?? 0
+        const policy = policySliders.find(p => p.id === policyId)
+        const policyStartYear = policy?.startYear ?? 2024
+        
+        // Only apply impact if we're at or past the policy start year
+        if (year >= policyStartYear) {
+          const policyData = policyImpacts[policyId as keyof typeof policyImpacts]
+          if (policyData && typeof policyData === 'object') {
+            const levelData = (policyData as any)[policyLevel]
+            if (levelData && typeof levelData === 'object') {
+              const impact = (levelData as any)[service.serviceLine] || 0
+              effectiveCAGR += impact
+            }
+          }
+        }
+      })
       
       // Calculate EBITDA using the effective CAGR
       row[`year${year}`] = calculateEBITDA(service.baseline2024, effectiveCAGR, yearsFromBaseline)
