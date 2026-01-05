@@ -337,44 +337,105 @@ export default function ScenarioExplorerPage() {
 
   const exportToExcel = () => {
     const years = [2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035]
-    
-    // Create workbook
     const wb = XLSX.utils.book_new()
     
-    // Sheet 1: Current Slider Settings
-    const sliderSettingsData = [
-      ['Policy Slider Settings'],
-      ['Policy', 'Setting', 'Level'],
-      ...policySliders.map(slider => [
-        slider.label,
-        sliderLevels[sliderValues[slider.id]],
-        sliderValues[slider.id]
-      ])
-    ]
-    const ws1 = XLSX.utils.aoa_to_sheet(sliderSettingsData)
-    XLSX.utils.book_append_sheet(wb, ws1, 'Slider Settings')
+    // Build the main calculation sheet with formulas
+    const data: any[][] = []
+    let currentRow = 0
     
-    // Sheet 2: Detailed Calculation Breakdown
-    const breakdownData: any[] = []
-    breakdownData.push(['EBITDA Calculation Breakdown - Service Line by Year'])
-    breakdownData.push([])
+    // Section 1: NET ADJUSTED CAGR AND EBITDA (TOP)
+    data[currentRow++] = ['NET ADJUSTED CAGR AND EBITDA']
+    data[currentRow++] = []
+    data[currentRow++] = []
+    const headerRow = currentRow
+    data[currentRow] = ['Service Line']
+    years.forEach(year => {
+      data[headerRow].push(`${year} EBITDA`, `${year} CAGR`)
+    })
+    currentRow++
+    
+    const netAdjustedStartRow = currentRow
+    ebitdaBaseline.forEach((service, idx) => {
+      const row: any[] = [service.serviceLine]
+      years.forEach((year, yearIdx) => {
+        const colOffset = 1 + (yearIdx * 2)
+        // EBITDA: calculated value
+        row.push(service.baseline2024) // Will be calculated with formula
+        // CAGR: reference to net adjusted CAGR section below
+        row.push({ f: `C${netAdjustedStartRow + 20 + idx}` }) // Formula placeholder
+      })
+      data[currentRow++] = row
+    })
+    
+    // Total row
+    data[currentRow] = ['Total']
+    years.forEach((year, yearIdx) => {
+      const colOffset = 1 + (yearIdx * 2)
+      // Sum EBITDA for this year
+      data[currentRow].push({ f: `SUM(B${netAdjustedStartRow}:B${currentRow-1})` })
+      data[currentRow].push('-')
+    })
+    currentRow++
+    
+    // Section 2: NET ADJUSTED CAGR
+    currentRow += 2
+    data[currentRow++] = ['NET ADJUSTED CAGR']
+    data[currentRow++] = []
+    data[currentRow++] = []
+    data[currentRow] = ['Service Line']
+    years.forEach(year => data[currentRow].push(`${year} CAGR`))
+    currentRow++
+    
+    const netCAGRStartRow = currentRow
+    const baselineCAGRRow = currentRow + 20 // Will reference baseline section
+    const policyStartRows: Record<string, number> = {}
+    
+    ebitdaBaseline.forEach((service, idx) => {
+      const row: any[] = [service.serviceLine]
+      years.forEach((year, yearIdx) => {
+        const colOffset = 2 + yearIdx
+        // Formula: Baseline CAGR + sum of all active policy impacts
+        let formula = `C${baselineCAGRRow + idx}`
+        policySliders.forEach((policy, policyIdx) => {
+          const policyRow = baselineCAGRRow + 20 + (policyIdx * 15) + idx
+          formula += `+C${policyRow}`
+        })
+        row.push({ f: formula })
+      })
+      data[currentRow++] = row
+    })
+    
+    // Section 3: BASELINE CAGR
+    currentRow += 2
+    data[currentRow++] = ['BASELINE CAGR']
+    data[currentRow++] = []
+    data[currentRow++] = []
+    data[currentRow] = ['Service Line']
+    years.forEach(year => data[currentRow].push(`${year} CAGR`))
+    currentRow++
     
     ebitdaBaseline.forEach(service => {
-      breakdownData.push([`Service Line: ${service.serviceLine}`])
-      breakdownData.push(['', 'Baseline 2024', '€' + service.baseline2024.toFixed(2)])
-      breakdownData.push(['', 'Baseline CAGR', service.cagr.toFixed(2) + '%'])
-      breakdownData.push([])
+      const row: any[] = [service.serviceLine]
+      years.forEach(() => row.push(service.cagr))
+      data[currentRow++] = row
+    })
+    
+    // Section 4+: Individual Policy Sections
+    policySliders.forEach(policy => {
+      currentRow += 2
+      data[currentRow++] = [policy.label.toUpperCase()]
+      data[currentRow++] = ['Current slider setting:', sliderLevels[sliderValues[policy.id]]]
+      data[currentRow++] = ['Impacts of this slider setting on CAGR of various service lines']
+      data[currentRow++] = []
+      data[currentRow] = ['Service Line']
+      years.forEach(year => data[currentRow].push(`${year} CAGR`))
+      currentRow++
       
-      // Header row for this service
-      breakdownData.push(['Year', 'Baseline CAGR', ...policySliders.map(p => p.label + ' Impact'), 'Total Effective CAGR', 'EBITDA (€M)'])
+      policyStartRows[policy.id] = currentRow
       
-      years.forEach(year => {
-        const yearsFromBaseline = year - 2024
-        let effectiveCAGR = service.cagr
-        const policyImpactsForYear: number[] = []
-        
-        // Calculate each policy's impact
-        policySliders.forEach(policy => {
+      ebitdaBaseline.forEach(service => {
+        const row: any[] = [service.serviceLine]
+        years.forEach(year => {
           const policyLevel = sliderValues[policy.id] ?? 0
           const policyStartYear = policy.startYear ?? 2024
           let impact = 0
@@ -385,50 +446,17 @@ export default function ScenarioExplorerPage() {
               const levelData = (policyData as any)[policyLevel]
               if (levelData && typeof levelData === 'object') {
                 impact = (levelData as any)[service.serviceLine] || 0
-                effectiveCAGR += impact
               }
             }
           }
-          policyImpactsForYear.push(impact)
+          row.push(impact)
         })
-        
-        const ebitda = calculateEBITDA(service.baseline2024, effectiveCAGR, yearsFromBaseline)
-        
-        breakdownData.push([
-          year,
-          service.cagr.toFixed(2) + '%',
-          ...policyImpactsForYear.map(i => i === 0 ? '-' : (i > 0 ? '+' : '') + i.toFixed(2) + '%'),
-          effectiveCAGR.toFixed(2) + '%',
-          '€' + ebitda.toFixed(2)
-        ])
+        data[currentRow++] = row
       })
-      
-      breakdownData.push([]) // Empty row between services
     })
     
-    const ws2 = XLSX.utils.aoa_to_sheet(breakdownData)
-    XLSX.utils.book_append_sheet(wb, ws2, 'Detailed Breakdown')
-    
-    // Sheet 3: Final EBITDA Table (same as displayed)
-    const { tableData, totalRow } = generateEBITDATable(sliderValues)
-    const ebitdaTableData: any[] = []
-    ebitdaTableData.push(['EBITDA Projection Table'])
-    ebitdaTableData.push(['Service Line', ...years.flatMap(y => [y + ' EBITDA', y + ' CAGR'])])
-    
-    tableData.forEach(row => {
-      ebitdaTableData.push([
-        row.serviceLine,
-        ...years.flatMap(year => ['€' + row[`year${year}`].toFixed(2), row.cagr.toFixed(2) + '%'])
-      ])
-    })
-    
-    ebitdaTableData.push([
-      totalRow.serviceLine,
-      ...years.flatMap(year => ['€' + totalRow[`year${year}`].toFixed(2), '-'])
-    ])
-    
-    const ws3 = XLSX.utils.aoa_to_sheet(ebitdaTableData)
-    XLSX.utils.book_append_sheet(wb, ws3, 'EBITDA Table')
+    const ws = XLSX.utils.aoa_to_sheet(data)
+    XLSX.utils.book_append_sheet(wb, ws, 'EBITDA Calculation')
     
     // Generate filename with timestamp
     const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-')
