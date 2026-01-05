@@ -61,13 +61,13 @@ const policyImpacts = {
     }
   },
   'traffic-mgmt': {
-    0: { // Very Low: 50% less LEZ than expected
+    0: { // Very Low: Eliminates 50% of LEZ revenue from 2025 onwards
       'On-Street': 0, 'Off-Street': 0, 'Congestion Charging & LEZ': -50, 'Other Urban': 0,
       'Road User Charging (Tolling)': 0, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
       'Road Safety': 0, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
     },
-    1: { // Low: 25% less LEZ than expected
-      'On-Street': 0, 'Off-Street': 0, 'Congestion Charging & LEZ': -25, 'Other Urban': 0,
+    1: { // Low: Eliminates 50% of LEZ revenue from 2025 onwards
+      'On-Street': 0, 'Off-Street': 0, 'Congestion Charging & LEZ': -50, 'Other Urban': 0,
       'Road User Charging (Tolling)': 0, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
       'Road Safety': 0, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
     },
@@ -76,13 +76,13 @@ const policyImpacts = {
       'Road User Charging (Tolling)': 0, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
       'Road Safety': 0, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
     },
-    3: { // High: 25% more LEZ than expected
-      'On-Street': 5, 'Off-Street': 5, 'Congestion Charging & LEZ': 25, 'Other Urban': 0,
+    3: { // High: Increases LEZ growth and revenue by 1%
+      'On-Street': 0, 'Off-Street': 0, 'Congestion Charging & LEZ': 1, 'Other Urban': 0,
       'Road User Charging (Tolling)': 0, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
       'Road Safety': 0, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
     },
-    4: { // Very High: 50% more LEZ than expected
-      'On-Street': 10, 'Off-Street': 10, 'Congestion Charging & LEZ': 50, 'Other Urban': 0,
+    4: { // Very High: Increases LEZ growth and revenue by 2%
+      'On-Street': 0, 'Off-Street': 0, 'Congestion Charging & LEZ': 2, 'Other Urban': 0,
       'Road User Charging (Tolling)': 0, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
       'Road Safety': 0, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
     }
