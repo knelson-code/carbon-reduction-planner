@@ -10,7 +10,7 @@ git add -A
 
 echo.
 echo Committing changes...
-git commit -m "Test deployment: Make Conditions text red in Climate & Environmental section"
+git commit -m "Add xlsx library for Excel export functionality"
 
 echo.
 echo Pushing to GitHub...
