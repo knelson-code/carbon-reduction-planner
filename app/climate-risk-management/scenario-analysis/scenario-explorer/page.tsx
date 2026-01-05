@@ -461,11 +461,12 @@ export default function ScenarioExplorerPage() {
         const baselineRow = baselineCAGRStartRow + serviceIdx
         
         // Formula: Baseline + Policy1 + Policy2 + ...
-        let formula = `${yearCol}${baselineRow + 1}` // Excel is 1-indexed
+        // Excel is 1-indexed, so add 1 to all row numbers
+        let formula = `${yearCol}${baselineRow + 1}`
         
         policySliders.forEach((policy, policyIdx) => {
-          const policyRow = policyCAGRStartRows[policyIdx] + serviceIdx
-          formula += `+${yearCol}${policyRow + 1}` // Excel is 1-indexed
+          const policyDataRow = policyCAGRStartRows[policyIdx] + serviceIdx
+          formula += `+${yearCol}${policyDataRow + 1}`
         })
         
         data[netCAGRRow][1 + yearIdx] = { f: formula }
