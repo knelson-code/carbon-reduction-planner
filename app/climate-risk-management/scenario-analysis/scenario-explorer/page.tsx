@@ -104,16 +104,17 @@ const generateEBITDATable = (sliderValues: Record<string, number> = {}) => {
     const row: any = {
       serviceLine: service.serviceLine,
       code: service.code,
-      cagr: service.cagr // This is the baseline CAGR
+      cagr: service.cagr // This is just for reference, we'll store year-specific CAGRs
     }
     
-    years.forEach(year => {
-      const yearsFromBaseline = year - 2024
-      
-      // Calculate effective CAGR for this year by adding ALL policy impacts
+    // Calculate year-by-year with proper compounding
+    let previousYearEBITDA = service.baseline2024
+    
+    years.forEach((year, yearIdx) => {
+      // Calculate effective CAGR for THIS specific year by adding ALL active policy impacts
       let effectiveCAGR = service.cagr
       
-      // Loop through all policies and apply their impacts
+      // Loop through all policies and apply their impacts for this year
       Object.keys(policyImpacts).forEach(policyId => {
         const policyLevel = sliderValues[policyId] ?? 0
         const policy = policySliders.find(p => p.id === policyId)
@@ -132,8 +133,20 @@ const generateEBITDATable = (sliderValues: Record<string, number> = {}) => {
         }
       })
       
-      // Calculate EBITDA using the effective CAGR
-      row[`year${year}`] = calculateEBITDA(service.baseline2024, effectiveCAGR, yearsFromBaseline)
+      // Store the effective CAGR for this year
+      row[`cagr${year}`] = effectiveCAGR
+      
+      // Calculate EBITDA for this year: Previous year × (1 + this year's CAGR / 100)
+      if (yearIdx === 0) {
+        // 2024 is the baseline
+        row[`year${year}`] = service.baseline2024
+        previousYearEBITDA = service.baseline2024
+      } else {
+        // Year N = Year N-1 × (1 + CAGR_N / 100)
+        const currentYearEBITDA = previousYearEBITDA * (1 + effectiveCAGR / 100)
+        row[`year${year}`] = currentYearEBITDA
+        previousYearEBITDA = currentYearEBITDA
+      }
     })
     
     return row
@@ -682,7 +695,7 @@ export default function ScenarioExplorerPage() {
                                     €{row[`year${year}`].toFixed(2)}
                                   </td>
                                   <td key={`${year}-cagr`} className="border px-1 py-0.5 text-right text-[10px]">
-                                    {row.cagr.toFixed(2)}%
+                                    {row[`cagr${year}`].toFixed(2)}%
                                   </td>
                                 </>
                               ))}
