@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import ClimateRiskManagementSidebar from "@/components/ClimateRiskManagementSidebar"
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import * as XLSX from 'xlsx'
 
 // Graph type options
 const graphOptions = [
@@ -334,6 +335,109 @@ export default function ScenarioExplorerPage() {
     setSliderValues(resetValues)
   }
 
+  const exportToExcel = () => {
+    const years = [2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035]
+    
+    // Create workbook
+    const wb = XLSX.utils.book_new()
+    
+    // Sheet 1: Current Slider Settings
+    const sliderSettingsData = [
+      ['Policy Slider Settings'],
+      ['Policy', 'Setting', 'Level'],
+      ...policySliders.map(slider => [
+        slider.label,
+        sliderLevels[sliderValues[slider.id]],
+        sliderValues[slider.id]
+      ])
+    ]
+    const ws1 = XLSX.utils.aoa_to_sheet(sliderSettingsData)
+    XLSX.utils.book_append_sheet(wb, ws1, 'Slider Settings')
+    
+    // Sheet 2: Detailed Calculation Breakdown
+    const breakdownData: any[] = []
+    breakdownData.push(['EBITDA Calculation Breakdown - Service Line by Year'])
+    breakdownData.push([])
+    
+    ebitdaBaseline.forEach(service => {
+      breakdownData.push([`Service Line: ${service.serviceLine}`])
+      breakdownData.push(['', 'Baseline 2024', '€' + service.baseline2024.toFixed(2)])
+      breakdownData.push(['', 'Baseline CAGR', service.cagr.toFixed(2) + '%'])
+      breakdownData.push([])
+      
+      // Header row for this service
+      breakdownData.push(['Year', 'Baseline CAGR', ...policySliders.map(p => p.label + ' Impact'), 'Total Effective CAGR', 'EBITDA (€M)'])
+      
+      years.forEach(year => {
+        const yearsFromBaseline = year - 2024
+        let effectiveCAGR = service.cagr
+        const policyImpactsForYear: number[] = []
+        
+        // Calculate each policy's impact
+        policySliders.forEach(policy => {
+          const policyLevel = sliderValues[policy.id] ?? 0
+          const policyStartYear = policy.startYear ?? 2024
+          let impact = 0
+          
+          if (year >= policyStartYear) {
+            const policyData = policyImpacts[policy.id as keyof typeof policyImpacts]
+            if (policyData && typeof policyData === 'object') {
+              const levelData = (policyData as any)[policyLevel]
+              if (levelData && typeof levelData === 'object') {
+                impact = (levelData as any)[service.serviceLine] || 0
+                effectiveCAGR += impact
+              }
+            }
+          }
+          policyImpactsForYear.push(impact)
+        })
+        
+        const ebitda = calculateEBITDA(service.baseline2024, effectiveCAGR, yearsFromBaseline)
+        
+        breakdownData.push([
+          year,
+          service.cagr.toFixed(2) + '%',
+          ...policyImpactsForYear.map(i => i === 0 ? '-' : (i > 0 ? '+' : '') + i.toFixed(2) + '%'),
+          effectiveCAGR.toFixed(2) + '%',
+          '€' + ebitda.toFixed(2)
+        ])
+      })
+      
+      breakdownData.push([]) // Empty row between services
+    })
+    
+    const ws2 = XLSX.utils.aoa_to_sheet(breakdownData)
+    XLSX.utils.book_append_sheet(wb, ws2, 'Detailed Breakdown')
+    
+    // Sheet 3: Final EBITDA Table (same as displayed)
+    const { tableData, totalRow } = generateEBITDATable(sliderValues)
+    const ebitdaTableData: any[] = []
+    ebitdaTableData.push(['EBITDA Projection Table'])
+    ebitdaTableData.push(['Service Line', ...years.flatMap(y => [y + ' EBITDA', y + ' CAGR'])])
+    
+    tableData.forEach(row => {
+      ebitdaTableData.push([
+        row.serviceLine,
+        ...years.flatMap(year => ['€' + row[`year${year}`].toFixed(2), row.cagr.toFixed(2) + '%'])
+      ])
+    })
+    
+    ebitdaTableData.push([
+      totalRow.serviceLine,
+      ...years.flatMap(year => ['€' + totalRow[`year${year}`].toFixed(2), '-'])
+    ])
+    
+    const ws3 = XLSX.utils.aoa_to_sheet(ebitdaTableData)
+    XLSX.utils.book_append_sheet(wb, ws3, 'EBITDA Table')
+    
+    // Generate filename with timestamp
+    const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-')
+    const filename = `EBITDA_Scenario_Export_${timestamp}.xlsx`
+    
+    // Write file
+    XLSX.writeFile(wb, filename)
+  }
+
   const openAssumptions = (sliderId: string) => {
     setSelectedSliderForAssumptions(sliderId)
   }
@@ -384,6 +488,16 @@ export default function ScenarioExplorerPage() {
                     <option value="5year">5 Years (2024-2030)</option>
                     <option value="10year">10 Years (2024-2035)</option>
                   </select>
+                  <button
+                    onClick={exportToExcel}
+                    className="text-xs px-3 py-1 rounded border transition-colors font-medium"
+                    style={{ backgroundColor: '#10b981', color: '#ffffff', borderColor: '#10b981' }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#059669'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#10b981'}
+                    title="Export detailed calculation breakdown to Excel"
+                  >
+                    📊 Export to Excel
+                  </button>
                 </div>
                 <button className="text-gray-400 hover:text-gray-600">⋮</button>
               </div>
