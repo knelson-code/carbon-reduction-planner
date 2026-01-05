@@ -513,7 +513,7 @@ export default function ScenarioExplorerPage() {
                         label={{ value: 'Year', position: 'insideBottom', offset: -10, fontSize: 12 }}
                       />
                       <YAxis 
-                        domain={[0, 320]}
+                        domain={[0, 400]}
                         tick={{ fontSize: 11 }}
                         label={{ value: 'Revenue (Million €)', angle: -90, position: 'insideLeft', fontSize: 12 }}
                       />
@@ -673,7 +673,7 @@ export default function ScenarioExplorerPage() {
                         label={{ value: 'Year', position: 'insideBottom', offset: -10, fontSize: 12 }}
                       />
                       <YAxis 
-                        domain={[0, 320]}
+                        domain={[0, 400]}
                         tick={{ fontSize: 11 }}
                         label={{ value: 'Revenue (Million €)', angle: -90, position: 'insideLeft', fontSize: 12 }}
                       />
