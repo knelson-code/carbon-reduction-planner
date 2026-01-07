@@ -94,25 +94,25 @@ const policyImpacts = {
       'Road User Charging (Tolling)': 0, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
       'Road Safety': 0, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
     },
-    1: { // Low: 0.25%
-      'On-Street': 0.25, 'Off-Street': 0.25, 'Congestion Charging & LEZ': 0.25, 'Other Urban': 0.25,
-      'Road User Charging (Tolling)': 0.25, 'Intelligent Traffic Systems': 0.25, 'Mowiz Truck': 0.25,
-      'Road Safety': 0.25, 'SaaS Data-Centric Solutions': 0.25, 'Mowiz App': 0.25
+    1: { // Low: -0.25%
+      'On-Street': -0.25, 'Off-Street': -0.25, 'Congestion Charging & LEZ': -0.25, 'Other Urban': -0.25,
+      'Road User Charging (Tolling)': -0.25, 'Intelligent Traffic Systems': -0.25, 'Mowiz Truck': -0.25,
+      'Road Safety': -0.25, 'SaaS Data-Centric Solutions': -0.25, 'Mowiz App': -0.25
     },
-    2: { // Medium: 0.5%
-      'On-Street': 0.5, 'Off-Street': 0.5, 'Congestion Charging & LEZ': 0.5, 'Other Urban': 0.5,
-      'Road User Charging (Tolling)': 0.5, 'Intelligent Traffic Systems': 0.5, 'Mowiz Truck': 0.5,
-      'Road Safety': 0.5, 'SaaS Data-Centric Solutions': 0.5, 'Mowiz App': 0.5
+    2: { // Medium: -0.5%
+      'On-Street': -0.5, 'Off-Street': -0.5, 'Congestion Charging & LEZ': -0.5, 'Other Urban': -0.5,
+      'Road User Charging (Tolling)': -0.5, 'Intelligent Traffic Systems': -0.5, 'Mowiz Truck': -0.5,
+      'Road Safety': -0.5, 'SaaS Data-Centric Solutions': -0.5, 'Mowiz App': -0.5
     },
-    3: { // High: 0.75%
-      'On-Street': 0.75, 'Off-Street': 0.75, 'Congestion Charging & LEZ': 0.75, 'Other Urban': 0.75,
-      'Road User Charging (Tolling)': 0.75, 'Intelligent Traffic Systems': 0.75, 'Mowiz Truck': 0.75,
-      'Road Safety': 0.75, 'SaaS Data-Centric Solutions': 0.75, 'Mowiz App': 0.75
+    3: { // High: -0.75%
+      'On-Street': -0.75, 'Off-Street': -0.75, 'Congestion Charging & LEZ': -0.75, 'Other Urban': -0.75,
+      'Road User Charging (Tolling)': -0.75, 'Intelligent Traffic Systems': -0.75, 'Mowiz Truck': -0.75,
+      'Road Safety': -0.75, 'SaaS Data-Centric Solutions': -0.75, 'Mowiz App': -0.75
     },
-    4: { // Very High: 1%
-      'On-Street': 1, 'Off-Street': 1, 'Congestion Charging & LEZ': 1, 'Other Urban': 1,
-      'Road User Charging (Tolling)': 1, 'Intelligent Traffic Systems': 1, 'Mowiz Truck': 1,
-      'Road Safety': 1, 'SaaS Data-Centric Solutions': 1, 'Mowiz App': 1
+    4: { // Very High: -1%
+      'On-Street': -1, 'Off-Street': -1, 'Congestion Charging & LEZ': -1, 'Other Urban': -1,
+      'Road User Charging (Tolling)': -1, 'Intelligent Traffic Systems': -1, 'Mowiz Truck': -1,
+      'Road Safety': -1, 'SaaS Data-Centric Solutions': -1, 'Mowiz App': -1
     }
   }
 }
@@ -1025,7 +1025,7 @@ export default function ScenarioExplorerPage() {
                         onChange={(e) => handleSliderChange(slider.id, parseInt(e.target.value))}
                         className="w-full h-2 rounded-lg appearance-none cursor-pointer"
                         style={{
-                          background: `linear-gradient(to right, #10b981 0%, #10b981 ${(sliderValues[slider.id] / 4) * 100}%, #d4dfe0 ${(sliderValues[slider.id] / 4) * 100}%, #d4dfe0 100%)`
+                          background: `linear-gradient(to right, #FF5B35 0%, #FF5B35 ${(sliderValues[slider.id] / 4) * 100}%, #d4dfe0 ${(sliderValues[slider.id] / 4) * 100}%, #d4dfe0 100%)`
                         }}
                       />
                       <div className="flex justify-between mt-1 text-[10px]" style={{ color: '#6C757D' }}>
