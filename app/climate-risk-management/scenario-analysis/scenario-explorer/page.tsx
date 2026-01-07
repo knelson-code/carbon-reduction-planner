@@ -114,6 +114,33 @@ const policyImpacts = {
       'Road User Charging (Tolling)': -1, 'Intelligent Traffic Systems': -1, 'Mowiz Truck': -1,
       'Road Safety': -1, 'SaaS Data-Centric Solutions': -1, 'Mowiz App': -1
     }
+  },
+  'client-stability': {
+    0: { // Very Low: 0%
+      'On-Street': 0, 'Off-Street': 0, 'Congestion Charging & LEZ': 0, 'Other Urban': 0,
+      'Road User Charging (Tolling)': 0, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
+      'Road Safety': 0, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
+    },
+    1: { // Low: -0.25%
+      'On-Street': -0.25, 'Off-Street': -0.25, 'Congestion Charging & LEZ': -0.25, 'Other Urban': -0.25,
+      'Road User Charging (Tolling)': -0.25, 'Intelligent Traffic Systems': -0.25, 'Mowiz Truck': -0.25,
+      'Road Safety': -0.25, 'SaaS Data-Centric Solutions': -0.25, 'Mowiz App': -0.25
+    },
+    2: { // Medium: -0.5%
+      'On-Street': -0.5, 'Off-Street': -0.5, 'Congestion Charging & LEZ': -0.5, 'Other Urban': -0.5,
+      'Road User Charging (Tolling)': -0.5, 'Intelligent Traffic Systems': -0.5, 'Mowiz Truck': -0.5,
+      'Road Safety': -0.5, 'SaaS Data-Centric Solutions': -0.5, 'Mowiz App': -0.5
+    },
+    3: { // High: -0.75%
+      'On-Street': -0.75, 'Off-Street': -0.75, 'Congestion Charging & LEZ': -0.75, 'Other Urban': -0.75,
+      'Road User Charging (Tolling)': -0.75, 'Intelligent Traffic Systems': -0.75, 'Mowiz Truck': -0.75,
+      'Road Safety': -0.75, 'SaaS Data-Centric Solutions': -0.75, 'Mowiz App': -0.75
+    },
+    4: { // Very High: -1%
+      'On-Street': -1, 'Off-Street': -1, 'Congestion Charging & LEZ': -1, 'Other Urban': -1,
+      'Road User Charging (Tolling)': -1, 'Intelligent Traffic Systems': -1, 'Mowiz Truck': -1,
+      'Road Safety': -1, 'SaaS Data-Centric Solutions': -1, 'Mowiz App': -1
+    }
   }
 }
 
@@ -278,6 +305,14 @@ const climateSliders = [
     label: 'Deterioration of our Operating Environment',
     description: 'Climate-driven deterioration affecting business operations, infrastructure, and service delivery.',
     assumptions: 'Uniform impact across all service lines. Reflects cumulative effects of temperature rise, extreme weather, and environmental changes.',
+    startYear: 2026,
+    defaultValue: 0 // Very Low (0% impact)
+  },
+  { 
+    id: 'client-stability', 
+    label: 'Strength and Stability of our Clients',
+    description: 'Climate change impacts on government clients\' fiscal capacity and operational stability.',
+    assumptions: 'Climate change has direct and indirect impacts on governments. Governments expenditures may rise in response to the impacts of increasingly frequent extreme weather events. Government revenue may be reduced as GDP and taxable economic activity decline due to climate changes impacts on key sectors including agriculture, tourism, and real estate. In this context, Governments are increasingly likely to need to respond to multiple crises simultaneously (health care, agricultural decline, water shortages, and extreme events), while having less available income, and attempting to act in an increasingly polarized social and political environment. It is therefore reasonable to model the idea that our business growth, which is dependent on these clients, will be affected.',
     startYear: 2026,
     defaultValue: 0 // Very Low (0% impact)
   },
