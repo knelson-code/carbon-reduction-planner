@@ -953,7 +953,7 @@ export default function ScenarioExplorerPage() {
 
             {/* Right: Climate/Environmental Conditions Placeholder */}
             <div className="bg-gray-50 rounded-lg p-4 border" style={{ borderColor: '#d4dfe0' }}>
-              <h3 className="text-sm font-bold mb-4" style={{ color: '#0B1F32' }}>Climate & Environmental Conditions</h3>
+              <h3 className="text-sm font-bold mb-4" style={{ color: '#0B1F32' }}>Climate & Environmental <span style={{ color: '#FF0000' }}>Conditions</span></h3>
               <div className="flex items-center justify-center h-[calc(100%-2rem)] border-2 border-dashed rounded" style={{ borderColor: '#d4dfe0' }}>
                 <p className="text-sm text-gray-400">Climate sliders coming soon...</p>
               </div>
