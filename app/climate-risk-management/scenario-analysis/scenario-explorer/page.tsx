@@ -384,9 +384,17 @@ export default function ScenarioExplorerPage() {
   const resetSliders = () => {
     const resetValues = policySliders.reduce((acc, slider) => ({ 
       ...acc, 
-      [slider.id]: 2 // Reset to "Medium"
+      [slider.id]: ('defaultValue' in slider && slider.defaultValue !== undefined) ? slider.defaultValue : 0
     }), {})
-    setSliderValues(resetValues)
+    setSliderValues(prev => ({ ...prev, ...resetValues }))
+  }
+
+  const resetClimateSliders = () => {
+    const resetValues = climateSliders.reduce((acc, slider) => ({ 
+      ...acc, 
+      [slider.id]: ('defaultValue' in slider && slider.defaultValue !== undefined) ? slider.defaultValue : 0
+    }), {})
+    setSliderValues(prev => ({ ...prev, ...resetValues }))
   }
 
   const exportToExcel = () => {
@@ -995,7 +1003,18 @@ export default function ScenarioExplorerPage() {
 
             {/* Right: Climate/Environmental Conditions */}
             <div className="bg-gray-50 rounded-lg p-4 border overflow-y-auto" style={{ borderColor: '#d4dfe0' }}>
-              <h3 className="text-sm font-bold mb-4" style={{ color: '#0B1F32' }}>Climate & Environmental Conditions</h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-bold" style={{ color: '#0B1F32' }}>Climate & Environmental Conditions</h3>
+                <button
+                  onClick={resetClimateSliders}
+                  className="text-xs px-3 py-1 rounded transition-colors"
+                  style={{ backgroundColor: '#163E64', color: '#ffffff' }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0B1F32'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#163E64'}
+                >
+                  Reset All
+                </button>
+              </div>
               
               <div className="space-y-3">
                 {climateSliders.map(slider => (
