@@ -224,7 +224,7 @@ const policySliders = [
     label: 'LEZ and Congestion Charging',
     description: 'Low Emission Zones and congestion charging schemes to manage urban traffic and reduce emissions.',
     assumptions: 'Implementation of urban access restrictions and pricing mechanisms to discourage high-emission vehicle use.',
-    startYear: 2025,
+    startYear: 2026,
     defaultValue: 2 // Medium matches baseline scenario
   },
   { 
