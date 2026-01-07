@@ -4,13 +4,14 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import ClimateRiskManagementSidebar from "@/components/ClimateRiskManagementSidebar"
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import * as XLSX from 'xlsx'
 
 // Graph type options
 const graphOptions = [
   { id: 'ebitda', label: 'EBITDA Growth by Service Line' },
   { id: 'ebitda-table', label: 'EBITDA per Year (Table)' },
+  { id: 'value-of-company', label: 'Value of Company' },
   { id: 'profitability', label: 'Profitability' },
   { id: 'liquidity', label: 'Liquidity' },
   { id: 'solvency', label: 'Solvency' },
@@ -386,6 +387,32 @@ const generateChartData = (timeFrame: '5year' | '10year', sliderValues: Record<s
     })
     
     return chartRow
+  })
+}
+
+// Generate company value data: Baseline vs Current Scenario
+// Multiple is currently set to 12x as placeholder (will be calculated based on financial metrics later)
+const generateCompanyValueData = (timeFrame: '5year' | '10year', sliderValues: Record<string, number> = {}) => {
+  const { tableData, totalRow, years: allYears } = generateEBITDATable(sliderValues)
+  const { totalRow: baselineTotalRow } = generateEBITDATable({}) // Baseline with no policy impacts
+  const endYear = timeFrame === '5year' ? 2030 : 2035
+  const years = allYears.filter(year => year <= endYear)
+  
+  // Placeholder multiple - will be calculated based on solvency, liquidity, profitability, operating efficiency
+  const PLACEHOLDER_MULTIPLE = 12
+  
+  return years.map(year => {
+    const baselineEBITDA = baselineTotalRow[`year${year}`]
+    const currentEBITDA = totalRow[`year${year}`]
+    
+    return {
+      year,
+      baselineValue: baselineEBITDA * PLACEHOLDER_MULTIPLE,
+      currentValue: currentEBITDA * PLACEHOLDER_MULTIPLE,
+      baselineEBITDA,
+      currentEBITDA,
+      multiple: PLACEHOLDER_MULTIPLE
+    }
   })
 }
 
@@ -840,7 +867,49 @@ export default function ScenarioExplorerPage() {
                     </div>
                   )
                 })()}
-                {leftGraph !== 'ebitda' && leftGraph !== 'ebitda-table' && (
+                {leftGraph === 'value-of-company' && (() => {
+                  const companyValueData = generateCompanyValueData(timeFrame, sliderValues)
+                  return (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={companyValueData} margin={{ top: 10, right: 10, left: 0, bottom: 20 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                        <XAxis 
+                          dataKey="year" 
+                          tick={{ fontSize: 11 }}
+                          label={{ value: 'Year', position: 'insideBottom', offset: -10, fontSize: 12 }}
+                        />
+                        <YAxis 
+                          tick={{ fontSize: 11 }}
+                          label={{ value: 'Company Value (Million €)', angle: -90, position: 'insideLeft', fontSize: 12 }}
+                        />
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: '#ffffff', 
+                            border: '1px solid #d4dfe0',
+                            borderRadius: '6px',
+                            fontSize: '12px'
+                          }}
+                          formatter={(value: any, name?: string, props?: any) => {
+                            if (!name || !props) return [value, name || '']
+                            const data = props.payload
+                            if (name === 'Baseline Value') {
+                              return [`€${value.toFixed(1)}M (€${data.baselineEBITDA.toFixed(1)}M EBITDA × ${data.multiple}x)`, name]
+                            } else {
+                              return [`€${value.toFixed(1)}M (€${data.currentEBITDA.toFixed(1)}M EBITDA × ${data.multiple}x)`, name]
+                            }
+                          }}
+                        />
+                        <Legend 
+                          wrapperStyle={{ fontSize: '11px' }}
+                          iconType="rect"
+                        />
+                        <Bar dataKey="baselineValue" fill="#4682B4" name="Baseline Value" />
+                        <Bar dataKey="currentValue" fill="#FF5B35" name="Current Scenario Value" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  )
+                })()}
+                {leftGraph !== 'ebitda' && leftGraph !== 'ebitda-table' && leftGraph !== 'value-of-company' && (
                   <div className="flex items-center justify-center h-full text-gray-400 text-sm">
                     Chart data coming soon...
                   </div>
@@ -1000,7 +1069,49 @@ export default function ScenarioExplorerPage() {
                     </div>
                   )
                 })()}
-                {rightGraph !== 'ebitda' && rightGraph !== 'ebitda-table' && (
+                {rightGraph === 'value-of-company' && (() => {
+                  const companyValueData = generateCompanyValueData(timeFrame, sliderValues)
+                  return (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={companyValueData} margin={{ top: 10, right: 10, left: 0, bottom: 20 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                        <XAxis 
+                          dataKey="year" 
+                          tick={{ fontSize: 11 }}
+                          label={{ value: 'Year', position: 'insideBottom', offset: -10, fontSize: 12 }}
+                        />
+                        <YAxis 
+                          tick={{ fontSize: 11 }}
+                          label={{ value: 'Company Value (Million €)', angle: -90, position: 'insideLeft', fontSize: 12 }}
+                        />
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: '#ffffff', 
+                            border: '1px solid #d4dfe0',
+                            borderRadius: '6px',
+                            fontSize: '12px'
+                          }}
+                          formatter={(value: any, name?: string, props?: any) => {
+                            if (!name || !props) return [value, name || '']
+                            const data = props.payload
+                            if (name === 'Baseline Value') {
+                              return [`€${value.toFixed(1)}M (€${data.baselineEBITDA.toFixed(1)}M EBITDA × ${data.multiple}x)`, name]
+                            } else {
+                              return [`€${value.toFixed(1)}M (€${data.currentEBITDA.toFixed(1)}M EBITDA × ${data.multiple}x)`, name]
+                            }
+                          }}
+                        />
+                        <Legend 
+                          wrapperStyle={{ fontSize: '11px' }}
+                          iconType="rect"
+                        />
+                        <Bar dataKey="baselineValue" fill="#4682B4" name="Baseline Value" />
+                        <Bar dataKey="currentValue" fill="#FF5B35" name="Current Scenario Value" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  )
+                })()}
+                {rightGraph !== 'ebitda' && rightGraph !== 'ebitda-table' && rightGraph !== 'value-of-company' && (
                   <div className="flex items-center justify-center h-full text-gray-400 text-sm">
                     Chart data coming soon...
                   </div>
