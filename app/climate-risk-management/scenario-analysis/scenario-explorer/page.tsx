@@ -87,8 +87,34 @@ const policyImpacts = {
       'Road User Charging (Tolling)': 0, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
       'Road Safety': 0, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
     }
+  },
+  'operating-deterioration': {
+    0: { // Very Low: 0%
+      'On-Street': 0, 'Off-Street': 0, 'Congestion Charging & LEZ': 0, 'Other Urban': 0,
+      'Road User Charging (Tolling)': 0, 'Intelligent Traffic Systems': 0, 'Mowiz Truck': 0,
+      'Road Safety': 0, 'SaaS Data-Centric Solutions': 0, 'Mowiz App': 0
+    },
+    1: { // Low: 0.25%
+      'On-Street': 0.25, 'Off-Street': 0.25, 'Congestion Charging & LEZ': 0.25, 'Other Urban': 0.25,
+      'Road User Charging (Tolling)': 0.25, 'Intelligent Traffic Systems': 0.25, 'Mowiz Truck': 0.25,
+      'Road Safety': 0.25, 'SaaS Data-Centric Solutions': 0.25, 'Mowiz App': 0.25
+    },
+    2: { // Medium: 0.5%
+      'On-Street': 0.5, 'Off-Street': 0.5, 'Congestion Charging & LEZ': 0.5, 'Other Urban': 0.5,
+      'Road User Charging (Tolling)': 0.5, 'Intelligent Traffic Systems': 0.5, 'Mowiz Truck': 0.5,
+      'Road Safety': 0.5, 'SaaS Data-Centric Solutions': 0.5, 'Mowiz App': 0.5
+    },
+    3: { // High: 0.75%
+      'On-Street': 0.75, 'Off-Street': 0.75, 'Congestion Charging & LEZ': 0.75, 'Other Urban': 0.75,
+      'Road User Charging (Tolling)': 0.75, 'Intelligent Traffic Systems': 0.75, 'Mowiz Truck': 0.75,
+      'Road Safety': 0.75, 'SaaS Data-Centric Solutions': 0.75, 'Mowiz App': 0.75
+    },
+    4: { // Very High: 1%
+      'On-Street': 1, 'Off-Street': 1, 'Congestion Charging & LEZ': 1, 'Other Urban': 1,
+      'Road User Charging (Tolling)': 1, 'Intelligent Traffic Systems': 1, 'Mowiz Truck': 1,
+      'Road Safety': 1, 'SaaS Data-Centric Solutions': 1, 'Mowiz App': 1
+    }
   }
-  // More policies will be added here
 }
 
 // Calculate EBITDA for a given year using CAGR
@@ -244,6 +270,18 @@ const policySliders = [
   },
 ]
 
+// Climate slider configuration
+const climateSliders = [
+  { 
+    id: 'operating-deterioration', 
+    label: 'Deterioration of our Operating Environment',
+    description: 'Climate-driven deterioration affecting business operations, infrastructure, and service delivery.',
+    assumptions: 'Uniform impact across all service lines. Reflects cumulative effects of temperature rise, extreme weather, and environmental changes.',
+    startYear: 2024,
+    defaultValue: 0 // Very Low (0% impact)
+  },
+]
+
 // Generate chart data from the same EBITDA calculation used by the table
 const generateChartData = (timeFrame: '5year' | '10year', sliderValues: Record<string, number> = {}) => {
   const { tableData, years: allYears } = generateEBITDATable(sliderValues)
@@ -316,12 +354,14 @@ export default function ScenarioExplorerPage() {
   const [leftGraph, setLeftGraph] = useState('ebitda')
   const [rightGraph, setRightGraph] = useState('ebitda-table')
   const [timeFrame, setTimeFrame] = useState<'5year' | '10year'>('10year')
-  const [sliderValues, setSliderValues] = useState<Record<string, number>>(
-    policySliders.reduce((acc, slider) => ({ 
+  const [sliderValues, setSliderValues] = useState<Record<string, number>>(() => {
+    // Initialize both policy and climate sliders
+    const allSliders = [...policySliders, ...climateSliders]
+    return allSliders.reduce((acc, slider) => ({ 
       ...acc, 
       [slider.id]: ('defaultValue' in slider && slider.defaultValue !== undefined) ? slider.defaultValue : 0 
     }), {})
-  )
+  })
   const [chartData, setChartData] = useState(() => generateChartData(timeFrame, sliderValues))
   const [selectedSliderForAssumptions, setSelectedSliderForAssumptions] = useState<string | null>(null)
 
@@ -539,7 +579,7 @@ export default function ScenarioExplorerPage() {
   }
 
   const selectedSlider = selectedSliderForAssumptions 
-    ? policySliders.find(s => s.id === selectedSliderForAssumptions)
+    ? [...policySliders, ...climateSliders].find(s => s.id === selectedSliderForAssumptions)
     : null
 
   if (status === "loading") {
@@ -951,11 +991,53 @@ export default function ScenarioExplorerPage() {
               </div>
             </div>
 
-            {/* Right: Climate/Environmental Conditions Placeholder */}
-            <div className="bg-gray-50 rounded-lg p-4 border" style={{ borderColor: '#d4dfe0' }}>
+            {/* Right: Climate/Environmental Conditions */}
+            <div className="bg-gray-50 rounded-lg p-4 border overflow-y-auto" style={{ borderColor: '#d4dfe0' }}>
               <h3 className="text-sm font-bold mb-4" style={{ color: '#0B1F32' }}>Climate & Environmental <span style={{ color: '#FF0000' }}>Conditions</span></h3>
-              <div className="flex items-center justify-center h-[calc(100%-2rem)] border-2 border-dashed rounded" style={{ borderColor: '#d4dfe0' }}>
-                <p className="text-sm text-gray-400">Climate sliders coming soon...</p>
+              
+              <div className="space-y-3">
+                {climateSliders.map(slider => (
+                  <div key={slider.id} className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <label className="text-xs font-medium" style={{ color: '#163E64' }}>
+                          {slider.label}
+                        </label>
+                        <button
+                          onClick={() => openAssumptions(slider.id)}
+                          className="text-gray-400 hover:text-gray-600 text-xs"
+                          title="View assumptions"
+                        >
+                          ⋮
+                        </button>
+                      </div>
+                      <span className="text-xs font-semibold" style={{ color: '#163E64' }}>
+                        {sliderLevels[sliderValues[slider.id]]}
+                      </span>
+                    </div>
+                    <div className="relative">
+                      <input
+                        type="range"
+                        min={0}
+                        max={4}
+                        step={1}
+                        value={sliderValues[slider.id]}
+                        onChange={(e) => handleSliderChange(slider.id, parseInt(e.target.value))}
+                        className="w-full h-2 rounded-lg appearance-none cursor-pointer"
+                        style={{
+                          background: `linear-gradient(to right, #10b981 0%, #10b981 ${(sliderValues[slider.id] / 4) * 100}%, #d4dfe0 ${(sliderValues[slider.id] / 4) * 100}%, #d4dfe0 100%)`
+                        }}
+                      />
+                      <div className="flex justify-between mt-1 text-[10px]" style={{ color: '#6C757D' }}>
+                        {sliderLevels.map((level, index) => (
+                          <span key={level} className={sliderValues[slider.id] === index ? 'font-semibold' : ''}>
+                            {level}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
