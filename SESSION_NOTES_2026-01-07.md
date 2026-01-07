@@ -134,13 +134,13 @@ Export to Excel with Full Formula Breakdown
 
 ---
 
-## 📝 Notes for Next Session
+## 📝 Next Steps
 
-### Pending Feature: Extreme Events - Randomize Impact Mode
+### ⏭️ NEXT SESSION TASK: Extreme Events - Randomize Impact Mode
 
-**NOT IMPLEMENTED YET** - See detailed implementation prompt below.
+**STATUS: Foundation Complete - Averaging Mode Working**
 
-The Extreme Events slider currently works in "Averaging of Impact" mode (uniform CAGR reduction). The next session needs to implement "Randomize Impact" mode where:
+The Extreme Events slider is currently functional in "Averaging of Impact" mode (uniform CAGR reduction). The next session should implement "Randomize Impact" mode where:
 - User can toggle between "Averaging" and "Randomize" modes
 - In Randomize mode: Random one-off 25% revenue hits to specific service-line-year combinations
 - Number of hits based on slider level (0, 1, 2, 3, or 4 hits)
