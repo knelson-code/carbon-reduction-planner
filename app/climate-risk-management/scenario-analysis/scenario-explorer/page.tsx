@@ -140,10 +140,11 @@ const generateEBITDATable = (sliderValues: Record<string, number> = {}) => {
       // Calculate effective CAGR for THIS specific year by adding ALL active policy impacts
       let effectiveCAGR = service.cagr
       
-      // Loop through all policies and apply their impacts for this year
+      // Loop through all policies and climate impacts and apply their impacts for this year
       Object.keys(policyImpacts).forEach(policyId => {
         const policyLevel = sliderValues[policyId] ?? 0
-        const policy = policySliders.find(p => p.id === policyId)
+        const allSliders = [...policySliders, ...climateSliders]
+        const policy = allSliders.find(p => p.id === policyId)
         const policyStartYear = policy?.startYear ?? 2024
         
         // Only apply impact if we're at or past the policy start year
@@ -277,7 +278,7 @@ const climateSliders = [
     label: 'Deterioration of our Operating Environment',
     description: 'Climate-driven deterioration affecting business operations, infrastructure, and service delivery.',
     assumptions: 'Uniform impact across all service lines. Reflects cumulative effects of temperature rise, extreme weather, and environmental changes.',
-    startYear: 2024,
+    startYear: 2026,
     defaultValue: 0 // Very Low (0% impact)
   },
 ]
@@ -468,8 +469,9 @@ export default function ScenarioExplorerPage() {
       data[row++] = serviceRow
     })
     
-    // Section 4+: Individual Policy Sections
-    policySliders.forEach((policy) => {
+    // Section 4+: Individual Policy and Climate Sections
+    const allSliders = [...policySliders, ...climateSliders]
+    allSliders.forEach((policy) => {
       row += 2
       data[row++] = [policy.label.toUpperCase()]
       data[row++] = ['Current slider setting:', sliderLevels[sliderValues[policy.id]]]
@@ -504,7 +506,7 @@ export default function ScenarioExplorerPage() {
     })
     
     // STEP 2: Now fill in formulas with correct row references
-    // Fill NET ADJUSTED CAGR formulas (Baseline + all policies)
+    // Fill NET ADJUSTED CAGR formulas (Baseline + all policies + all climate)
     ebitdaBaseline.forEach((service, serviceIdx) => {
       const netCAGRRow = netAdjustedCAGRStartRow + serviceIdx
       data[netCAGRRow][0] = service.serviceLine // Update service name
@@ -513,11 +515,11 @@ export default function ScenarioExplorerPage() {
         const yearCol = colToLetter(1 + yearIdx)
         const baselineRow = baselineCAGRStartRow + serviceIdx
         
-        // Formula: Baseline + Policy1 + Policy2 + ...
+        // Formula: Baseline + Policy1 + Policy2 + Climate1 + ...
         // Excel is 1-indexed, so add 1 to all row numbers
         let formula = `${yearCol}${baselineRow + 1}`
         
-        policySliders.forEach((policy, policyIdx) => {
+        allSliders.forEach((policy, policyIdx) => {
           const policyDataRow = policyCAGRStartRows[policyIdx] + serviceIdx
           formula += `+${yearCol}${policyDataRow + 1}`
         })
@@ -993,7 +995,7 @@ export default function ScenarioExplorerPage() {
 
             {/* Right: Climate/Environmental Conditions */}
             <div className="bg-gray-50 rounded-lg p-4 border overflow-y-auto" style={{ borderColor: '#d4dfe0' }}>
-              <h3 className="text-sm font-bold mb-4" style={{ color: '#0B1F32' }}>Climate & Environmental <span style={{ color: '#FF0000' }}>Conditions</span></h3>
+              <h3 className="text-sm font-bold mb-4" style={{ color: '#0B1F32' }}>Climate & Environmental Conditions</h3>
               
               <div className="space-y-3">
                 {climateSliders.map(slider => (
