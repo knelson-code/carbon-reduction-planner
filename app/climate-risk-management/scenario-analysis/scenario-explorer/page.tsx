@@ -879,6 +879,7 @@ export default function ScenarioExplorerPage() {
                           label={{ value: 'Year', position: 'insideBottom', offset: -10, fontSize: 12 }}
                         />
                         <YAxis 
+                          domain={[0, 6000]}
                           tick={{ fontSize: 11 }}
                           label={{ value: 'Company Value (Million €)', angle: -90, position: 'insideLeft', fontSize: 12 }}
                         />
@@ -903,8 +904,8 @@ export default function ScenarioExplorerPage() {
                           wrapperStyle={{ fontSize: '11px' }}
                           iconType="rect"
                         />
-                        <Bar dataKey="baselineValue" fill="#4682B4" name="Baseline Value" />
-                        <Bar dataKey="currentValue" fill="#FF5B35" name="Current Scenario Value" />
+                        <Bar dataKey="baselineValue" fill="#8B008B" name="Baseline Value" />
+                        <Bar dataKey="currentValue" fill="#CCFF00" name="Current Scenario Value" />
                       </BarChart>
                     </ResponsiveContainer>
                   )
@@ -1081,6 +1082,7 @@ export default function ScenarioExplorerPage() {
                           label={{ value: 'Year', position: 'insideBottom', offset: -10, fontSize: 12 }}
                         />
                         <YAxis 
+                          domain={[0, 6000]}
                           tick={{ fontSize: 11 }}
                           label={{ value: 'Company Value (Million €)', angle: -90, position: 'insideLeft', fontSize: 12 }}
                         />
@@ -1105,8 +1107,8 @@ export default function ScenarioExplorerPage() {
                           wrapperStyle={{ fontSize: '11px' }}
                           iconType="rect"
                         />
-                        <Bar dataKey="baselineValue" fill="#4682B4" name="Baseline Value" />
-                        <Bar dataKey="currentValue" fill="#FF5B35" name="Current Scenario Value" />
+                        <Bar dataKey="baselineValue" fill="#8B008B" name="Baseline Value" />
+                        <Bar dataKey="currentValue" fill="#CCFF00" name="Current Scenario Value" />
                       </BarChart>
                     </ResponsiveContainer>
                   )
