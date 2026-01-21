@@ -1188,7 +1188,7 @@ export default function ScenarioExplorerPage() {
             {/* Right: Climate/Environmental Conditions */}
             <div className="bg-gray-50 rounded-lg p-4 border overflow-y-auto" style={{ borderColor: '#d4dfe0' }}>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-bold" style={{ color: '#0B1F32' }}>Climate & Environmental Conditions</h3>
+                <h3 className="text-sm font-bold" style={{ color: '#0B1F32' }}>Climate & Environmental <span style={{ color: 'red' }}>Conditions</span></h3>
                 <button
                   onClick={resetClimateSliders}
                   className="text-xs px-3 py-1 rounded transition-colors"
