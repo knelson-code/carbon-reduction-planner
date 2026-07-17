@@ -63,6 +63,12 @@ export async function GET(request: NextRequest) {
     }
 
     const record = await prisma.clientRoom.findUnique({ where: { room } })
+    // Cheap change-polling: caller sends the updatedAt it already has; if
+    // nothing is newer we skip the payload so pages can poll every few seconds.
+    const since = params.get("since")
+    if (since && record?.updatedAt && record.updatedAt.toISOString() === since) {
+      return NextResponse.json({ unchanged: true, updatedAt: since }, { headers })
+    }
     return NextResponse.json(
       { data: record?.data ?? null, updatedAt: record?.updatedAt ?? null },
       { headers }
