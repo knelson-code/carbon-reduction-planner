@@ -99,6 +99,18 @@ model ActivityCompletion {
   @@unique([userId, activityId])
 }
 
+// Shared state for client-facing pages hosted on the static marketing site
+// (e.g. newdayclimate.com/pm). One row per client "room"; no user accounts —
+// access is a shared passphrase checked in /api/client-room.
+model ClientRoom {
+  id         String   @id @default(cuid())
+  room       String   @unique // e.g. "papelmatic"
+  passphrase String
+  data       Json?    // page state: stars, notes, table answers, etc.
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
 model Purchase {
   id              String    @id @default(cuid())
   userId          String
