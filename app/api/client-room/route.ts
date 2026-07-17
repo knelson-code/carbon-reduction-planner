@@ -12,7 +12,7 @@ import { prisma } from "@/lib/prisma"
 // ============================================================================
 
 const ROOMS: Record<string, string> = {
-  papelmatic: "papelmatic2031",
+  papelmatic: "pm",
 }
 
 // Origins allowed to call this API from the browser (the static marketing site).
