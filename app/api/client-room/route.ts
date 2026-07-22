@@ -13,6 +13,7 @@ import { prisma } from "@/lib/prisma"
 
 const ROOMS: Record<string, string> = {
   papelmatic: "pm",
+  arpol: "ar",
 }
 
 // Origins allowed to call this API from the browser (the static marketing site).
