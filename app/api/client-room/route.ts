@@ -14,6 +14,7 @@ import { prisma } from "@/lib/prisma"
 const ROOMS: Record<string, string> = {
   papelmatic: "pm",
   arpol: "ar",
+  pmtc: "pm", // Papelmatic proposal room (newdayclimate.com/pmtc) — temp passphrase, to be upgraded
 }
 
 // Origins allowed to call this API from the browser (the static marketing site).
