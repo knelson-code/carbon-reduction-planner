@@ -20,14 +20,14 @@ import { prisma } from "@/lib/prisma"
 // ============================================================================
 
 const BOARD_ROOMS: Record<string, string> = {
-  demo: "workshop2026",
+  demo: "risk",
 }
 
 // Any well-formed room name that is NOT listed above unlocks with the master
 // passphrase, so Keith can spin up a board per client just by sharing
 // /board/?room=<name> — no code change or deploy. List a room in BOARD_ROOMS
 // only when it needs its own passphrase.
-const DEFAULT_BOARD_PASS = "workshop2026"
+const DEFAULT_BOARD_PASS = "risk"
 const ROOM_NAME_RE = /^[a-z0-9-]{1,32}$/
 
 function roomPass(room: string): string | null {
