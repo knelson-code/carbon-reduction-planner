@@ -23,6 +23,18 @@ const BOARD_ROOMS: Record<string, string> = {
   demo: "workshop2026",
 }
 
+// Any well-formed room name that is NOT listed above unlocks with the master
+// passphrase, so Keith can spin up a board per client just by sharing
+// /board/?room=<name> — no code change or deploy. List a room in BOARD_ROOMS
+// only when it needs its own passphrase.
+const DEFAULT_BOARD_PASS = "workshop2026"
+const ROOM_NAME_RE = /^[a-z0-9-]{1,32}$/
+
+function roomPass(room: string): string | null {
+  if (!ROOM_NAME_RE.test(room)) return null
+  return BOARD_ROOMS[room] ?? DEFAULT_BOARD_PASS
+}
+
 // Origins allowed to call this API from the browser (the static marketing site).
 const ALLOWED_ORIGINS = [
   "https://newdayclimate.com",
@@ -64,7 +76,7 @@ function corsHeaders(request: NextRequest): Record<string, string> {
 
 function checkAccess(room: string | null, pass: string | null): string | null {
   if (!room || !pass) return null
-  const expected = BOARD_ROOMS[room]
+  const expected = roomPass(room)
   if (!expected || pass !== expected) return null
   return room
 }
@@ -202,7 +214,7 @@ export async function POST(request: NextRequest) {
         update: { objects: mergedJson, notes: mergedNotes, notesUpdatedAt: mergedNotesStamps },
         create: {
           room,
-          passphrase: BOARD_ROOMS[room],
+          passphrase: roomPass(room) ?? "",
           objects: mergedJson,
           notes: mergedNotes,
           notesUpdatedAt: mergedNotesStamps,
