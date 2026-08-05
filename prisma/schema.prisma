@@ -127,3 +127,19 @@ model Purchase {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 }
+
+// Shared state for the collaborative whiteboard client pages (e.g.
+// newdayclimate.com/board). One row per client "room"; no user accounts —
+// access is a shared passphrase checked in /api/board. Objects/notes are
+// merged per-key (last-write-wins) so concurrent editors don't clobber
+// each other's changes.
+model Board {
+  id             String   @id @default(cuid())
+  room           String   @unique // e.g. "demo"
+  passphrase     String
+  objects        Json?    // map: objectId -> object payload (incl. updatedAt, or {deleted:true, updatedAt} tombstone)
+  notes          Json?    // map: noteKey -> note text
+  notesUpdatedAt Json?    // map: noteKey -> numeric timestamp (ms) of last write
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
