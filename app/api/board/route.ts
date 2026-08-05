@@ -151,13 +151,21 @@ export async function POST(request: NextRequest) {
       const existingNotesStamps: NotesStampsMap =
         (existing?.notesUpdatedAt as NotesStampsMap | null) ?? {}
 
+      // Client clocks decide last-write-wins, so a device with a fast clock
+      // could stamp far-future times and make its edits unbeatable. Clamp
+      // incoming stamps to server-now plus a small slack.
+      const maxStamp = Date.now() + 5_000
+
       const merged: ObjectsMap = { ...existingObjects }
       if (ops) {
         for (const [id, incomingRaw] of Object.entries(ops as Record<string, unknown>)) {
           if (!isPlainObject(incomingRaw)) continue
           const incoming = incomingRaw as BoardObject
-          const incomingUpdatedAt =
-            typeof incoming.updatedAt === "number" ? incoming.updatedAt : -1
+          const incomingUpdatedAt = Math.min(
+            typeof incoming.updatedAt === "number" ? incoming.updatedAt : -1,
+            maxStamp
+          )
+          incoming.updatedAt = incomingUpdatedAt
           const existingUpdatedAt = merged[id]?.updatedAt ?? -1
           if (incomingUpdatedAt >= existingUpdatedAt) {
             merged[id] = incoming.deleted
@@ -172,8 +180,9 @@ export async function POST(request: NextRequest) {
       if (notes) {
         for (const [key, value] of Object.entries(notes as Record<string, unknown>)) {
           if (typeof value !== "string") continue
-          const incomingStamp = (notesUpdatedAt as Record<string, unknown> | undefined)?.[key]
-          if (typeof incomingStamp !== "number") continue
+          const incomingStampRaw = (notesUpdatedAt as Record<string, unknown> | undefined)?.[key]
+          if (typeof incomingStampRaw !== "number") continue
+          const incomingStamp = Math.min(incomingStampRaw, maxStamp)
           const existingStamp = mergedNotesStamps[key] ?? -1
           if (incomingStamp > existingStamp) {
             mergedNotes[key] = value
