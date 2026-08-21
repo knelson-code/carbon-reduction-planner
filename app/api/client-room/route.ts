@@ -15,6 +15,8 @@ const ROOMS: Record<string, string> = {
   papelmatic: "pm",
   arpol: "ar",
   pmtc: "pm", // Papelmatic proposal room (newdayclimate.com/pmtc) — temp passphrase, to be upgraded
+  as: "as", // Ungated workshop room (newdayclimate.com/as). The page is unlisted and
+            // ships this passphrase in its source on purpose: no login, link = access.
 }
 
 // Origins allowed to call this API from the browser (the static marketing site).
