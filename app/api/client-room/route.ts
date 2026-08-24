@@ -88,8 +88,13 @@ export async function GET(request: NextRequest) {
       // logs do not live long, and "was that Zaragoza or was it me?" is the whole question.
       const city = request.headers.get("x-vercel-ip-city") ?? "?"
       const country = request.headers.get("x-vercel-ip-country") ?? "?"
+      // Which door the visit came through. IP alone cannot separate the facilitator from
+      // the client — a phone on mobile data has a different IP from the same person's
+      // desk, and often geolocates to the carrier's exchange in another city entirely.
+      const via = (request.nextUrl.searchParams.get("p") ?? "?").slice(0, 60)
       console.log(
-        `ROOMVISIT room=${room} ip=${ip} where=${decodeURIComponent(city)},${country}` +
+        `ROOMVISIT room=${room} via=${via} ip=${ip}` +
+        ` where=${decodeURIComponent(city)},${country}` +
         ` at=${new Date().toISOString()} ua=${ua}`
       )
     }
