@@ -83,7 +83,15 @@ export async function GET(request: NextRequest) {
       const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
         ?? request.headers.get("x-real-ip") ?? "unknown"
       const ua = (request.headers.get("user-agent") ?? "").slice(0, 90)
-      console.log(`ROOMVISIT room=${room} ip=${ip} at=${new Date().toISOString()} ua=${ua}`)
+      // Vercel resolves the location at the edge, so the log says where a visit came from
+      // without anyone having to geolocate an IP afterwards — which matters because these
+      // logs do not live long, and "was that Zaragoza or was it me?" is the whole question.
+      const city = request.headers.get("x-vercel-ip-city") ?? "?"
+      const country = request.headers.get("x-vercel-ip-country") ?? "?"
+      console.log(
+        `ROOMVISIT room=${room} ip=${ip} where=${decodeURIComponent(city)},${country}` +
+        ` at=${new Date().toISOString()} ua=${ua}`
+      )
     }
     if (since && record?.updatedAt && record.updatedAt.toISOString() === since) {
       return NextResponse.json({ unchanged: true, updatedAt: since }, { headers })
