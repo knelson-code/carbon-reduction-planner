@@ -73,6 +73,18 @@ export async function GET(request: NextRequest) {
     // Cheap change-polling: caller sends the updatedAt it already has; if
     // nothing is newer we skip the payload so pages can poll every few seconds.
     const since = params.get("since")
+
+    // One line per PAGE LOAD, so "did the client actually open the link?" has an answer.
+    // Keyed on `since` being absent: loadState() omits it on a fresh load, while every
+    // poll sends it (even empty). Logging unconditionally would bury the real visits under
+    // hundreds of poll lines, since an open board polls several times a second.
+    // Read back with the Vercel runtime logs for this project, filtered on "ROOMVISIT".
+    if (since === null) {
+      const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+        ?? request.headers.get("x-real-ip") ?? "unknown"
+      const ua = (request.headers.get("user-agent") ?? "").slice(0, 90)
+      console.log(`ROOMVISIT room=${room} ip=${ip} at=${new Date().toISOString()} ua=${ua}`)
+    }
     if (since && record?.updatedAt && record.updatedAt.toISOString() === since) {
       return NextResponse.json({ unchanged: true, updatedAt: since }, { headers })
     }
