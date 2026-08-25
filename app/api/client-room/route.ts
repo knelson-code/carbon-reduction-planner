@@ -20,6 +20,9 @@ const ROOMS: Record<string, string> = {
   az: "az", // Realtime experiment (newdayclimate.com/az) — a copy of /as with Ably live
             // motion. Its OWN room on purpose: experimenting must not be able to touch
             // the /as board, which is the working backup.
+  t1: "t1", // ENGLISH workshop board (newdayclimate.com/t1, pretty URL /workshop-...).
+            // Same page as /az translated; its own room so an English session and a
+            // Spanish one can run at the same time without touching each other.
 }
 
 // Origins allowed to call this API from the browser (the static marketing site).
