@@ -38,6 +38,12 @@ const ALLOWED_ORIGINS = [
 // Keep saved blobs sane (the page state is small JSON — stars, notes, tables).
 const MAX_DATA_BYTES = 200_000
 
+// How long a visit record is kept. Vercel's runtime logs expire on their own; a
+// database row does not, so it has to be pruned deliberately. These rows are personal
+// data (IP + approximate location) and exist to answer "did the client open the link
+// for this session?" — a question that stops mattering long before 180 days.
+const VISIT_RETENTION_DAYS = 180
+
 function corsHeaders(request: NextRequest): Record<string, string> {
   const origin = request.headers.get("origin") || ""
   const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0]
@@ -100,6 +106,33 @@ export async function GET(request: NextRequest) {
         ` where=${decodeURIComponent(city)},${country}` +
         ` at=${new Date().toISOString()} ua=${ua}`
       )
+      // The log line above is for live tailing and expires with Vercel's retention.
+      // THIS is the durable record. Deliberately not awaited on the critical path and
+      // fully swallowed on error: a visit we failed to record must never turn into a
+      // board that failed to load. Same reasoning as the log line never throwing.
+      void prisma.roomVisit
+        .create({
+          data: {
+            room,
+            via,
+            ip,
+            city: decodeURIComponent(city),
+            country,
+            userAgent: ua,
+          },
+        })
+        .then(() =>
+          // Prune on write rather than on a schedule: this project has no cron, and a
+          // visit is exactly the moment we know the table just grew.
+          prisma.roomVisit.deleteMany({
+            where: {
+              at: {
+                lt: new Date(Date.now() - VISIT_RETENTION_DAYS * 24 * 60 * 60 * 1000),
+              },
+            },
+          })
+        )
+        .catch((e) => console.error("roomVisit write failed:", e))
     }
     if (since && record?.updatedAt && record.updatedAt.toISOString() === since) {
       return NextResponse.json({ unchanged: true, updatedAt: since }, { headers })

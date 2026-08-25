@@ -111,6 +111,28 @@ model ClientRoom {
   updatedAt  DateTime @updatedAt
 }
 
+// One row per PAGE LOAD of a client room, so "did the client actually open the
+// link?" has a durable answer. This used to be a console.log only, which meant the
+// record lived as long as Vercel's runtime-log retention (~1 day on Hobby, ~7 on
+// Pro) and could not be queried afterwards. The log line is still emitted for live
+// tailing; this table is the record that lasts.
+//
+// It is PERSONAL DATA (IP + approximate location). Ordinary server-log territory,
+// but because rows now outlive a log buffer they are pruned on write — see
+// VISIT_RETENTION_DAYS in app/api/client-room/route.ts.
+model RoomVisit {
+  id        String   @id @default(cuid())
+  room      String   // which board: "az", "t1", "as", ...
+  via       String?  // which door: "/az/" vs "/taller-bf6khv" - separates facilitator from client
+  ip        String?
+  city      String?
+  country   String?
+  userAgent String?
+  at        DateTime @default(now())
+
+  @@index([room, at])
+}
+
 model Purchase {
   id              String    @id @default(cuid())
   userId          String
